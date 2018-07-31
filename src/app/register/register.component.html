@@ -1,3 +1,47 @@
-<p>
-  register works!
-</p>
+<div class="mainDiv" *ngIf="!isLogged">
+    <div style="flex:40%"></div>
+    <mat-card class="registerCard" style="flex:20%">
+        <b><mat-card-subtitle>Register</mat-card-subtitle></b>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+                <div class="input-class">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="Enter Application Name" [(ngModel)]="appName"><mat-icon class="prefix-icon">person</mat-icon>
+                  </mat-form-field>
+                </div>
+                <br>
+                <div class="input-class">
+                  <mat-form-field class="full-width">
+                    <mat-icon class="prefix-icon">public</mat-icon>
+                    <input matInput placeholder="https://example.com" type="text" [(ngModel)]="callback">
+                    <mat-icon class="help-authorize" [matTooltip]="ORIGIN_HELP" matTooltipPosition="above">help</mat-icon>
+                  </mat-form-field>
+                </div>
+                <br>
+                <div class="input-class">
+                  <mat-form-field class="full-width">
+                    <mat-icon class="prefix-icon">refresh</mat-icon>
+                    <input matInput placeholder="https://example.com/oauth2callback" type="text" [(ngModel)]="callback">
+                    <mat-icon class="help-authorize" [matTooltip]="AUTHORIZE_HELP" matTooltipPosition="above">help</mat-icon>
+                  </mat-form-field>
+                </div>
+  
+              <button mat-raised-button class="login-button" (click)="login()">Register</button>
+        </mat-card-content>
+    </mat-card>
+    <div style="flex:40%"></div>
+  </div>
+  
+  <div class="mainDiv" *ngIf="isLogged">
+      <div class="loginCard" style="flex:40%;"></div>
+        <div style="flex:20%">
+          <span>
+            Hello, you are now logged in.
+          </span><br><br>
+          <button mat-raised-button class="email-button" color="primary" (click)="getEmail()">My Email</button>
+          <button mat-raised-button class="logout-button" color="warn" (click)="logout()">Logout</button>
+        </div>
+  
+      <div class="loginCard" style="flex:40%"></div>
+  </div>
+  

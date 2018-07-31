@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule, MatSnackBarModule } from '@angular/material';
+import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
 //import { RegisterService } from './register/login.service';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -27,7 +27,8 @@ import { RegisterComponent } from './register/register.component';
     MatToolbarModule,
     MatDividerModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   providers: [/*LoginService*/],
   bootstrap: [AppComponent]
