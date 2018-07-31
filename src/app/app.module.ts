@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
@@ -8,12 +9,27 @@ import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatT
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginService } from './login/login.service';
+
+const appRoutes: Routes = [
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '',
+    redirectTo: '/register',
+    pathMatch: 'full'
+  },
+  { path: '**', component: PageNotFoundComponent}
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +44,13 @@ import { RegisterComponent } from './register/register.component';
     MatDividerModule,
     MatSnackBarModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: false }
+    )
   ],
-  providers: [/*LoginService*/],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
