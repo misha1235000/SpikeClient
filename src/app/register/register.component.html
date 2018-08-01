@@ -1,7 +1,7 @@
 <div class="mainDiv" *ngIf="!isLogged">
     <div style="flex:40%"></div>
     <mat-card class="registerCard" style="flex:20%">
-        <b><mat-card-subtitle>Register</mat-card-subtitle></b>
+        <b><mat-card-subtitle>Register Server With OAuth</mat-card-subtitle></b>
         <mat-divider></mat-divider>
         <mat-card-content>
                 <div class="input-class">
@@ -13,7 +13,7 @@
                 <div class="input-class">
                   <mat-form-field class="full-width">
                     <mat-icon class="prefix-icon">public</mat-icon>
-                    <input matInput placeholder="https://example.com" type="text" [(ngModel)]="callback">
+                    <input matInput placeholder="https://example.com" type="text" [(ngModel)]="website">
                     <mat-icon class="help-authorize" [matTooltip]="ORIGIN_HELP" matTooltipPosition="above">help</mat-icon>
                   </mat-form-field>
                 </div>
