@@ -24,13 +24,13 @@ function getCookie(name) {
 })
 export class LoginComponent implements OnInit {
   isLogged: boolean;
-  email: string;
+  appName: string;
   password: string;
 
   constructor(private loginService: LoginService, private snackBar: MatSnackBar) { }
   
   login() {
-    this.loginService.login(this.email, this.password).subscribe((data) => {
+    this.loginService.login(this.appName, this.password).subscribe((data) => {
       if (data.auth) {
         let expiresDate: Date = new Date();
         expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 1 * 60 * 1000);
