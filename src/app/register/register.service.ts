@@ -39,7 +39,7 @@ export class RegisterService {
               });
   }
 
-  isExist(): Observable<any> {
+  isExist(appName): Observable<any> {
     return this.http.get(this.serverUrl + '/logout')
            .map((data) => {
               return data.json();

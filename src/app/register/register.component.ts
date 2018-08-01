@@ -37,12 +37,13 @@ export class RegisterComponent implements OnInit {
   constructor(private registerService: RegisterService, private loginService: LoginService, public dialog: MatDialog) { }
   
   isExist() {
-    this.registerService.isExist().subscribe((data) => {
-      if (data.auth) {
+   // this.registerService.isExist(this.appName).subscribe((data) => {
+      if (this.appName.length > 3) {
         this.openLogin();
-      }
-    });
+    //  }
+   // });
   }
+}
 
   openLogin() {
     const dialogRef = this.dialog.open(OpenLoginComponent, {
