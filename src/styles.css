@@ -5,3 +5,7 @@ body {
     margin: 0px;
     background-color: rgba(235 ,235, 235, 1);
 }
+
+mat-dialog-container {
+    padding: 0 !important;
+}

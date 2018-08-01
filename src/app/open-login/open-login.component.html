@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Login</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="mat-card-content">
+  <div class="input-class">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Enter Your Team Name" [(ngModel)]="teamName"><mat-icon class="prefix-icon">person</mat-icon>
+      </mat-form-field>
+    </div>
+    <br>
+    <div class="input-class">
+      <mat-form-field class="full-width">
+        <mat-icon class="prefix-icon">vpn_key</mat-icon>
+        <input matInput placeholder="Password" type="password" [(ngModel)]="password">
+      </mat-form-field>
+    </div>
+
+  <button mat-raised-button class="login-button" (click)="login()">Login</button>
+</div>
