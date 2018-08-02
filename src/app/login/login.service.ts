@@ -32,8 +32,8 @@ export class LoginService {
    */
   constructor(private http: Http){}
 
-  login(email, password): Observable<any> {
-     return this.http.post(this.serverUrl + '/login', {'email': email, 'password': password})
+  login(teamName, password): Observable<any> {
+     return this.http.post(this.serverUrl + '/login', {'email': teamName, 'password': password})
             .map((data) => {
                 return data.json();
               });
@@ -58,15 +58,4 @@ export class LoginService {
               return Observable.throw(error);
            });
   }
-
-  /*
-  verifyCode(code, reqId, appointment, user): Observable<any> {
-    return this.http.post(this.serverUrl + '/verify', {'code': code, 'request_id': reqId, 'appointment': appointment, 'user': user})
-           .map((res: Response) => {
-              return res.json();
-           }).catch((error) => {
-              return error.json().error;
-           });
-  }*/
-
 }
