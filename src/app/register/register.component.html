@@ -1,4 +1,4 @@
-<div class="mainDiv" *ngIf="!isLogged">
+<div class="mainDiv">
     <div style="flex:40%"></div>
     <mat-card class="registerCard" style="flex:20%">
         <b><mat-card-subtitle>Register Server With OAuth</mat-card-subtitle></b>
@@ -25,23 +25,10 @@
                     <mat-icon class="help-authorize" [matTooltip]="AUTHORIZE_HELP" matTooltipPosition="above">help</mat-icon>
                   </mat-form-field>
                 </div>
-  
+                <mat-spinner *ngIf="!isDone" diameter="50" style="position:absolute; left:-50px; bottom:-70px;"></mat-spinner>
               <button mat-raised-button class="login-button" (click)="isExist()">Register</button>
         </mat-card-content>
     </mat-card>
     <div style="flex:40%"></div>
-  </div>
-  
-  <div class="mainDiv" *ngIf="isLogged">
-      <div class="loginCard" style="flex:40%;"></div>
-        <div style="flex:20%">
-          <span>
-            Hello, you are now logged in.
-          </span><br><br>
-          <button mat-raised-button class="email-button" color="primary" (click)="getEmail()">My Email</button>
-          <button mat-raised-button class="logout-button" color="warn" (click)="logout()">Logout</button>
-        </div>
-  
-      <div class="loginCard" style="flex:40%"></div>
   </div>
   
