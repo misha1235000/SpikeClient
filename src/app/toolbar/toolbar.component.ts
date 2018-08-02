@@ -26,6 +26,7 @@ function getCookie(name: string) {
 export class ToolbarComponent implements OnInit {
 
   isLogged = false;
+  teamName;
 
   constructor(public dialog: MatDialog, public openLoginService: OpenLoginService) { }
 
@@ -54,8 +55,17 @@ export class ToolbarComponent implements OnInit {
     });
   }
 
+  getEmail() {
+    this.openLoginService.getEmail().subscribe((data) => {
+      this.teamName = data;
+    });
+  }
+
   ngOnInit() {
     this.checkLogin();
+    if (this.isLogged) {
+      this.getEmail();
+    }
   }
 
 }

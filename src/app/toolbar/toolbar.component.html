@@ -5,5 +5,8 @@
       <button *ngIf="!isLogged" mat-button class="login-button" (click)="openLogin()">Team Login</button>
       <button *ngIf="isLogged" mat-button class="login-button" (click)="logout()">Team Logout</button>
       <button routerLink="/register" routerLinkActive="active" mat-button class="login-button">Register OAuth</button>
+      <span class="example-spacer-right"></span>
+      <span *ngIf="isLogged">Hello {{teamName.email}}</span>
+
 
 </mat-toolbar-row>

@@ -45,6 +45,7 @@ export class OpenLoginComponent implements OnInit {
     });
   }
 
+
   ngOnInit() {
   }
 

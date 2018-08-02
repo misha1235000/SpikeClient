@@ -26,10 +26,10 @@ function getCookie(name) {
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  website: string;
-  callback: string;
-  isLogged: boolean;
+  website = "";
+  callback = "";
   appName = "";
+  isLogged: boolean;
   isDone = true;
 
   AUTHORIZE_HELP = "For use with requests from a web server. This is the path in your application that users are redirected to after they have authenticated with Google. The path will be appended with the authorization code for access. Must have a protocol. Cannot contain URL fragments or relative paths. Cannot be a public IP address.";

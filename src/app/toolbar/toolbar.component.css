@@ -3,8 +3,12 @@ mat-toolbar {
 }
 
 .example-spacer {
-    flex: 1 1 auto;
+    margin-left: 50px;
   }
+
+.example-spacer-right {
+    flex: 1 1 auto;
+}
   
   .login-button {
       font-weight: bold;
