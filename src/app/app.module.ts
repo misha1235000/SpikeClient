@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule, MatSnackBarModule, MatTooltipModule, MatDialogModule } from '@angular/material';
+import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule, MatSnackBarModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
 //import { RegisterService } from './register/login.service';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -14,6 +14,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
 import { OpenLoginComponent } from './open-login/open-login.component';
+import { OpenLoginService } from './open-login/open-login.service';
 
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -49,13 +50,14 @@ const appRoutes: Routes = [
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }
     )
   ],
   entryComponents: [OpenLoginComponent],
-  providers: [LoginService, RegisterService],
+  providers: [OpenLoginService, RegisterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
