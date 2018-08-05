@@ -13,8 +13,6 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
-import { OpenLoginComponent } from './open-login/open-login.component';
-import { OpenLoginService } from './open-login/open-login.service';
 
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -33,7 +31,7 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginComponent,
     PageNotFoundComponent,
-    OpenLoginComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -56,8 +54,7 @@ const appRoutes: Routes = [
       { enableTracing: false }
     )
   ],
-  entryComponents: [OpenLoginComponent],
-  providers: [OpenLoginService, RegisterService],
+  providers: [LoginService, RegisterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
