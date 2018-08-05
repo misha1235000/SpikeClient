@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { OpenLoginComponent } from '../open-login/open-login.component';
+import { LoginComponent } from '../login/login.component';
 import { MatDialog } from '../../../node_modules/@angular/material';
-import { OpenLoginService } from '../open-login/open-login.service';
+import { LoginService } from '../login/login.service';
 
 function getCookie(name: string) {
   let ca: Array<string> = document.cookie.split(';');
@@ -28,26 +28,14 @@ export class ToolbarComponent implements OnInit {
   isLogged = false;
   teamName;
 
-  constructor(public dialog: MatDialog, public openLoginService: OpenLoginService) { }
-
-  openLogin() {
-    const dialogRef = this.dialog.open(OpenLoginComponent, {
-      width: '410px',
-      height: '350px',
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
+  constructor(public dialog: MatDialog, public loginService: LoginService) { }
 
   checkLogin() {
     getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
   }
 
   logout() {
-    this.openLoginService.logout().subscribe((data) => {
+    this.loginService.logout().subscribe((data) => {
       if (data) {
         document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
         location.reload();
@@ -56,7 +44,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   getEmail() {
-    this.openLoginService.getEmail().subscribe((data) => {
+    this.loginService.getEmail().subscribe((data) => {
       this.teamName = data;
     });
   }
