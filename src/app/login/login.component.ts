@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         let expires: string = `${expiresDate.toUTCString()}`;
 
         document.cookie = `token=${data.token};expires=${expires};path=/`;
-        location.reload();
+        window.location.href = '/register';
       }
     });
   }
@@ -59,7 +59,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-   getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
+    if (getCookie('token').length > 0) {
+      this.isLogged = true
+      window.location.href = '/register';
+    } else {
+      this.isLogged = false;
+    }
   }
 
 }
