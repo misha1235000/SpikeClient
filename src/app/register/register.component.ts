@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { OpenLoginService } from '../open-login/open-login.service';
+import { LoginService } from '../login/login.service';
 import { RegisterService } from './register.service';
 import { MatDialog } from '../../../node_modules/@angular/material';
-import { OpenLoginComponent } from '../open-login/open-login.component';
 import { timeout } from '../../../node_modules/rxjs/operators';
 
 function getCookie(name) {
@@ -36,7 +35,7 @@ export class RegisterComponent implements OnInit {
   ORIGIN_HELP = "For use with requests from a browser. This is the origin URI of the client application. It can't contain a wildcard (https://*.example.com) or a path (https://example.com/subdir). If you're using a nonstandard port, you must include it in the origin URI.";
 
 
-  constructor(private registerService: RegisterService, private openLoginService: OpenLoginService, public dialog: MatDialog) { }
+  constructor(private registerService: RegisterService, private loginService: LoginService, public dialog: MatDialog) { }
   
   checkLogin(): void {
     getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
@@ -48,30 +47,13 @@ export class RegisterComponent implements OnInit {
     setTimeout(() => {
       this.isDone = true;
       if (this.appName.length > 3) {
-        if (!this.isLogged) {
-          this.openLogin();
-        } else {
           alert('Registered successfuly.');
-        }
-      //  }
-     // });
-      } else {
+        } else {
         alert('App already exists.');
       }
     }, 2000); 
 }
 
-  openLogin() {
-    const dialogRef = this.dialog.open(OpenLoginComponent, {
-      width: '410px',
-      height: '350px',
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 
   ngOnInit() {
    this.checkLogin();
