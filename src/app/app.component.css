@@ -1,0 +1,30 @@
+.sidenav {
+    display: flex;
+    justify-content: center;
+    width: 240px;
+    background-color: #DADADA;
+}
+
+.mat-list-icon {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .btn-list {
+      height: 50px;
+      position:relative;
+      right:10px;
+      width:100%;
+      text-align:left;
+
+  }
+
+  .btn-icon {
+      position:relative;
+      top: 5px;
+  }
+
+  .btn-text {
+      position:relative;
+      left: 10px;
+      bottom: 10px;
+  }
