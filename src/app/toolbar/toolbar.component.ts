@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginComponent } from '../login/login.component';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '../../../node_modules/@angular/material';
 import { LoginService } from '../login/login.service';
 
@@ -24,7 +23,7 @@ function getCookie(name: string) {
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-
+  @Input() sidenav;
   isLogged = false;
   teamName;
 

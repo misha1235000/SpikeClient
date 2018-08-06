@@ -1,13 +1,12 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>JWT Login App</span>
+      <button *ngIf="isLogged" class="menu-button" mat-icon-button (click)="sidenav.toggle();"><mat-icon>menu</mat-icon></button>
+      <span class="logo-text">JWT Login App</span>
       <span class="example-spacer"></span>
       <!--<button *ngIf="!isLogged" mat-button class="login-button" (click)="openLogin()">Team Login</button>-->
-      <button *ngIf="!isLogged" routerLink="/login" routerLinkActive="active" mat-button class="login-button">Team Login</button>
+      <!--<button *ngIf="!isLogged" routerLink="/login" routerLinkActive="active" mat-button class="login-button">Team Login</button>-->
       <button *ngIf="isLogged" routerLink="/register" routerLinkActive="active" mat-button class="login-button">Register OAuth</button>
       <span class="example-spacer-right"></span>
       <span *ngIf="isLogged">Hello {{teamName.email}},<button *ngIf="isLogged" mat-button class="login-button" (click)="logout()">Logout</button>
       </span>
-
-
 </mat-toolbar-row>

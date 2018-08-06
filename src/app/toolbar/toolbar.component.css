@@ -2,6 +2,10 @@ mat-toolbar {
     background-color: black !important;
 }
 
+mat-toolbar-row {
+    padding: 0;
+}
+
 .example-spacer {
     margin-left: 50px;
   }
@@ -9,11 +13,19 @@ mat-toolbar {
 .example-spacer-right {
     flex: 1 1 auto;
 }
-  
-  .login-button {
-      font-weight: bold;
-  }
 
-  .active {
-    background-color: rgba(255,255,255,0.2);
-  }
+.login-button {
+    font-weight: bold;
+}
+
+.active {
+background-color: rgba(255,255,255,0.2);
+}
+
+.logo-text {
+    margin-left:15px;
+}
+
+.menu-button {
+    margin-left: 5px;
+}

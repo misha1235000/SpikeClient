@@ -38,7 +38,12 @@ export class RegisterComponent implements OnInit {
   constructor(private registerService: RegisterService, private loginService: LoginService, public dialog: MatDialog) { }
   
   checkLogin(): void {
-    getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
+    if (getCookie('token').length > 0) {
+      this.isLogged = true
+    } else {
+      this.isLogged = false;
+      window.location.href = '/login';
+    }
   }
 
   isExist() {
