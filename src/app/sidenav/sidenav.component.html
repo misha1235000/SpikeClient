@@ -1,0 +1,29 @@
+<mat-sidenav-container class="example-container" *ngIf="isLogged" >
+    <button mat-icon-button style="position: fixed; left: 5px; top: 12px;" (click)="sidenav.toggle();"><mat-icon style="color: white;">menu</mat-icon></button>
+        <mat-sidenav #sidenav mode="side" opened class="sidenav"
+                     [fixedInViewport]="options.value.fixed" [fixedTopGap]="options.value.top"
+                     [fixedBottomGap]="options.value.bottom" >
+            <mat-list>
+                <h3 mat-subheader style="font-weight: bold;">Hello {{ teamName.email }}</h3>
+                <div class="btns-list">
+                <mat-list-item>
+                    <button mat-button class="btn-list" routerLink="/register" routerLinkActive="active">   
+                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">lock</mat-icon> Register OAuth</h4>
+                    </button>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <button mat-button class="btn-list">
+                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">remove_red_eye</mat-icon> Dashboard</h4>
+                    </button>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <button mat-button class="btn-list" (click)="logout()">
+                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">power_settings_new</mat-icon> Logout</h4>
+                    </button>
+                </mat-list-item>
+                </div>
+            </mat-list>
+        </mat-sidenav>
+</mat-sidenav-container>
