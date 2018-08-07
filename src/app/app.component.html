@@ -1,31 +1,3 @@
-<app-toolbar [sidenav]="sidenav"></app-toolbar>
-<mat-sidenav-container class="example-container" *ngIf="isLogged">
-        <mat-sidenav #sidenav mode="side" opened class="sidenav"
-                     [fixedInViewport]="options.value.fixed" [fixedTopGap]="options.value.top"
-                     [fixedBottomGap]="options.value.bottom">
-            <mat-list>
-                <h3 mat-subheader>Hello {{ teamName.email }}</h3>
-                <mat-list-item>
-                
-                    <button mat-button class="btn-list">   
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">lock</mat-icon> Register OAuth</h4>
-                    </button>
-
-                    
-                </mat-list-item>
-                <mat-list-item>
-                    <button mat-button class="btn-list">
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">remove_red_eye</mat-icon> Dashboard</h4>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button mat-button class="btn-list">
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">power_settings_new</mat-icon> Logout</h4>
-                    </button>
-                </mat-list-item>
-            </mat-list>
-        </mat-sidenav>
-</mat-sidenav-container>
-
-    
+<app-toolbar (sidenavOpened)='openSideNav($event)'></app-toolbar>
+<app-sidenav [sidenavToggle]='sidenav'></app-sidenav>
 <router-outlet></router-outlet>

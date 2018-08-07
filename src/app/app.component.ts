@@ -23,33 +23,10 @@ function getCookie(name: string) {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  isLogged = false;
-  teamName = "";
+  sidenav = true;
   title = 'app';
-  options: FormGroup;
 
-  constructor(fb: FormBuilder, private loginService: LoginService) {
-    this.options = fb.group({
-      bottom: 0,
-      fixed: true,
-      top: 64
-    });
-  }
-
-  checkLogin() {
-    getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
-  }
-
-  getEmail() {
-    this.loginService.getEmail().subscribe((data) => {
-      this.teamName = data;
-    });
-  }
-
-  ngOnInit() {
-    this.checkLogin();
-    if (this.isLogged) {
-      this.getEmail();
-    }
+  openSideNav(event) {
+    this.sidenav = event;
   }
 }
