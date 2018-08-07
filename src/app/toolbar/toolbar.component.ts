@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '../../../node_modules/@angular/material';
 import { LoginService } from '../login/login.service';
 
@@ -23,9 +23,10 @@ function getCookie(name: string) {
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
+  @Output() sidenavOpened = new EventEmitter();
   @Input() sidenav;
   isLogged = false;
-  teamName;
+  isOpened = true;
 
   constructor(public dialog: MatDialog, public loginService: LoginService) { }
 
@@ -33,26 +34,13 @@ export class ToolbarComponent implements OnInit {
     getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
   }
 
-  logout() {
-    this.loginService.logout().subscribe((data) => {
-      if (data) {
-        document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
-        location.reload();
-      }
-    });
-  }
-
-  getEmail() {
-    this.loginService.getEmail().subscribe((data) => {
-      this.teamName = data;
-    });
-  }
-
   ngOnInit() {
     this.checkLogin();
-    if (this.isLogged) {
-      this.getEmail();
-    }
+  }
+
+  openSideNav() {
+    this.isOpened = !this.isOpened;
+    this.sidenavOpened.emit(this.isOpened);
   }
 
 }

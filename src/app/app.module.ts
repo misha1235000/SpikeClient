@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginComponent,
     PageNotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,
