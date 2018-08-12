@@ -1,6 +1,5 @@
-<div class="mainDiv" *ngIf="isLogged">
-    <div style="flex:40%"></div>
-    <mat-card class="registerCard" style="flex:20%">
+<div *ngIf="isLogged" style="flex:40%;" style="width:450px;">
+    <mat-card class="registerCard">
         <b><mat-card-subtitle>Register Server With OAuth</mat-card-subtitle></b>
         <mat-divider></mat-divider>
         <mat-card-content>
@@ -29,6 +28,5 @@
               <button mat-raised-button class="login-button" (click)="isExist()" type="submit">Register</button>
         </mat-card-content>
     </mat-card>
-    <div style="flex:40%"></div>
   </div>
   
