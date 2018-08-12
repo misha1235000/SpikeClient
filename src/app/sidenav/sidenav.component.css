@@ -30,7 +30,7 @@
 
   .btn-text {
       position:relative;
-      bottom: 10px;
+      bottom: 12px;
   }
 
   mat-list-item {
@@ -39,7 +39,10 @@
       left: 10px;
   }
 
-  .active {
+.active {
     background-color: rgba(0,0,0,0.1);
-    }
-    
+}
+
+.mat-subheader {
+    display: block !important;
+}

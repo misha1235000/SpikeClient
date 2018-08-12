@@ -4,7 +4,7 @@
                      [fixedInViewport]="options.value.fixed" [fixedTopGap]="options.value.top"
                      [fixedBottomGap]="options.value.bottom" >
             <mat-list>
-                <h3 mat-subheader style="font-weight: bold;">Hello {{ teamName.email }}</h3>
+                <h3 mat-subheader style="font-weight: bold; text-align:center;">Hello {{ teamName.username }}</h3>
                 <div class="btns-list">
                 <mat-list-item>
                     <button mat-button class="btn-list" routerLink="/register" routerLinkActive="active">   
@@ -13,8 +13,8 @@
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <mat-list-item>
-                    <button mat-button class="btn-list">
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">remove_red_eye</mat-icon> Dashboard</h4>
+                    <button mat-button class="btn-list" routerLink="/tokens" routerLinkActive="active">
+                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">vpn_key</mat-icon> Tokens</h4>
                     </button>
                 </mat-list-item>
                 <mat-divider></mat-divider>

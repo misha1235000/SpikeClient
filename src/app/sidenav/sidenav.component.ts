@@ -42,8 +42,8 @@ export class SidenavComponent {
     getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
   }
 
-  getEmail() {
-    this.loginService.getEmail().subscribe((data) => {
+  getUsername() {
+    this.loginService.getUsername().subscribe((data) => {
       this.teamName = data;
     });
   }
@@ -66,7 +66,7 @@ export class SidenavComponent {
   ngOnInit() {
     this.checkLogin();
     if (this.isLogged) {
-      this.getEmail();
+      this.getUsername();
     }
   }
 }
