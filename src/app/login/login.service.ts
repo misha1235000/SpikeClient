@@ -32,8 +32,8 @@ export class LoginService {
    */
   constructor(private http: Http){}
 
-  login(teamName, password): Observable<any> {
-     return this.http.post(this.serverUrl + '/login', {'email': teamName, 'password': password})
+  login(user): Observable<any> {
+     return this.http.post(this.serverUrl + '/login', {'user': user})
             .map((data) => {
                 return data.json();
               });
@@ -46,7 +46,7 @@ export class LoginService {
            });
   }
 
-  getEmail(): Observable<any> {
+  getUsername(): Observable<any> {
     let headers = new Headers();
 
     headers.append('authorization', getCookie('token'));

@@ -30,10 +30,10 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService, private snackBar: MatSnackBar) { }
   
   login() {
-    this.loginService.login(this.teamName, this.password).subscribe((data) => {
+    this.loginService.login({'username': this.teamName, 'password': this.password}).subscribe((data) => {
       if (data.auth) {
         let expiresDate: Date = new Date();
-        expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 1 * 60 * 1000);
+        expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000);
 
         let expires: string = `${expiresDate.toUTCString()}`;
 
@@ -52,8 +52,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  getEmail() {
-    this.loginService.getEmail().subscribe((data) => {
+  getUsername() {
+    this.loginService.getUsername().subscribe((data) => {
       this.snackBar.open(data.email, '', {duration: 1000});
   });
   }
