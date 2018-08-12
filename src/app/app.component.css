@@ -1,0 +1,5 @@
+.main-div {
+    position:relative;
+    top: 150px;
+    display: flex;
+}

@@ -1,3 +1,7 @@
 <app-toolbar (sidenavOpened)='openSideNav($event)'></app-toolbar>
 <app-sidenav [sidenavToggle]='sidenav'></app-sidenav>
-<router-outlet></router-outlet>
+<div class="main-div">
+    <div style="flex:30%"></div>
+    <router-outlet></router-outlet>
+    <div style="flex:30%"></div>
+</div>

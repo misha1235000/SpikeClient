@@ -4,8 +4,10 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, FormBuilder } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule, MatSnackBarModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule, MatSidenavModule, MatCheckboxModule, MatListModule } from '@angular/material';
-//import { RegisterService } from './register/login.service';
+import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule,
+        MatSnackBarModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule, MatSidenavModule, MatCheckboxModule,
+        MatListModule, 
+        MatExpansionModule} from '@angular/material';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { RegisterComponent } from './register/register.component';
@@ -14,10 +16,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { TokensComponent } from './tokens/tokens.component';
 
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'tokens', component: TokensComponent },
   { path: '',
     redirectTo: '/register',
     pathMatch: 'full'
@@ -33,7 +37,8 @@ const appRoutes: Routes = [
     LoginComponent,
     PageNotFoundComponent,
     LoginComponent,
-    SidenavComponent
+    SidenavComponent,
+    TokensComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,7 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatCheckboxModule,
     MatListModule,
+    MatExpansionModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }
