@@ -39,7 +39,12 @@ export class SidenavComponent {
   }
 
   checkLogin() {
-    getCookie('token').length > 0 ? this.isLogged = true: this.isLogged = false;
+    if(getCookie('token').length > 0) {
+      this.isLogged = true
+     } else { 
+       this.isLogged = false;
+       document.cookie='token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+     }
   }
 
   getUsername() {
@@ -57,7 +62,7 @@ export class SidenavComponent {
   logout() {
     this.loginService.logout().subscribe((data) => {
       if (data) {
-        document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         window.location.href = '/login'
       }
     });
