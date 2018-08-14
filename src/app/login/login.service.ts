@@ -54,7 +54,8 @@ export class LoginService {
            .map((data) => {
              return data.json();
            }).catch((error) => {
-              location.reload();
+            document.cookie='token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            window.location.href='/login';
               return Observable.throw(error);
            });
   }
