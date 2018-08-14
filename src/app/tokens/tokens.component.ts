@@ -23,7 +23,10 @@ function getCookie(name) {
 })
 export class TokensComponent implements OnInit {
   isLogged = false;
-
+  tokens = [{name: 'GoogleMe Token', hostname: 'https://googleme.com', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNzAxMjg5NTJlY2VkMzIzMGI0YmNkMyIsImlhdCI6MTUzNDA3MTQzMywiZXhwIjoxNTM0MDcxNDkzfQ.gSnFbauA67xG7oM9xa7wvAhBHa8Ot-KM-G-yo3NL8XI'},
+            {name: 'Fire Token', hostname: 'https://firecool.com', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNzAxYTQ0YTM3YzJmMTEwNDViODI4ZSIsImlhdCI6MTUzNDEzOTI0MSwiZXhwIjoxNTM0MTM5ODQxfQ.ubnwdVzNqkWxbxMRxep2LEu0YGU4EHFPu8o4mcebMZs'},
+            {name: 'Youtube Token', hostname: 'https://youtube.com', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNzAxYTQ0YTM3YzJmMTEwNDViODI4ZSIsImlhdCI6MTUzNDEzOTI1NSwiZXhwIjoxNTM0MTM5ODU1fQ.vmfPgwgSgY9V_-4FMY_52dRgu2V0vihW3pwR2GeaFPE'},
+            {name: 'Waze Token', hostname: 'https://waze.com', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNzAxYTQ0YTM3YzJmMTEwNDViODI4ZSIsImlhdCI6MTUzNDEzOTI2MywiZXhwIjoxNTM0MTM5ODYzfQ.KAu5VrplsOjeloQ5I5JAIEnCjg7VetjW76l13WujvWI'},];
   constructor(private snackBar: MatSnackBar) { }
 
   checkLogin(): void {
