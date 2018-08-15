@@ -6,23 +6,24 @@
             <mat-list>
                 <h3 mat-subheader style="font-weight: bold; text-align:center;">Hello {{ teamName.username }}</h3>
                 <div class="btns-list">
-                <mat-list-item>
-                    <button mat-button class="btn-list" routerLink="/register" routerLinkActive="active">   
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">lock</mat-icon> Register OAuth</h4>
-                    </button>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-                <mat-list-item>
-                    <button mat-button class="btn-list" routerLink="/tokens" routerLinkActive="active">
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">vpn_key</mat-icon> Tokens</h4>
-                    </button>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-                <mat-list-item>
-                    <button mat-button class="btn-list" (click)="logout()">
-                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">power_settings_new</mat-icon> Logout</h4>
-                    </button>
-                </mat-list-item>
+                    <mat-list-item>
+                        <button mat-button class="btn-list" routerLink="/tokens" routerLinkActive="active">
+                            <h4 mat-line class="btn-text"><mat-icon class="btn-icon">vpn_key</mat-icon> Registered Clients</h4>
+                        </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                            <button mat-button class="btn-list" routerLink="/activity" routerLinkActive="active">   
+                                <h4 mat-line class="btn-text"><mat-icon class="btn-icon">assignment</mat-icon> Profile Activity</h4>
+                            </button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        <button mat-button class="btn-list" (click)="logout()">
+                            <h4 mat-line class="btn-text"><mat-icon class="btn-icon">power_settings_new</mat-icon> Logout</h4>
+                        </button>
+                    </mat-list-item>
+                    
                 </div>
             </mat-list>
         </mat-sidenav>

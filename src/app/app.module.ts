@@ -17,6 +17,8 @@ import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { TokensComponent } from './tokens/tokens.component';
+import { OpenRegisterComponent } from './open-register/open-register.component';
+import { OpenRegisterService } from './open-register/open-register.service';
 
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -38,7 +40,8 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     LoginComponent,
     SidenavComponent,
-    TokensComponent
+    TokensComponent,
+    OpenRegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ const appRoutes: Routes = [
       { enableTracing: false }
     )
   ],
-  providers: [LoginService, RegisterService, FormBuilder],
+  entryComponents: [OpenRegisterComponent],
+  providers: [LoginService, RegisterService, FormBuilder, OpenRegisterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

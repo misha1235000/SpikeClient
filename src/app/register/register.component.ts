@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
         alert('App already exists.');
       }
     }, 2000); 
-}
+  }
 
 
   ngOnInit() {

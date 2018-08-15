@@ -12,8 +12,9 @@
           <div style='text-align:center;'>
           <mat-icon style='position:relative; right:6px; top: 5px;'>vpn_key</mat-icon>
           <textarea readonly style='background-color:#EAEAEA; width: 90%; position:relative; top:14px; resize: none;' #userInput>{{ token.token }}</textarea>
-          <button mat-icon-button color="primary" (click)='copyClipboard(userInput)' matTooltip="copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
+          <button mat-icon-button color='primary' (click)='copyClipboard(userInput)' matTooltip='Copy' matTooltipPosition='above'><mat-icon>file_copy</mat-icon></button>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+      <button mat-fab color='primary' style="position:fixed; right: 200px; bottom:100px;" matTooltip='Add Client' matTooltipPosition='above' (click)='openRegister()'><mat-icon>add</mat-icon></button>
 </div>
