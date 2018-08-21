@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService, private snackBar: MatSnackBar) { }
   
   login() {
-    this.loginService.login({'username': this.teamName, 'password': this.password}).subscribe((data) => {
+    this.loginService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
       if (data.auth) {
         let expiresDate: Date = new Date();
         expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000);
