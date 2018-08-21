@@ -32,8 +32,8 @@ export class LoginService {
    */
   constructor(private http: Http){}
 
-  login(user): Observable<any> {
-     return this.http.post(this.serverUrl + '/login', {'user': user})
+  login(team): Observable<any> {
+     return this.http.post(this.serverUrl + '/login', {'team': team})
             .map((data) => {
                 return data.json();
               });
