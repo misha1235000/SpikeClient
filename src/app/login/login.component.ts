@@ -1,21 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material';
-
-function getCookie(name) {
-  let ca: Array<string> = document.cookie.split(';');
-        let caLen: number = ca.length;
-        let cookieName = `${name}=`;
-        let c: string;
-
-        for (let i: number = 0; i < caLen; i += 1) {
-            c = ca[i].replace(/^\s+/g, '');
-            if (c.indexOf(cookieName) == 0) {
-                return c.substring(cookieName.length, c.length);
-            }
-        }
-        return '';
-}
+import { PublicFunctions } from '../shared/shared';
 
 @Component({
   selector: 'app-login',
@@ -28,17 +14,17 @@ export class LoginComponent implements OnInit {
   password: string;
 
   constructor(private loginService: LoginService, private snackBar: MatSnackBar) { }
-  
+
   login() {
     this.loginService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
       if (data.auth) {
-        let expiresDate: Date = new Date();
+        const expiresDate: Date = new Date();
         expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000);
 
-        let expires: string = `${expiresDate.toUTCString()}`;
+        const expires = `${expiresDate.toUTCString()}`;
 
         document.cookie = `token=${data.token};expires=${expires};path=/`;
-        window.location.href = '/register';
+        window.location.href = '/tokens';
       }
     });
   }
@@ -52,16 +38,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  getUsername() {
-    this.loginService.getUsername().subscribe((data) => {
-      this.snackBar.open(data.email, '', {duration: 1000});
-  });
-  }
-
   ngOnInit() {
-    if (getCookie('token').length > 0) {
-      this.isLogged = true
-      window.location.href = '/register';
+    if (PublicFunctions.getCookie('token').length > 0) {
+      this.isLogged = true;
+      window.location.href = '/tokens';
     } else {
       this.isLogged = false;
       document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
