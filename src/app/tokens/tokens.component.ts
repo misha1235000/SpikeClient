@@ -1,3 +1,5 @@
+// tokens.component
+
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { OpenRegisterComponent } from '../open-register/open-register.component';

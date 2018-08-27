@@ -1,3 +1,5 @@
+// toolbar.component
+
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '../../../node_modules/@angular/material';
 import { LoginService } from '../login/login.service';

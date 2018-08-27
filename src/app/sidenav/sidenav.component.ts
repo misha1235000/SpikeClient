@@ -1,3 +1,5 @@
+// sidenav.component
+
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { SidenavService } from './sidenav.service';

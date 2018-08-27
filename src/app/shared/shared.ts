@@ -1,3 +1,5 @@
+// shared
+
 export class PublicFunctions {
     public static getCookie(name: string) {
     const ca: Array < string > = document.cookie.split(';');

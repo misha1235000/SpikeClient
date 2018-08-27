@@ -11,11 +11,9 @@ import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatT
         MatListModule, MatExpansionModule} from '@angular/material';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginService } from './login/login.service';
-import { RegisterService } from './register/register.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { TokensComponent } from './tokens/tokens.component';
 import { OpenRegisterComponent } from './open-register/open-register.component';
@@ -36,7 +34,6 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     ToolbarComponent,
-    RegisterComponent,
     LoginComponent,
     PageNotFoundComponent,
     LoginComponent,
@@ -70,7 +67,7 @@ const appRoutes: Routes = [
     )
   ],
   entryComponents: [OpenRegisterComponent],
-  providers: [LoginService, RegisterService, FormBuilder, OpenRegisterService, SidenavService],
+  providers: [LoginService, FormBuilder, OpenRegisterService, SidenavService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

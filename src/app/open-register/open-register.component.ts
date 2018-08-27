@@ -1,3 +1,5 @@
+// open-register.component
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '../../../node_modules/@angular/material';
 import { OpenRegisterService } from './open-register.service';
