@@ -1,4 +1,4 @@
-// open-register.service
+// sidenav.service
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -8,39 +8,26 @@ import 'rxjs/add/operator/catch';
 import { PublicFunctions } from '../shared/shared';
 
 @Injectable()
-export class OpenRegisterService {
-  private serverUrl = 'http://localhost:3000/api/auth';
+export class SidenavService {
+  private serverUrl = 'http://localhost:3000/api/team';
 
   /**
    * Injection of the http service.
    * @param http
    */
-  constructor(private http: Http){}
+  constructor(private http: Http) {}
 
-  login(email, password): Observable<any> {
-     return this.http.post(this.serverUrl + '/login', {'email': email, 'password': password})
-            .map((data) => {
-                return data.json();
-              });
-  }
-
-  logout(): Observable<any> {
-    return this.http.get(this.serverUrl + '/logout')
-           .map((data) => {
-              return data.json();
-           });
-  }
-
-  getEmail(): Observable<any> {
+   getUsername(): Observable<any> {
     const headers = new Headers();
 
+    // TODO: Think about a way to get all the data needed in the login itself.
     headers.append('authorization', PublicFunctions.getCookie('token'));
-
     return this.http.get(this.serverUrl, {headers: headers})
            .map((data) => {
              return data.json();
            }).catch((error) => {
-              location.reload();
+        //    document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        //    window.location.href = '/login';
               return Observable.throw(error);
            });
   }

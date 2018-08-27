@@ -1,5 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+// tokens.component.spec
 
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TokensComponent } from './tokens.component';
 
 describe('TokensComponent', () => {
