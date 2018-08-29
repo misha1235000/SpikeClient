@@ -38,8 +38,8 @@ mat-card-content {
     color: white;
     background-color: black;
     position:absolute;
-    right: 0px;
-    bottom: -70px;
+    right: -40px;
+    bottom: -80px;
 }
 
 .logout-button {
@@ -51,4 +51,14 @@ mat-card-content {
 .email-button {
     position: relative;
     left: 50px;
+}
+
+.error-msg {
+    position:absolute;
+    left: 20px;
+    bottom: 25px;
+    max-width:220px;
+    font-size: 11px;
+    color: #ef5350;
+    font-weight: bold;
 }

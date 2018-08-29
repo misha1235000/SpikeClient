@@ -1,11 +1,11 @@
 // login.service
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { PublicFunctions } from '../shared/shared';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class LoginService {
@@ -21,6 +21,8 @@ export class LoginService {
      return this.http.post(this.serverUrl + '/login', {'team': team})
             .map((data) => {
                 return data.json();
+              }).catch((error) => {
+                return Observable.throw(error.json());
               });
   }
 
