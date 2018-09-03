@@ -17,18 +17,20 @@ export class SidenavService {
    */
   constructor(private http: Http) {}
 
-   getUsername(): Observable<any> {
+  getUsername(): Observable<any> {
     const headers = new Headers();
 
-    // TODO: Think about a way to get all the data needed in the login itself.
     headers.append('authorization', PublicFunctions.getCookie('token'));
-    return this.http.get(this.serverUrl, {headers: headers})
+
+    return this.http.get(this.serverUrl, {headers})
            .map((data) => {
              return data.json();
            }).catch((error) => {
-        //    document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        //    window.location.href = '/login';
-              return Observable.throw(error);
+             if (error.status === 401) {
+                PublicFunctions.logout();
+             }
+
+             return Observable.throw(error.json());
            });
   }
 }

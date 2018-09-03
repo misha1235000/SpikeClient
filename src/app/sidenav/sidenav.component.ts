@@ -15,7 +15,7 @@ export class SidenavComponent implements OnInit, OnChanges {
   @Input() sidenavToggle;
   sidenav;
   isLogged = false;
-  teamName = '';
+  team = '';
   title = 'app';
   options: FormGroup;
 
@@ -36,19 +36,15 @@ export class SidenavComponent implements OnInit, OnChanges {
      }
   }
 
-  getUsername() {
-    this.sidenavService.getUsername().subscribe((data) => {
-      this.teamName = data;
-    });
+  logout() {
+    PublicFunctions.logout();
   }
 
-
-  logout() {
-    this.loginService.logout().subscribe((data) => {
-      if (data) {
-        document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        window.location.href = '/login';
-      }
+  getUsername() {
+    this.sidenavService.getUsername().subscribe((data) => {
+      this.team = data.team;
+    }, (error) => {
+      console.log(error);
     });
   }
 

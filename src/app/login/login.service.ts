@@ -17,6 +17,10 @@ export class LoginService {
    */
   constructor(private http: Http) {}
 
+  /**
+   * Login http service.
+   * @param team - The team object with login details.
+   */
   login(team): Observable<any> {
      return this.http.post(this.serverUrl + '/login', {'team': team})
             .map((data) => {
@@ -24,12 +28,5 @@ export class LoginService {
               }).catch((error) => {
                 return Observable.throw(error.json());
               });
-  }
-
-  logout(): Observable<any> {
-    return this.http.get(this.serverUrl + '/logout')
-           .map((data) => {
-              return data.json();
-           });
   }
 }
