@@ -11,13 +11,13 @@ import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatT
         MatListModule, MatExpansionModule} from '@angular/material';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './auth/login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { LoginService } from './login/login.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { TokensComponent } from './tokens/tokens.component';
-import { OpenRegisterComponent } from './open-register/open-register.component';
-import { SidenavService } from './sidenav/sidenav.service';
+import { OpenRegisterClientComponent } from './auth/open-register-client/open-register-client.component';
+import { OpenRegisterTeamComponent} from './auth/open-register-team/open-register-team.component';
+import { AuthService } from './auth/auth.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,7 +38,8 @@ const appRoutes: Routes = [
     LoginComponent,
     SidenavComponent,
     TokensComponent,
-    OpenRegisterComponent
+    OpenRegisterClientComponent,
+    OpenRegisterTeamComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,8 +67,8 @@ const appRoutes: Routes = [
       { enableTracing: false }
     )
   ],
-  entryComponents: [OpenRegisterComponent],
-  providers: [LoginService, FormBuilder, SidenavService],
+  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent],
+  providers: [FormBuilder, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
