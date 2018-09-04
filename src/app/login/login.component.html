@@ -6,10 +6,13 @@
           <form [formGroup]="loginFormGroup" #ngForm>
                 <div class="input-class">
                   <mat-form-field class="full-width">
-                    <input [formControl]="teamnameFormControl" matInput placeholder="Enter Your Team Name" [(ngModel)]="teamName" name="name" required><mat-icon class="prefix-icon">person</mat-icon>
-                    <mat-error *ngIf="teamnameFormControl.hasError('required')">teamname is required.</mat-error>
+                    <input [formControl]="teamnameFormControl" matInput placeholder="Enter Your Team Name" [(ngModel)]="teamName" name="name" required>
+                    <mat-icon class="prefix-icon">person</mat-icon>
+                    <mat-error *ngIf="teamnameFormControl.hasError('required')">
+                      Team name is required.
+                    </mat-error>
                     <mat-error *ngIf="teamnameFormControl.hasError('pattern') && !teamnameFormControl.hasError('required')">
-                      teamname must contain 1-40 letters or numbers.
+                      Team name must contain 1-40 letters or numbers.
                     </mat-error>
 
                   </mat-form-field>
@@ -19,20 +22,18 @@
                   <mat-form-field class="full-width">
                     <mat-icon class="prefix-icon">vpn_key</mat-icon>
                     <input [formControl]="passwordFormControl" matInput placeholder="Password" type="password" [(ngModel)]="password" name="pass" required>
-                    <mat-error *ngIf="passwordFormControl.hasError('required')">password is required.</mat-error>
+                    <mat-error *ngIf="passwordFormControl.hasError('required')">
+                      Password is required.
+                    </mat-error>
                     <mat-error *ngIf="passwordFormControl.hasError('pattern') && !passwordFormControl.hasError('required')">
-                      password must contain 1-40 letters, numbers or special characters
+                      Password must contain 1-40 letters, numbers or special characters
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <button mat-raised-button class="login-button" (click)="login()" [disabled]="passwordFormControl.hasError('required') ||
-                                                                                             passwordFormControl.hasError('pattern') ||
-                                                                                             teamnameFormControl.hasError('required') ||
-                                                                                             teamnameFormControl.hasError('pattern')">Login</button>
+                <button mat-raised-button class="login-button" (click)="login()" [disabled]="!isDetailsValid()">Login</button>
               </form>
-
         </mat-card-content>
-        
         <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
     </mat-card>
   </div>
+  
