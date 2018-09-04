@@ -1,0 +1,30 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Register Team</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="mat-card-content">
+    <div class="input-class">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Enter Team Name" [(ngModel)]="teamName"><mat-icon class="prefix-icon">person</mat-icon>
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="input-class">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">lock</mat-icon>
+          <input matInput placeholder="Enter Password" type="password" [(ngModel)]="password">
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="input-class">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">check</mat-icon>
+          <input matInput placeholder="Enter Password Again" type="password" [(ngModel)]="passwordConfirm">
+        </mat-form-field>
+      </div>
+      <mat-spinner *ngIf="!isDone" diameter="50" style="position:absolute; bottom:-70px;"></mat-spinner>
+    <button mat-raised-button class="login-button" type="submit">Register</button>
+</div>
