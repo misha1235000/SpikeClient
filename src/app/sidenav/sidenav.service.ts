@@ -13,10 +13,13 @@ export class SidenavService {
 
   /**
    * Injection of the http service.
-   * @param http
+   * @param http - The http service.
    */
   constructor(private http: Http) {}
 
+  /**
+   * Gets a username by the token which is saved on the cookie.
+   */
   getUsername(): Observable<any> {
     const headers = new Headers();
 
@@ -25,8 +28,8 @@ export class SidenavService {
     return this.http.get(this.serverUrl, {headers})
            .map((data) => {
              return data.json();
-           }).catch((error) => {
-             if (error.status === 401) {
+           }).catch((error) => { // If there is any error.
+             if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
                 PublicFunctions.logout();
              }
 

@@ -17,7 +17,6 @@ import { LoginService } from './login/login.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { TokensComponent } from './tokens/tokens.component';
 import { OpenRegisterComponent } from './open-register/open-register.component';
-import { OpenRegisterService } from './open-register/open-register.service';
 import { SidenavService } from './sidenav/sidenav.service';
 
 const appRoutes: Routes = [
@@ -68,7 +67,7 @@ const appRoutes: Routes = [
     )
   ],
   entryComponents: [OpenRegisterComponent],
-  providers: [LoginService, FormBuilder, OpenRegisterService, SidenavService],
+  providers: [LoginService, FormBuilder, SidenavService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,7 +2,6 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '../../../node_modules/@angular/material';
-import { OpenRegisterService } from './open-register.service';
 import { PublicFunctions } from '../shared/shared';
 
 @Component({
@@ -28,10 +27,18 @@ export class OpenRegisterComponent implements OnInit {
                 '(https://example.com/subdir). If you\'re using a nonstandard port, you must include it in the origin URI.';
 
 
-  constructor(private openLoginService: OpenRegisterService,
-  public dialogRef: MatDialogRef<OpenRegisterComponent>,
-  @Inject(MAT_DIALOG_DATA) public data: any, ) {}
+  /**
+   * Inits the needed services.
+   * @param openLoginService - The open login service.
+   * @param dialogRef - The dialog ref service.
+   * @param data - The data service.
+   */
+  constructor(public dialogRef: MatDialogRef<OpenRegisterComponent>,
+  @Inject(MAT_DIALOG_DATA) public data: any) {}
 
+  /**
+   * Checks whether the team account is logged in or not.
+   */
   checkLogin(): void {
     if (PublicFunctions.getCookie('token').length > 0) {
       this.isLogged = true;
@@ -42,22 +49,12 @@ export class OpenRegisterComponent implements OnInit {
     }
   }
 
-  isExist() {
-    this.isDone = false;
-   // this.registerService.isExist(this.appName).subscribe((data) => {
-    setTimeout(() => {
-      this.isDone = true;
-      if (this.appName.length > 3) {
-          alert('Registered successfuly.');
-        } else {
-        alert('App already exists.');
-      }
-    }, 2000);
-  }
-
   ngOnInit() {
   }
 
+  /**
+   * Closes the dialog.
+   */
   close(): void {
     this.dialogRef.close();
   }

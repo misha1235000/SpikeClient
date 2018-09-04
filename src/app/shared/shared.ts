@@ -1,6 +1,10 @@
 // shared
 
 export class PublicFunctions {
+    /**
+     * Gets a cookie value by name.
+     * @param name - Cookie name.
+     */
     public static getCookie(name: string) {
     const ca: Array < string > = document.cookie.split(';');
     const caLen: number = ca.length;
@@ -17,6 +21,9 @@ export class PublicFunctions {
     return '';
     }
 
+    /**
+     * Logouts from a team.
+     */
     public static logout() {
         document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         window.location.href = '/login';
