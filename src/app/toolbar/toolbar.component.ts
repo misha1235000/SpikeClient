@@ -16,17 +16,31 @@ export class ToolbarComponent implements OnInit {
   isLogged = false;
   isOpened = true;
 
+  /**
+   * Initializes the needed services.
+   * @param dialog - The Dialog service.
+   * @param loginService - The Login service.
+   */
   constructor(public dialog: MatDialog, public loginService: LoginService) { }
 
+  /**
+   * Checks whether the team account is logged in or not.
+   */
   checkLogin() {
     PublicFunctions.getCookie('token').length > 0 ? this.isLogged = true : this.isLogged = false;
   }
 
+  /**
+   * When the component initializes, check if the team account logged in.
+   */
   ngOnInit() {
     this.checkLogin();
   }
 
-  openSideNav() {
+  /**
+   * Opens or closes sidenav.
+   */
+  toggleSidenav() {
     this.isOpened = !this.isOpened;
     this.sidenavOpened.emit(this.isOpened);
   }
