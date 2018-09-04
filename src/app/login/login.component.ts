@@ -6,26 +6,6 @@ import { MatSnackBar } from '@angular/material';
 import { PublicFunctions } from '../shared/shared';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-/**
- * TODO
- * @param teamname -
- * @param password -
- */
-function detailsValid(teamname: string, password: string): string {
-  const teamnameRegex = /[a-zA-Z0-9]{1,40}/m;
-  const passwordRegex = /[a-zA-Z0-9!@#$%^&*()_+=-]{1,40}/m;
-
-  !password ? password = '' : password = password;
-
-  if (!teamnameRegex.test(teamname)) {
-    return 'teamname must contain 1-40 letters or numbers';
-  } else if (!passwordRegex.test(password)) {
-    return 'password must contain 1-40 letters, numbers or special characters';
-  } else {
-    return '';
-  }
-}
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -33,9 +13,10 @@ function detailsValid(teamname: string, password: string): string {
 })
 export class LoginComponent implements OnInit {
   /**
-   * TODO
-   * @param loginService -
-   * @param snackBar -
+   * The constructor of the component
+   * @param loginService - The login service that will be used for the login.
+   * @param snackBar - The snackbar that will be useed.
+   * @param _formBuilder - The form builder.
    */
   constructor(private loginService: LoginService, private snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
 
@@ -56,19 +37,19 @@ export class LoginComponent implements OnInit {
   errorMsg: string;
 
   /**
-   * TODO
+   * Logins to a team with the details given.
    */
   login() {
       this.loginService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
-        if (data.auth) {
+        if (data.auth) { // If the server returned that the login authorized.
           this.errorMsg = undefined;
           const expiresDate: Date = new Date();
 
-          expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000);
+          expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000); // Set the expire date of the cookie.
 
           const expires = `${expiresDate.toUTCString()}`;
 
-          document.cookie = `token=${data.token};expires=${expires};path=/`;
+          document.cookie = `token=${data.token};expires=${expires};path=/`; // The cookie of the token.
           window.location.href = '/tokens';
         } else {
           this.errorMsg = data.message;
@@ -79,7 +60,7 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * TODO
+   * When the component intializes, init the login form group with necessary validators.
    */
   ngOnInit() {
     this.loginFormGroup = this._formBuilder.group({
@@ -92,12 +73,26 @@ export class LoginComponent implements OnInit {
       ]),
     });
 
-    if (PublicFunctions.getCookie('token').length > 0) {
+    if (PublicFunctions.getCookie('token').length > 0) { // If the token cookie isnt empty.
       this.isLogged = true;
       window.location.href = '/tokens';
-    } else {
+    } else { // If the token cookie is empty.
       this.isLogged = false;
       document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+  }
+
+  /**
+   * Checks whether there is any error in any input
+   */
+  isDetailsValid() {
+    if (this.passwordFormControl.hasError('required') ||
+        this.passwordFormControl.hasError('pattern') ||
+        this.teamnameFormControl.hasError('required') ||
+        this.teamnameFormControl.hasError('pattern')) {
+        return false;
+    }
+
+    return true;
   }
 }
