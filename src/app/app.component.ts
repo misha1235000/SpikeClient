@@ -2,7 +2,6 @@
 
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { LoginService } from './login/login.service';
 
 @Component({
   selector: 'app-root',

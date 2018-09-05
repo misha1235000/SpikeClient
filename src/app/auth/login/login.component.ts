@@ -67,13 +67,8 @@ export class LoginComponent implements OnInit {
    */
   ngOnInit() {
     this.loginFormGroup = this.formBuilder.group({
-      teamname: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9]{1,40}$')]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+=-]{1,40}$'),
-      ]),
+      teamname: this.teamnameFormControl,
+      password: this.passwordFormControl
     });
 
     if (PublicFunctions.getCookie('token').length > 0) { // If the token cookie isnt empty.

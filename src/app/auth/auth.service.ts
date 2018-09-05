@@ -1,10 +1,11 @@
 // auth.service
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 import { PublicFunctions } from '../shared/shared';
 
 @Injectable()
@@ -44,14 +45,11 @@ export class AuthService {
    * @param team - The team object to register.
    */
   registerTeam(team): Observable<any> {
-    const headers = new Headers();
-
-    headers.append('authorization', PublicFunctions.getCookie('token'));
-
-    return this.http.post(this.teamUrl, {'team': team})
+    return this.http.post(this.authUrl + '/register', {'team': team})
             .map((data) => {
                 return data.json();
             }).catch((error) => {
+
                 return Observable.throw(error.json());
             });
   }

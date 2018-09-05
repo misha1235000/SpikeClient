@@ -6,25 +6,47 @@
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="mat-card-content">
-    <div class="input-class">
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Enter Team Name" [(ngModel)]="teamName"><mat-icon class="prefix-icon">person</mat-icon>
-        </mat-form-field>
-      </div>
-      <br>
+    <form [formGroup]="registerFormGroup" #ngForm autocomplete="off">
       <div class="input-class">
-        <mat-form-field class="full-width">
-          <mat-icon class="prefix-icon">lock</mat-icon>
-          <input matInput placeholder="Enter Password" type="password" [(ngModel)]="password">
-        </mat-form-field>
-      </div>
-      <br>
-      <div class="input-class">
-        <mat-form-field class="full-width">
-          <mat-icon class="prefix-icon">check</mat-icon>
-          <input matInput placeholder="Enter Password Again" type="password" [(ngModel)]="passwordConfirm">
-        </mat-form-field>
-      </div>
-      <mat-spinner *ngIf="!isDone" diameter="50" style="position:absolute; bottom:-70px;"></mat-spinner>
-    <button mat-raised-button class="login-button" type="submit">Register</button>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Enter Team Name" formControlName="teamname" autocomplete="off" maxlength="20" required>
+            <mat-icon class="prefix-icon" name="teamname">person</mat-icon>
+            <mat-error *ngIf="teamnameFormControl.hasError('required')">
+                Team name is required.
+            </mat-error>
+            <mat-error *ngIf="teamnameFormControl.hasError('pattern') && !teamnameFormControl.hasError('required')">
+                Team name must contain 4-20 letters or numbers.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br>
+        <div class="input-class">
+          <mat-form-field class="full-width">
+            <mat-icon class="prefix-icon">lock</mat-icon>
+            <input matInput placeholder="Enter Password" type="password" name="pass" formControlName="password" autocomplete="off" maxlength="50" required>
+            <mat-error *ngIf="passwordFormControl.hasError('required')">
+              Password is required.
+            </mat-error>
+            <mat-error *ngIf="passwordFormControl.hasError('pattern') && !passwordFormControl.hasError('required')">
+              Password must contain 8-50 letters, numbers and special characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br>
+        <div class="input-class">
+          <mat-form-field class="full-width">
+            <mat-icon class="prefix-icon">check</mat-icon>
+            <input matInput placeholder="Enter Password Again" type="password" name="passconf" formControlName="passwordConfirm" autocomplete="off" maxlength="50" required>
+            <mat-error *ngIf="passwordConfirmFormControl.hasError('required')">
+                Password Confirm is required.
+              </mat-error>
+              <mat-error *ngIf="registerFormGroup.controls.passwordConfirm.errors?.MatchPassword && !passwordConfirmFormControl.hasError('required')">
+                Passwords are not equal.
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-spinner *ngIf="!isDone" diameter="50" style="position:absolute; bottom:-70px;"></mat-spinner>
+      <button mat-raised-button class="login-button" type="submit" (click)="register()" disabled="disabled" [disabled]="!isDetailsValid()">Register</button>
+    </form>
+    <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
 </div>

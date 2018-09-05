@@ -76,3 +76,13 @@ mat-card-subtitle {
     cursor: default;
     font-size: 20px;
 }
+
+.error-msg {
+    position:absolute;
+    left: -40px;
+    bottom: -80px;
+    max-width:220px;
+    font-size: 11px;
+    color: #ef5350;
+    font-weight: bold;
+}
