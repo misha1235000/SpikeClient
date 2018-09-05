@@ -3,7 +3,7 @@
         <b><mat-card-subtitle>Login</mat-card-subtitle></b>
         <mat-divider></mat-divider>
         <mat-card-content>
-          <form [formGroup]="loginFormGroup" #ngForm>
+          <form [formGroup]="loginFormGroup" #ngForm autocomplete="off">
                 <div class="input-class">
                   <mat-form-field class="full-width">
                     <input [formControl]="teamnameFormControl" matInput placeholder="Enter Your Team Name" [(ngModel)]="teamName" name="name" required>
@@ -33,6 +33,7 @@
                 <button mat-raised-button class="login-button" (click)="login()" [disabled]="!isDetailsValid()">Login</button>
               </form>
         </mat-card-content>
+        <button class="register-btn" mat-button (click)='openRegister()'>Create new account</button>
         <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
     </mat-card>
   </div>

@@ -1,10 +1,12 @@
 // login.component
 
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from './login.service';
-import { MatSnackBar } from '@angular/material';
-import { PublicFunctions } from '../shared/shared';
+import { AuthService } from '../auth.service';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { PublicFunctions } from '../../shared/shared';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { OpenRegisterTeamComponent } from '../open-register-team/open-register-team.component';
+
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
    * @param snackBar - The snackbar that will be useed.
    * @param _formBuilder - The form builder.
    */
-  constructor(private loginService: LoginService, private snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private snackBar: MatSnackBar, private formBuilder: FormBuilder,
+              private registerDialog: MatDialog) { }
 
   teamnameFormControl = new FormControl('', [
     Validators.required,
@@ -40,7 +43,7 @@ export class LoginComponent implements OnInit {
    * Logins to a team with the details given.
    */
   login() {
-      this.loginService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
+      this.authService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
         if (data.auth) { // If the server returned that the login authorized.
           this.errorMsg = undefined;
           const expiresDate: Date = new Date();
@@ -63,14 +66,9 @@ export class LoginComponent implements OnInit {
    * When the component intializes, init the login form group with necessary validators.
    */
   ngOnInit() {
-    this.loginFormGroup = this._formBuilder.group({
-      teamname: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9]{1,40}$')]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+=-]{1,40}$'),
-      ]),
+    this.loginFormGroup = this.formBuilder.group({
+      teamname: this.teamnameFormControl,
+      password: this.passwordFormControl
     });
 
     if (PublicFunctions.getCookie('token').length > 0) { // If the token cookie isnt empty.
@@ -94,5 +92,15 @@ export class LoginComponent implements OnInit {
     }
 
     return true;
+  }
+
+    /**
+   * Opens the register dialog.
+   */
+  openRegister() {
+    const dialogRef = this.registerDialog.open(OpenRegisterTeamComponent, {
+      width: '410px',
+      height: '430px'
+    });
   }
 }

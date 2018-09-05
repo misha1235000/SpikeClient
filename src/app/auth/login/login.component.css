@@ -39,7 +39,7 @@ mat-card-content {
     background-color: black;
     position:absolute;
     right: -40px;
-    bottom: -80px;
+    bottom: -70px;
 }
 
 .logout-button {
@@ -56,9 +56,15 @@ mat-card-content {
 .error-msg {
     position:absolute;
     left: 20px;
-    bottom: 25px;
+    bottom: 10px;
     max-width:220px;
     font-size: 11px;
     color: #ef5350;
     font-weight: bold;
+}
+
+.register-btn {
+    color: #1a73e8;
+    position: relative;
+    bottom: 15px;
 }

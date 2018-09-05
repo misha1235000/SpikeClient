@@ -2,8 +2,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
-import { OpenRegisterComponent } from '../open-register/open-register.component';
 import { PublicFunctions } from '../shared/shared';
+import { OpenRegisterClientComponent } from '../auth/open-register-client/open-register-client.component';
 
 @Component({
   selector: 'app-tokens',
@@ -67,7 +67,7 @@ export class TokensComponent implements OnInit {
    * Opens the register dialog.
    */
   openRegister() {
-    const dialogRef = this.registerDialog.open(OpenRegisterComponent, {
+    const dialogRef = this.registerDialog.open(OpenRegisterClientComponent, {
       width: '410px',
       height: '420px'
     });

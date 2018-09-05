@@ -2,8 +2,7 @@
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import { SidenavService } from './sidenav.service';
-import { LoginService } from '../login/login.service';
+import { AuthService } from '../auth/auth.service';
 import { PublicFunctions } from '../shared/shared';
 
 @Component({
@@ -22,10 +21,9 @@ export class SidenavComponent implements OnInit, OnChanges {
   /**
    * Inits the needed services.
    * @param fb - the form builder service
-   * @param loginService - The login service.
-   * @param sidenavService - The sidenav service.
+   * @param authService - The auth service.
    */
-  constructor(fb: FormBuilder, private loginService: LoginService, private sidenavService: SidenavService) {
+  constructor(fb: FormBuilder, private authService: AuthService) {
     this.options = fb.group({
       bottom: 0,
       fixed: true,
@@ -50,8 +48,8 @@ export class SidenavComponent implements OnInit, OnChanges {
   /**
    * Gets the username of the current team account.
    */
-  getUsername() {
-    this.sidenavService.getUsername().subscribe((data) => {
+  getTeamName() {
+    this.authService.getTeamName().subscribe((data) => {
       this.team = data.team;
     }, (error) => {
       console.log(error);
@@ -65,7 +63,7 @@ export class SidenavComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.checkLogin();
     if (this.isLogged) {
-      this.getUsername();
+      this.getTeamName();
     }
   }
 

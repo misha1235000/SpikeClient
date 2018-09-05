@@ -1,15 +1,15 @@
-// open-register.component
+// open-register-client.component
 
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '../../../node_modules/@angular/material';
-import { PublicFunctions } from '../shared/shared';
+import { MatDialogRef, MAT_DIALOG_DATA } from '../../../../node_modules/@angular/material';
+import { PublicFunctions } from '../../shared/shared';
 
 @Component({
   selector: 'app-open-register',
-  templateUrl: './open-register.component.html',
-  styleUrls: ['./open-register.component.css']
+  templateUrl: './open-register-client.component.html',
+  styleUrls: ['./open-register-client.component.css']
 })
-export class OpenRegisterComponent implements OnInit {
+export class OpenRegisterClientComponent implements OnInit {
   isLogged: boolean;
   teamName: string;
   password: string;
@@ -33,7 +33,7 @@ export class OpenRegisterComponent implements OnInit {
    * @param dialogRef - The dialog ref service.
    * @param data - The data service.
    */
-  constructor(public dialogRef: MatDialogRef<OpenRegisterComponent>,
+  constructor(public dialogRef: MatDialogRef<OpenRegisterClientComponent>,
   @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   /**

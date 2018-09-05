@@ -2,7 +2,6 @@
 
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '../../../node_modules/@angular/material';
-import { LoginService } from '../login/login.service';
 import { PublicFunctions } from '../shared/shared';
 
 @Component({
@@ -19,9 +18,8 @@ export class ToolbarComponent implements OnInit {
   /**
    * Initializes the needed services.
    * @param dialog - The Dialog service.
-   * @param loginService - The Login service.
    */
-  constructor(public dialog: MatDialog, public loginService: LoginService) { }
+  constructor(public dialog: MatDialog) { }
 
   /**
    * Checks whether the team account is logged in or not.
