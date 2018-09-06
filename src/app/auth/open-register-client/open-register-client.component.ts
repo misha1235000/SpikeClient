@@ -36,20 +36,12 @@ export class OpenRegisterClientComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<OpenRegisterClientComponent>,
   @Inject(MAT_DIALOG_DATA) public data: any) {}
 
-  /**
+
+ /**
    * Checks whether the team account is logged in or not.
    */
-  checkLogin(): void {
-    if (PublicFunctions.getCookie('token').length > 0) {
-      this.isLogged = true;
-    } else {
-      this.isLogged = false;
-      document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
-      window.location.href = '/login';
-    }
-  }
-
   ngOnInit() {
+    this.isLogged = PublicFunctions.checkLogin();
   }
 
   /**

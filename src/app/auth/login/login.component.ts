@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
     this.authService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
       if (data.auth) { // If the server returned that the login authorized.
         this.errorMsg = undefined;
+
         const expiresDate: Date = new Date();
 
         expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000); // Set the expire date of the cookie.
@@ -69,25 +70,19 @@ export class LoginComponent implements OnInit {
    * When the component intializes, init the login form group with necessary validators.
    */
   ngOnInit() {
+    this.isLogged = PublicFunctions.checkLogin();
+
     this.loginFormGroup = this.formBuilder.group({
       teamname: this.teamnameFormControl,
       password: this.passwordFormControl
     });
-
-    if (PublicFunctions.getCookie('token').length > 0) { // If the token cookie isnt empty.
-      this.isLogged = true;
-      window.location.href = '/tokens';
-    } else { // If the token cookie is empty.
-      this.isLogged = false;
-      document.cookie = 'token=;expires=;Thu, 01 Jan 1970 00:00:01 GMT;';
-    }
   }
 
   /**
    * Checks whether there is any error in any input
    */
   isDetailsValid() {
-    return this.loginFormGroup.status === 'INVALID';
+    return this.loginFormGroup.status !== 'INVALID';
   }
 
     /**

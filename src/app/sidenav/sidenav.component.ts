@@ -32,13 +32,6 @@ export class SidenavComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Checks whether the team account is logged in or not.
-   */
-  checkLogin() {
-    PublicFunctions.getCookie('token').length > 0 ? this.isLogged = true : this.isLogged = false;
-  }
-
-  /**
    * Logout from the current team account.
    */
   logout() {
@@ -61,7 +54,8 @@ export class SidenavComponent implements OnInit, OnChanges {
    * if the user is logged in, then get the username.
    */
   ngOnInit() {
-    this.checkLogin();
+    this.isLogged = PublicFunctions.checkLogin();
+
     if (this.isLogged) {
       this.getTeamName();
     }

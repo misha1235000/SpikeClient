@@ -22,17 +22,10 @@ export class ToolbarComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   /**
-   * Checks whether the team account is logged in or not.
-   */
-  checkLogin() {
-    PublicFunctions.getCookie('token').length > 0 ? this.isLogged = true : this.isLogged = false;
-  }
-
-  /**
    * When the component initializes, check if the team account logged in.
    */
   ngOnInit() {
-    this.checkLogin();
+    this.isLogged = PublicFunctions.checkLogin();
   }
 
   /**
