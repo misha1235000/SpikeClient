@@ -28,4 +28,15 @@ export class PublicFunctions {
         document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         window.location.href = '/login';
     }
+
+    public static checkLogin(): boolean {
+        if (PublicFunctions.getCookie('token').length > 0) {
+            return true;
+        } else if (window.location.pathname !== '/login') {
+            this.logout();
+            return false;
+        } else {
+            return false;
+        }
+    }
 }

@@ -31,22 +31,10 @@ export class TokensComponent implements OnInit {
   constructor(private snackBar: MatSnackBar, private registerDialog: MatDialog) { }
 
   /**
-   * Checks whether the team is logged in or not.
-   */
-  checkLogin(): void {
-    if (PublicFunctions.getCookie('token').length > 0) {
-      this.isLogged = true;
-    } else {
-      this.isLogged = false;
-      window.location.href = '/login';
-    }
-  }
-
-  /**
    * When the component initialized, check if the account team is logged in.
    */
   ngOnInit() {
-    this.checkLogin();
+    this.isLogged = PublicFunctions.checkLogin();
   }
 
   /**
