@@ -114,10 +114,6 @@ export class OpenRegisterTeamComponent implements OnInit {
   }
 
   isDetailsValid() {
-    if (this.registerFormGroup.status === 'INVALID') {
-        return false;
-    }
-
-    return true;
+    return this.registerFormGroup.status === 'INVALID';
   }
 }

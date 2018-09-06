@@ -43,23 +43,26 @@ export class LoginComponent implements OnInit {
    * Logins to a team with the details given.
    */
   login() {
-      this.authService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
-        if (data.auth) { // If the server returned that the login authorized.
-          this.errorMsg = undefined;
-          const expiresDate: Date = new Date();
+    this.teamName = this.loginFormGroup.value.teamname;
+    this.password = this.loginFormGroup.value.password;
 
-          expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000); // Set the expire date of the cookie.
+    this.authService.login({'teamname': this.teamName, 'password': this.password}).subscribe((data) => {
+      if (data.auth) { // If the server returned that the login authorized.
+        this.errorMsg = undefined;
+        const expiresDate: Date = new Date();
 
-          const expires = `${expiresDate.toUTCString()}`;
+        expiresDate.setTime(expiresDate.getTime() + 1 * 1 * 10 * 60 * 1000); // Set the expire date of the cookie.
 
-          document.cookie = `token=${data.token};expires=${expires};path=/`; // The cookie of the token.
-          window.location.href = '/tokens';
-        } else {
-          this.errorMsg = data.message;
-        }
-      }, (error) => {
-        this.errorMsg = error.message;
-      });
+        const expires = `${expiresDate.toUTCString()}`;
+
+        document.cookie = `token=${data.token};expires=${expires};path=/`; // The cookie of the token.
+        window.location.href = '/tokens';
+      } else {
+        this.errorMsg = data.message;
+      }
+    }, (error) => {
+      this.errorMsg = error.message;
+    });
   }
 
   /**
@@ -84,14 +87,7 @@ export class LoginComponent implements OnInit {
    * Checks whether there is any error in any input
    */
   isDetailsValid() {
-    if (this.passwordFormControl.hasError('required') ||
-        this.passwordFormControl.hasError('pattern') ||
-        this.teamnameFormControl.hasError('required') ||
-        this.teamnameFormControl.hasError('pattern')) {
-        return false;
-    }
-
-    return true;
+    return this.loginFormGroup.status === 'INVALID';
   }
 
     /**

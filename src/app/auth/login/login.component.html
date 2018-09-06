@@ -6,7 +6,7 @@
           <form [formGroup]="loginFormGroup" #ngForm autocomplete="off">
                 <div class="input-class">
                   <mat-form-field class="full-width">
-                    <input [formControl]="teamnameFormControl" matInput placeholder="Enter Your Team Name" [(ngModel)]="teamName" name="name" required>
+                    <input formControlName="teamname" matInput placeholder="Enter Your Team Name" name="name" autocomplete="off" required>
                     <mat-icon class="prefix-icon">person</mat-icon>
                     <mat-error *ngIf="teamnameFormControl.hasError('required')">
                       Team name is required.
@@ -21,7 +21,7 @@
                 <div class="input-class">
                   <mat-form-field class="full-width">
                     <mat-icon class="prefix-icon">vpn_key</mat-icon>
-                    <input [formControl]="passwordFormControl" matInput placeholder="Password" type="password" [(ngModel)]="password" name="pass" required>
+                    <input formControlName="password" matInput placeholder="Password" type="password" name="pass" autocomplete="off" required>
                     <mat-error *ngIf="passwordFormControl.hasError('required')">
                       Password is required.
                     </mat-error>
