@@ -49,7 +49,19 @@ export class AuthService {
             .map((data) => {
                 return data.json();
             }).catch((error) => {
+                return Observable.throw(error.json());
+            });
+  }
 
+   /**
+   * Register a new client to the team account.
+   * @param client - The client object to register.
+   */
+  registerClient(client): Observable<any> {
+    return this.http.post(this.clientUrl, {'clientInformation': client})
+            .map((data) => {
+                return data.json();
+            }).catch((error) => {
                 return Observable.throw(error.json());
             });
   }

@@ -55,8 +55,8 @@ mat-card-subtitle {
     color: white;
     background-color: black;
     position:absolute;
-    right: 0px;
-    bottom: -70px;
+    right: 5px;
+    bottom: -35px;
 }
 
 .logout-button {
@@ -73,6 +73,17 @@ mat-card-subtitle {
 .help-authorize {
     position: absolute;
     bottom: 5px;
+    right: 0px;
     cursor: default;
     font-size: 20px;
+}
+
+.error-msg {
+    position:absolute;
+    left: -40px;
+    bottom: -35px;
+    max-width:220px;
+    font-size: 11px;
+    color: #ef5350;
+    font-weight: bold;
 }

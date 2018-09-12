@@ -56,8 +56,7 @@ export class TokensComponent implements OnInit {
    */
   openRegister() {
     const dialogRef = this.registerDialog.open(OpenRegisterClientComponent, {
-      width: '410px',
-      height: '420px'
+      width: '420px'
     });
   }
 }
