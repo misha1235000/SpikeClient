@@ -58,7 +58,11 @@ export class AuthService {
    * @param client - The client object to register.
    */
   registerClient(client): Observable<any> {
-    return this.http.post(this.clientUrl, {'clientInformation': client})
+    const headers = new Headers();
+
+    headers.append('authorization', PublicFunctions.getCookie('token'));
+
+    return this.http.post(this.clientUrl, {'clientInformation': client}, {headers})
             .map((data) => {
                 return data.json();
             }).catch((error) => {
