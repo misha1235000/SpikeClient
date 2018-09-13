@@ -83,13 +83,12 @@ export class OpenRegisterClientComponent implements OnInit {
    */
   register() {
     this.appName = this.registerClientFormGroup.value.appname;
-    this.redirectUris = this.registerClientFormGroup.value.redirectUris;
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 
     this.authService.registerClient({'appname': this.appName,
-                                     'redirectUris': this.redirectUris,
+                                     'redirectUris': this.redirectUris.map(value => this.hostUri + value),
                                      'hostUri': this.hostUri}).subscribe((data) => {
-      if (data) { // If the server returned that the login authorized.
+      if (data) {
         this.errorMsg = undefined;
         console.log(data);
       } else {
@@ -108,9 +107,9 @@ export class OpenRegisterClientComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
+    // Add the chip to the chips list.
     if ((value || '').trim() && this.redirectUrisRegex.test(value) && this.redirectUris.length < 10) {
-      this.redirectUris.push(this.registerClientFormGroup.value.hostUri + value.trim());
+      this.redirectUris.push(value.trim());
     }
 
     // Reset the input value
