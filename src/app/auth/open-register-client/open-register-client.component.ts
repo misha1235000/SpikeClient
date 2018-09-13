@@ -24,7 +24,7 @@ export class OpenRegisterClientComponent implements OnInit {
   passwordConfirm: string;
   isDone = true;
   hostUriRegex = /^https:\/\/(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/m;
-  redirectUrisRegex = /^\/[a-zA-Z0-9/]{1,100}$/m;
+  redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
 
   AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
                    'in your application that users are redirected to after they' +
@@ -85,7 +85,7 @@ export class OpenRegisterClientComponent implements OnInit {
     this.appName = this.registerClientFormGroup.value.appname;
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 
-    this.authService.registerClient({'appname': this.appName,
+    this.authService.registerClient({'name': this.appName,
                                      'redirectUris': this.redirectUris.map(value => this.hostUri + value),
                                      'hostUri': this.hostUri}).subscribe((data) => {
       if (data) {
