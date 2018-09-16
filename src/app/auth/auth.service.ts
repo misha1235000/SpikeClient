@@ -66,7 +66,11 @@ export class AuthService {
             .map((data) => {
                 return data.json();
             }).catch((error) => {
-                return Observable.throw(error.json());
+              if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
+                PublicFunctions.logout();
+              }
+
+              return Observable.throw(error.json());
             });
   }
 

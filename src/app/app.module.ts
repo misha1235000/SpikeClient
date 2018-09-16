@@ -18,6 +18,7 @@ import { TokensComponent } from './tokens/tokens.component';
 import { OpenRegisterClientComponent } from './auth/open-register-client/open-register-client.component';
 import { OpenRegisterTeamComponent} from './auth/open-register-team/open-register-team.component';
 import { AuthService } from './auth/auth.service';
+import { TokensService } from './tokens/tokens.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -69,7 +70,7 @@ const appRoutes: Routes = [
     )
   ],
   entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent],
-  providers: [FormBuilder, AuthService],
+  providers: [FormBuilder, AuthService, TokensService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
