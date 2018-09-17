@@ -90,7 +90,7 @@ export class OpenRegisterClientComponent implements OnInit {
                                      'hostUri': this.hostUri}).subscribe((data) => {
       if (data) {
         this.errorMsg = undefined;
-        console.log(data);
+        this.dialogRef.close(data);
       } else {
         this.errorMsg = data.message;
       }

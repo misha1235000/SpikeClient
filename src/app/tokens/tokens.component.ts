@@ -13,7 +13,7 @@ import { OpenRegisterClientComponent } from '../auth/open-register-client/open-r
 })
 export class TokensComponent implements OnInit {
   isLogged = false;
-  tokens = [];
+  tokens: any[];
 
   /**
   * Inject the needed services.
@@ -30,8 +30,12 @@ export class TokensComponent implements OnInit {
     this.isLogged = PublicFunctions.checkLogin();
     this.tokensService.getTokens().subscribe(
       tokens => {
+        if (tokens) {
+          this.tokens = tokens;
+        }
+
         console.log(tokens);
-        this.tokens = tokens;
+      //  this.tokens = tokens;
       },
       error => {
         console.log(error);
@@ -58,6 +62,12 @@ export class TokensComponent implements OnInit {
   openRegister() {
     const dialogRef = this.registerDialog.open(OpenRegisterClientComponent, {
       width: '420px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tokens.push(result);
+      }
     });
   }
 }

@@ -1,3 +1,25 @@
 mat-expansion-panel {
     margin:5px;
 }
+
+.icon-empty {
+    color: #DADADA;
+    text-align: center;
+    font-size: 300px;
+    width: 300px;
+    height: 300px;
+    cursor: default;
+}
+
+.div-empty {
+    width:1100px;
+    height:400px;
+    text-align: center;
+}
+
+.span-empty {
+    font-family: Arial;
+    text-align:center;
+    font-size: 22px;
+    color: #CACACA;
+}
