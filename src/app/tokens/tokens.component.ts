@@ -66,8 +66,31 @@ export class TokensComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.isNew = true;
         this.tokens.push(result);
       }
     });
+  }
+
+  getClientData(client, currClient) {
+    if (!client.secret || !client.redirectUris) {
+      this.tokensService.getClientData(client.clientId).subscribe(
+        clientData => {
+          if (clientData) {
+            for (let currIndex = 0; currIndex < this.tokens.length; currIndex++) {
+              if (this.tokens[currIndex].clientId === clientData.clientId) {
+                this.tokens[currIndex].secret = clientData.secret;
+                this.tokens[currIndex].redirectUris = clientData.redirectUris;
+                currClient.open();
+                this.tokens[currIndex].start = false;
+                break;
+              }
+            }
+          }
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
 }

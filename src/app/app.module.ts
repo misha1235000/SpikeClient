@@ -8,7 +8,7 @@ import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule,
         MatSnackBarModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule, MatSidenavModule, MatCheckboxModule,
-        MatListModule, MatExpansionModule, MatChipsModule} from '@angular/material';
+        MatListModule, MatExpansionModule, MatChipsModule, MatProgressBarModule} from '@angular/material';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -62,6 +62,7 @@ const appRoutes: Routes = [
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatCheckboxModule,
+    MatProgressBarModule,
     MatListModule,
     MatExpansionModule,
     RouterModule.forRoot(
