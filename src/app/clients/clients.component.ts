@@ -1,41 +1,38 @@
-// tokens.component
+// clients.component
 
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { PublicFunctions } from '../shared/shared';
-import { TokensService } from './tokens.service';
+import { ClientsService } from './clients.service';
 import { OpenRegisterClientComponent } from '../auth/open-register-client/open-register-client.component';
 
 @Component({
-  selector: 'app-tokens',
-  templateUrl: './tokens.component.html',
-  styleUrls: ['./tokens.component.css']
+  selector: 'app-clients',
+  templateUrl: './clients.component.html',
+  styleUrls: ['./clients.component.css']
 })
-export class TokensComponent implements OnInit {
+export class ClientsComponent implements OnInit {
   isLogged = false;
-  tokens: any[];
+  clients: any[];
 
   /**
   * Inject the needed services.
   * @param snackBar - The service of the snackbar.
   * @param registerDialog - The service of the register dialog.
-  * @param tokensService - The service of the tokens.
+  * @param clientsService - The service of the clients.
   */
-  constructor(private snackBar: MatSnackBar, private registerDialog: MatDialog, private tokensService: TokensService) { }
+  constructor(private snackBar: MatSnackBar, private registerDialog: MatDialog, private clientsService: ClientsService) { }
 
   /**
    * When the component initialized, check if the account team is logged in.
    */
   ngOnInit() {
     this.isLogged = PublicFunctions.checkLogin();
-    this.tokensService.getTokens().subscribe(
-      tokens => {
-        if (tokens) {
-          this.tokens = tokens;
+    this.clientsService.getClients().subscribe(
+      clients => {
+        if (clients) {
+          this.clients = clients;
         }
-
-        console.log(tokens);
-      //  this.tokens = tokens;
       },
       error => {
         console.log(error);
@@ -67,22 +64,22 @@ export class TokensComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         result.isNew = true;
-        this.tokens.push(result);
+        this.clients.push(result);
       }
     });
   }
 
   getClientData(client, currClient) {
     if (!client.secret || !client.redirectUris) {
-      this.tokensService.getClientData(client.clientId).subscribe(
+      this.clientsService.getClientData(client.clientId).subscribe(
         clientData => {
           if (clientData) {
-            for (let currIndex = 0; currIndex < this.tokens.length; currIndex++) {
-              if (this.tokens[currIndex].clientId === clientData.clientId) {
-                this.tokens[currIndex].secret = clientData.secret;
-                this.tokens[currIndex].redirectUris = clientData.redirectUris;
+            for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
+              if (this.clients[currIndex].clientId === clientData.clientId) {
+                this.clients[currIndex].secret = clientData.secret;
+                this.clients[currIndex].redirectUris = clientData.redirectUris;
                 currClient.open();
-                this.tokens[currIndex].start = false;
+                this.clients[currIndex].start = false;
                 break;
               }
             }

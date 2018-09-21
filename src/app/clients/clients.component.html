@@ -1,0 +1,42 @@
+<div *ngIf="isLogged" style="flex:40%;" style="width:1000px; position:relative; left:100px;">
+  <mat-accordion>
+      <div class="div-empty" *ngIf="clients && clients.length === 0">
+        <mat-icon class="icon-empty">desktop_windows</mat-icon>
+        <div class="span-empty">No Clients To Display</div>  
+      </div>
+      <mat-expansion-panel #currClient *ngFor="let client of clients" [expanded]="client.isNew" (click)="client.isNew = false; getClientData(client, currClient); client.start = true;">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="width:100px">
+              <mat-spinner diameter="20" *ngIf="client.start && !(client.secret && client.redirectUris)"></mat-spinner>
+            {{ client.name }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ client.hostUri }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div style="text-align:center; display: flex; align-items: center;">
+          <div style="width:50px; position:relative; flex:10%; text-align:center; left:30px; top:2px;">
+            <mat-icon style="position:relative; right:0px; top: 0px; text-align: center;">vpn_key</mat-icon>
+            <span style="position: relative; top: 10px; right: 39px; text-align:center; font-weight: bold; font-size:13px;">Client ID</span>
+          </div>
+          <div style="flex:90%; position:relative; right: 15px;">
+            <textarea readonly style="background-color:#EAEAEA; width: 92%; position:relative; top:14px; resize: none;" #clientId>{{ client.clientId }}</textarea>
+            <button mat-icon-button color="primary" (click)="copyClipboard(clientId)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
+          </div>
+        </div>
+
+        <div style="text-align:center; display: flex; align-items: center;">
+            <div style="width:50px; position:relative; flex:10%; text-align:center; left:30px; top:2px;">
+              <mat-icon style="position:relative; right:0px; top: 0px; text-align: center;">lock</mat-icon>
+              <span style="position: relative; top: 10px; right: 39px; text-align:center; font-weight: bold; font-size:13px;">Client SE</span>
+            </div>
+            <div style="flex:90%; position:relative; right: 15px;">
+              <textarea readonly style="background-color:#EAEAEA; width: 92%; position:relative; top:14px; resize: none;" #clientSecret>{{ client.secret }}</textarea>
+              <button mat-icon-button color="primary" (click)="copyClipboard(clientSecret)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
+            </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <button mat-fab color="primary" style="position:fixed; right: 100px; bottom:100px;" matTooltip="Add Client" matTooltipPosition="above" (click)="openRegister()"><mat-icon>add</mat-icon></button>
+
+</div>

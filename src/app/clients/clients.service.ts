@@ -1,4 +1,4 @@
-// tokens.service
+// clients.service
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +9,7 @@ import 'rxjs/add/observable/throw';
 import { PublicFunctions } from '../shared/shared';
 
 @Injectable()
-export class TokensService {
+export class ClientsService {
   private clientUrl = 'http://localhost:3000/api/client';
 
   /**
@@ -21,7 +21,7 @@ export class TokensService {
   /**
    * Gets clients by the token which is saved on the cookie.
    */
-  getTokens(): Observable<any> {
+  getClients(): Observable<any> {
     const headers = new Headers();
 
     headers.append('authorization', PublicFunctions.getCookie('token'));

@@ -14,17 +14,17 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { LoginComponent } from './auth/login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { TokensComponent } from './tokens/tokens.component';
+import { ClientsComponent } from './clients/clients.component';
 import { OpenRegisterClientComponent } from './auth/open-register-client/open-register-client.component';
 import { OpenRegisterTeamComponent} from './auth/open-register-team/open-register-team.component';
 import { AuthService } from './auth/auth.service';
-import { TokensService } from './tokens/tokens.service';
+import { ClientsService } from './clients/clients.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'tokens', component: TokensComponent },
+  { path: 'clients', component: ClientsComponent },
   { path: '',
-    redirectTo: '/tokens',
+    redirectTo: '/clients',
     pathMatch: 'full'
   },
   { path: '**', component: PageNotFoundComponent}
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     LoginComponent,
     SidenavComponent,
-    TokensComponent,
+    ClientsComponent,
     OpenRegisterClientComponent,
     OpenRegisterTeamComponent,
   ],
@@ -71,7 +71,7 @@ const appRoutes: Routes = [
     )
   ],
   entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent],
-  providers: [FormBuilder, AuthService, TokensService],
+  providers: [FormBuilder, AuthService, ClientsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
