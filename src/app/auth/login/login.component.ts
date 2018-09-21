@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         const expires = `${expiresDate.toUTCString()}`;
 
         document.cookie = `token=${data.token};expires=${expires};path=/`; // The cookie of the token.
-        window.location.href = '/tokens';
+        window.location.href = '/clients';
       } else {
         this.errorMsg = data.message;
       }

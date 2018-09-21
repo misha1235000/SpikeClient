@@ -1,4 +1,4 @@
-// tokens.service
+// clients.service
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +9,7 @@ import 'rxjs/add/observable/throw';
 import { PublicFunctions } from '../shared/shared';
 
 @Injectable()
-export class TokensService {
+export class ClientsService {
   private clientUrl = 'http://localhost:3000/api/client';
 
   /**
@@ -19,14 +19,34 @@ export class TokensService {
   constructor(private http: Http) {}
 
   /**
-   * Gets a username by the token which is saved on the cookie.
+   * Gets clients by the token which is saved on the cookie.
    */
-  getTokens(): Observable<any> {
+  getClients(): Observable<any> {
     const headers = new Headers();
 
     headers.append('authorization', PublicFunctions.getCookie('token'));
 
     return this.http.get(this.clientUrl, {headers})
+           .map((data) => {
+             return data.json();
+           }).catch((error) => { // If there is any error.
+             if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
+                PublicFunctions.logout();
+             }
+
+             return Observable.throw(error.json());
+           });
+  }
+
+  /**
+   * Gets a specific client data by the token and the client ID.
+   */
+  getClientData(clientId: string): Observable<any> {
+    const headers = new Headers();
+
+    headers.append('authorization', PublicFunctions.getCookie('token'));
+
+    return this.http.get(this.clientUrl + '/' + clientId, {headers})
            .map((data) => {
              return data.json();
            }).catch((error) => { // If there is any error.
