@@ -77,7 +77,8 @@ export class ClientsComponent implements OnInit {
             for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
               if (this.clients[currIndex].clientId === clientData.clientId) {
                 this.clients[currIndex].secret = clientData.secret;
-                this.clients[currIndex].redirectUris = clientData.redirectUris;
+                this.clients[currIndex].redirectUris = clientData.redirectUris
+                    .map(data => data.substr(8).substr(data.substr(8).indexOf('/')));
                 currClient.open();
                 this.clients[currIndex].start = false;
                 break;
