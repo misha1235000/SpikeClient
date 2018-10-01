@@ -23,3 +23,9 @@ mat-expansion-panel {
     font-size: 22px;
     color: #CACACA;
 }
+
+.avatar-img {
+    position: relative;
+    bottom: 20px;
+    right: 10px;
+}
