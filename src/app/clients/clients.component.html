@@ -7,8 +7,8 @@
       <mat-expansion-panel #currClient *ngFor="let client of clients" [expanded]="client.isNew" (click)="client.isNew = false; getClientData(client, currClient); client.start = true;" style="width:100%;">
         <mat-expansion-panel-header>
           <mat-panel-title style="position:absolute; left:30px; width:100%;">
-              <mat-progress-bar *ngIf="client.start && !(client.secret && client.redirectUris)" mode="indeterminate" style="position:absolute; top:-24px; left:-25px;"></mat-progress-bar>
-              <!--<mat-spinner diameter="20" *ngIf="client.start && !(client.secret && client.redirectUris)"></mat-spinner>-->
+            <mat-progress-bar *ngIf="client.start && !(client.secret && client.redirectUris)" mode="indeterminate" style="position:absolute; top:-24px; left:-25px;"></mat-progress-bar>
+            <avatar class="avatar-img" [size]="40" [name]="client.avatarName" [displayType]="'circle'" [background]="client.color"></avatar>
             <span style="position:relative; bottom: 10px;"> {{ client.name }}</span>
           </mat-panel-title>
           <mat-panel-description style="position:absolute; left:40%;">

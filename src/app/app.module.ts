@@ -9,6 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule,
         MatSnackBarModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule, MatSidenavModule, MatCheckboxModule,
         MatListModule, MatExpansionModule, MatChipsModule, MatProgressBarModule} from '@angular/material';
+import { AvatarModule } from 'ng2-avatar';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -65,6 +66,7 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     MatListModule,
     MatExpansionModule,
+    AvatarModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }
