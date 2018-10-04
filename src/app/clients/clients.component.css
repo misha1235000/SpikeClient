@@ -26,6 +26,10 @@ mat-expansion-panel {
 
 .avatar-img {
     position: relative;
-    bottom: 20px;
+    bottom: 15px;
     right: 10px;
+}
+
+input {
+    outline:none;
 }

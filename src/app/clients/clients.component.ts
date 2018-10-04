@@ -1,10 +1,11 @@
 // clients.component
 
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialog, MatChipInputEvent } from '@angular/material';
 import { PublicFunctions } from '../shared/shared';
 import { ClientsService } from './clients.service';
 import { OpenRegisterClientComponent } from '../auth/open-register-client/open-register-client.component';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 const COLORS = ['#EF5350', '#C62828', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0',
                 '#3D5AFE', '#1976D2', '#0277BD', '#0097A7', '#00897B', '#388E3C',
@@ -12,13 +13,18 @@ const COLORS = ['#EF5350', '#C62828', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0'
                 '#000000', '#29B6F6', '#7C4DFF', '#FF5252', '#EC407A', '#388E3C',
                 '#558B2F', '#1976D2'];
 
+const redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
+
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit {
+  isEditable = false;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isLogged = false;
+  isInputTriggered = false;
   clients: any[];
 
   /**
@@ -38,6 +44,7 @@ export class ClientsComponent implements OnInit {
       clients => {
         if (clients) {
           clients.forEach(client => {
+            client.newRedirectUris = [];
             client.color = COLORS[client.name[0].toLowerCase().charCodeAt(0) - 97];
             if (client.name.split(' ').length === 1) {
               client.avatarName = client.name + ' ' + client.name[client.name.length - 1];
@@ -78,6 +85,14 @@ export class ClientsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         result.isNew = true;
+        result.redirectUris = result.redirectUris
+                    .map(data => data.substr(8).substr(data.substr(8).indexOf('/')));
+        result.color = COLORS[result.name[0].toLowerCase().charCodeAt(0) - 97];
+        if (result.name.split(' ').length === 1) {
+          result.avatarName = result.name + ' ' + result.name[result.name.length - 1];
+        } else {
+          result.avatarName = result.name;
+        }
         this.clients.push(result);
       }
     });
@@ -104,5 +119,59 @@ export class ClientsComponent implements OnInit {
           console.log(error);
         });
     }
+  }
+
+ /* newChip(client) {
+    client.isInputTriggered = false;
+    client.redirectUris.push(client.uri);
+    client.uri = '';
+  }*/
+
+  isCancel(client, uri) {
+    if (uri.value.length === 0) {
+      client.isInputTriggered = false;
+    }
+  }
+
+  add(client, event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add the chip to the chips list.
+    if ((value || '').trim() && redirectUrisRegex.test(value)) {
+      client.isChanged = true;
+      client.isInputTriggered = false;
+      client.newRedirectUris.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(client, redirectUri): void {
+    const index = client.newRedirectUris.indexOf(redirectUri);
+    if (index >= 0) {
+      client.isChanged = true;
+      client.newRedirectUris.splice(index, 1);
+    }
+  }
+
+  saveChanges(client) {
+    client.newRedirectUris.forEach(newRedirectUri => {
+      client.redirectUris.push(client.hostUri + newRedirectUri);
+    });
+    this.clientsService.updateClient(client.clientId, {redirectUris: client.redirectUris}).subscribe((data) => {
+      if (data) {
+        console.log(data);
+      }
+    });
+  }
+
+  cancelChanges(client) {
+    client.isChanged = false;
+    client.newRedirectUris = [];
+    client.isEditable = false;
   }
 }
