@@ -57,4 +57,21 @@ export class ClientsService {
              return Observable.throw(error.json());
            });
   }
+
+  updateClient(clientId: string, client): Observable<any> {
+    const headers = new Headers();
+
+    headers.append('authorization', PublicFunctions.getCookie('token'));
+
+    return this.http.put(this.clientUrl + '/' + clientId, {clientInformation: client}, {headers})
+           .map((data) => {
+              return data.json();
+           }).catch((error) => {
+            if (error.status === 401) {
+              PublicFunctions.logout();
+            }
+
+            return Observable.throw(error.json());
+           });
+  }
 }

@@ -8,7 +8,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title style="position:absolute; left:30px; width:100%;">
             <mat-progress-bar *ngIf="client.start && !(client.secret && client.redirectUris)" mode="indeterminate" style="position:absolute; top:-24px; left:-25px;"></mat-progress-bar>
-            <avatar class="avatar-img" [size]="40" [name]="client.avatarName" [displayType]="'circle'" [background]="client.color"></avatar>
+            <avatar class="avatar-img" [size]="30" [name]="client.avatarName" [displayType]="'circle'" [background]="client.color"></avatar>
             <span style="position:relative; bottom: 10px;"> {{ client.name }}</span>
           </mat-panel-title>
           <mat-panel-description style="position:absolute; left:40%;">
@@ -45,14 +45,38 @@
           <div style="flex:85%; position:relative; right: 15px;">
             <mat-chip-list style="position:relative; left: 10px;">
               <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri }} 
-                <mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+                <mat-icon *ngIf="client.isEditable" matChipRemove>cancel</mat-icon></mat-chip>
+                <form class="example-form" style="margin: 0 0 0 15px" autocomplete="off">
+                  <mat-chip-list #chipList>
+                    <mat-chip  *ngFor="let newRedirectUri of client.newRedirectUris" [selectable]="selectable"
+                             (removed)="remove(client, newRedirectUri)">
+                      {{newRedirectUri}}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <input  *ngIf="client.isInputTriggered && client.isEditable" class="myinput" style="border-radius: 16px;
+                                  height: 27px;
+                                  text-align: center;
+                                  background-color: #DADADA;
+                                  font-weight: bold;"
+                            matInput type="text" placeholder="Redirect Uris..."
+                           [matChipInputFor]="chipList"
+                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                           [matChipInputAddOnBlur]="addOnBlur"
+                           (matChipInputTokenEnd)="add(client, $event)"
+                           name="redirectUris" maxlength="15" autocomplete="off">
+                </mat-chip-list>
+                </form>
+                <button style="background-color: white; color:#66BB6A; position: relative; left: 15px;" mat-mini-fab matTooltip="Save URI" matTooltipPosition="above" *ngIf="client.isEditable && client.isInputTriggered" [disabled]="client.uri && client.uri.length === 0"><mat-icon>check</mat-icon></button>
+                <button style="background-color: white; color:#3f51b5; position:relative; left: 15px;" mat-mini-fab matTooltip="Add New URI" matTooltipPosition="above" (click)="client.isInputTriggered = true;" *ngIf="client.isEditable && !client.isInputTriggered"><mat-icon>add</mat-icon></button>
             </mat-chip-list>
           </div>
       </div>
       <mat-action-row style="display: flex;">
-          <button mat-button color="warn" (click)="prevStep()" style=" font-weight:bold; position:relative; right: 20px;">Remove</button>
+          <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="!client.isEditable">Remove</button>
+          <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="client.isEditable" (click)="cancelChanges(client);">Cancel</button>
           <span style="flex: 1 1 auto;"></span>
-          <button mat-button color="primary" (click)="nextStep()" style="font-weight: bold;" [disabled]="!isChanged">Save</button>
+          <button mat-button color="primary" style="font-weight: bold;" *ngIf="!client.isEditable" (click)="client.isEditable = true">Edit</button>
+          <button mat-button color="primary" style="font-weight: bold;" *ngIf="client.isEditable" [disabled]="!client.isChanged" (click)="saveChanges(client)">Save</button>
       </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
