@@ -44,21 +44,22 @@
           </div>
           <div style="flex:85%; position:relative; right: 15px;">
             <mat-chip-list style="position:relative; left: 10px;">
-              <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri }} 
+              <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }} 
                 <mat-icon *ngIf="client.isEditable" matChipRemove>cancel</mat-icon></mat-chip>
                 <form class="example-form" style="margin: 0 0 0 15px" autocomplete="off">
                   <mat-chip-list #chipList>
                     <mat-chip  *ngFor="let newRedirectUri of client.newRedirectUris" [selectable]="selectable"
                              (removed)="remove(client, newRedirectUri)">
-                      {{newRedirectUri}}
+                      {{newRedirectUri.substr(8).substr(newRedirectUri.substr(8).indexOf('/'))}}
                       <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
-                    <input  *ngIf="client.isInputTriggered && client.isEditable" class="myinput" style="border-radius: 16px;
+                    <input #Input *ngIf="client.isInputTriggered && client.isEditable" class="myinput" style="border-radius: 12px;
                                   height: 27px;
                                   text-align: center;
-                                  background-color: #DADADA;
-                                  font-weight: bold;"
-                            matInput type="text" placeholder="Redirect Uris..."
+                                  background-color: white;
+                                  font-weight: bold;
+                                  color: black;"
+                            matInput type="text" (blur)="isCancel(client, Input)" placeholder="Redirect Uris..."
                            [matChipInputFor]="chipList"
                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                            [matChipInputAddOnBlur]="addOnBlur"

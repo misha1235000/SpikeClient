@@ -69,7 +69,7 @@ export class ClientsComponent implements OnInit {
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
     inputElement.blur();
-    this.snackBar.open('Token Copied To Clipboard', '', {
+    this.snackBar.open('Copied To Clipboard', '', {
         duration: 2000
     });
   }
@@ -85,8 +85,6 @@ export class ClientsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         result.isNew = true;
-        result.redirectUris = result.redirectUris
-                    .map(data => data.substr(8).substr(data.substr(8).indexOf('/')));
         result.color = COLORS[result.name[0].toLowerCase().charCodeAt(0) - 97];
         if (result.name.split(' ').length === 1) {
           result.avatarName = result.name + ' ' + result.name[result.name.length - 1];
@@ -106,8 +104,7 @@ export class ClientsComponent implements OnInit {
             for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
               if (this.clients[currIndex].clientId === clientData.clientId) {
                 this.clients[currIndex].secret = clientData.secret;
-                this.clients[currIndex].redirectUris = clientData.redirectUris
-                    .map(data => data.substr(8).substr(data.substr(8).indexOf('/')));
+                this.clients[currIndex].redirectUris = clientData.redirectUris;
                 currClient.open();
                 this.clients[currIndex].start = false;
                 break;
@@ -141,7 +138,7 @@ export class ClientsComponent implements OnInit {
     if ((value || '').trim() && redirectUrisRegex.test(value)) {
       client.isChanged = true;
       client.isInputTriggered = false;
-      client.newRedirectUris.push(value.trim());
+      client.newRedirectUris.push(client.hostUri + value.trim());
     }
 
     // Reset the input value
@@ -160,11 +157,13 @@ export class ClientsComponent implements OnInit {
 
   saveChanges(client) {
     client.newRedirectUris.forEach(newRedirectUri => {
-      client.redirectUris.push(client.hostUri + newRedirectUri);
+      client.redirectUris.push(newRedirectUri);
     });
+
     this.clientsService.updateClient(client.clientId, {redirectUris: client.redirectUris}).subscribe((data) => {
       if (data) {
-        console.log(data);
+        this.cancelChanges(client);
+        client.redirectUris = data.redirectUris;
       }
     });
   }
