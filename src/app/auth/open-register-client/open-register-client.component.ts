@@ -23,7 +23,8 @@ export class OpenRegisterClientComponent implements OnInit {
   password: string;
   passwordConfirm: string;
   isDone = true;
-  hostUriRegex = /^https:\/\/(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/m;
+  hostUriRegex =
+    /^https:\/\/(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\:{0,1}\d{0,5}$/m;
   redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
 
   AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
