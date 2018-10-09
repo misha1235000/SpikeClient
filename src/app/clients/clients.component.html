@@ -73,7 +73,7 @@
           </div>
       </div>
       <mat-action-row style="display: flex;">
-          <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="!client.isEditable">Remove</button>
+          <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="!client.isEditable" (click)="removeClient(client);">Remove</button>
           <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="client.isEditable" (click)="cancelChanges(client);">Cancel</button>
           <span style="flex: 1 1 auto;"></span>
           <button mat-button color="primary" style="font-weight: bold;" *ngIf="!client.isEditable" (click)="client.isEditable = true">Edit</button>

@@ -173,4 +173,14 @@ export class ClientsComponent implements OnInit {
     client.newRedirectUris = [];
     client.isEditable = false;
   }
+
+  removeClient(client) {
+    this.clientsService.removeClient(client.clientId).subscribe((data) => {
+      this.clients.forEach((currClient, index) => {
+        if (currClient.clientId === client.clientId) {
+          this.clients.splice(index, 1);
+        }
+      });
+    });
+  }
 }
