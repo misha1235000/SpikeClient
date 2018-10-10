@@ -44,13 +44,21 @@
           </div>
           <div style="flex:85%; position:relative; right: 15px;">
             <mat-chip-list style="position:relative; left: 10px;">
-              <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }} 
-                <mat-icon *ngIf="client.isEditable" matChipRemove>cancel</mat-icon></mat-chip>
+              <ng-container *ngIf="!client.isEditable">
+                <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }}
+                </mat-chip>
+              </ng-container>
+              <ng-container *ngIf="client.copyRedirectUris && client.isEditable">
+                <mat-chip selected *ngFor="let redirectUri of client.copyRedirectUris" (removed)="removeCopy(client, redirectUri)"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }} 
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </ng-container>
+
                 <form class="example-form" style="margin: 0 0 0 15px" autocomplete="off">
                   <mat-chip-list #chipList>
                     <mat-chip  *ngFor="let newRedirectUri of client.newRedirectUris" [selectable]="selectable"
                              (removed)="remove(client, newRedirectUri)">
-                      {{newRedirectUri.substr(8).substr(newRedirectUri.substr(8).indexOf('/'))}}
+                      {{ newRedirectUri.substr(8).substr(newRedirectUri.substr(8).indexOf('/')) }}
                       <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
                     <input #Input *ngIf="client.isInputTriggered && client.isEditable" class="myinput" style="border-radius: 12px;
@@ -76,8 +84,8 @@
           <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="!client.isEditable" (click)="removeClient(client);">Remove</button>
           <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="client.isEditable" (click)="cancelChanges(client);">Cancel</button>
           <span style="flex: 1 1 auto;"></span>
-          <button mat-button color="primary" style="font-weight: bold;" *ngIf="!client.isEditable" (click)="client.isEditable = true">Edit</button>
-          <button mat-button color="primary" style="font-weight: bold;" *ngIf="client.isEditable" [disabled]="!client.isChanged" (click)="saveChanges(client)">Save</button>
+          <button mat-button color="primary" style="font-weight: bold;" *ngIf="!client.isEditable" (click)="setEditable(client)">Edit</button>
+          <button mat-button color="primary" style="font-weight: bold;" *ngIf="client.isEditable" [disabled]="!isClientChanged(client)" (click)="saveChanges(client)">Save</button>
       </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>

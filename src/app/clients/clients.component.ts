@@ -136,7 +136,6 @@ export class ClientsComponent implements OnInit {
 
     // Add the chip to the chips list.
     if ((value || '').trim() && redirectUrisRegex.test(value)) {
-      client.isChanged = true;
       client.isInputTriggered = false;
       client.newRedirectUris.push(client.hostUri + value.trim());
     }
@@ -149,13 +148,23 @@ export class ClientsComponent implements OnInit {
 
   remove(client, redirectUri): void {
     const index = client.newRedirectUris.indexOf(redirectUri);
+
     if (index >= 0) {
-      client.isChanged = true;
       client.newRedirectUris.splice(index, 1);
     }
   }
 
+  removeCopy(client, redirectUri): void {
+    const index = client.copyRedirectUris.indexOf(redirectUri);
+
+    if (index >= 0) {
+      client.copyRedirectUris.splice(index, 1);
+    }
+  }
+
   saveChanges(client) {
+    client.redirectUris = client.copyRedirectUris.slice();
+
     client.newRedirectUris.forEach(newRedirectUri => {
       client.redirectUris.push(newRedirectUri);
     });
@@ -168,8 +177,12 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  setEditable(client) {
+    client.isEditable = true;
+    client.copyRedirectUris = client.redirectUris.slice();
+  }
+
   cancelChanges(client) {
-    client.isChanged = false;
     client.newRedirectUris = [];
     client.isEditable = false;
   }
@@ -182,5 +195,13 @@ export class ClientsComponent implements OnInit {
         }
       });
     });
+  }
+
+  isClientChanged(client): boolean {
+    if (client.redirectUris.toString() === client.copyRedirectUris.toString() && client.newRedirectUris.length === 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
