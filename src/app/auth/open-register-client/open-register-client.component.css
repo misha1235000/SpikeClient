@@ -47,6 +47,14 @@ mat-card-subtitle {
     bottom:5px;
 }
 
+.prefix-icon-special {
+    font-size: 30px;
+    color: #757575;
+    position: absolute;
+    left: -90px;
+    bottom: 5px;
+}
+
 .input-class {
     margin-left:25px;
 }

@@ -22,8 +22,9 @@
       <br>
       <div class="input-class">
         <mat-form-field class="full-width">
-          <mat-icon class="prefix-icon">public</mat-icon>
-          <input matInput placeholder="https://example.com" type="text" formControlName="hostUri" autocomplete="off" maxlength="200" required>
+          <mat-icon class="prefix-icon-special">public</mat-icon>
+          <span matPrefix>https://</span>
+          <input matInput placeholder="example.com" type="text" formControlName="hostUri" autocomplete="off" maxlength="200" required>
           <mat-icon class="help-authorize" [matTooltip]="ORIGIN_HELP" matTooltipPosition="above">help</mat-icon>
           <mat-error *ngIf="hostUriFormControl.hasError('required')">
               Hostname is required.
