@@ -46,7 +46,7 @@ export class ClientsComponent implements OnInit {
           clients.forEach(client => {
             client.newRedirectUris = [];
             client.color = COLORS[client.name[0].toLowerCase().charCodeAt(0) - 97];
-            if (client.name.split(' ').length === 1) {
+            if (client.name.split(' ') && client.name.split(' ').length === 1) {
               client.avatarName = client.name + ' ' + client.name[client.name.length - 1];
             } else {
               client.avatarName = client.name;
@@ -86,7 +86,7 @@ export class ClientsComponent implements OnInit {
       if (result) {
         result.isNew = true;
         result.color = COLORS[result.name[0].toLowerCase().charCodeAt(0) - 97];
-        if (result.name.split(' ').length === 1) {
+        if (result.name.split(' ') && result.name.split(' ').length === 1) {
           result.avatarName = result.name + ' ' + result.name[result.name.length - 1];
         } else {
           result.avatarName = result.name;
@@ -125,7 +125,7 @@ export class ClientsComponent implements OnInit {
   }*/
 
   isCancel(client, uri) {
-    if (uri.value.length === 0) {
+    if (uri.value && uri.value.length === 0) {
       client.isInputTriggered = false;
     }
   }
@@ -198,7 +198,7 @@ export class ClientsComponent implements OnInit {
   }
 
   isClientChanged(client): boolean {
-    if (client.redirectUris.toString() === client.copyRedirectUris.toString() && client.newRedirectUris.length === 0) {
+    if (client.redirectUris.toString() === client.copyRedirectUris.toString() && client.newRedirectUris && client.newRedirectUris.length === 0) {
       return false;
     } else {
       return true;
