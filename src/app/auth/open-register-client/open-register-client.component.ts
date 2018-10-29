@@ -87,7 +87,7 @@ export class OpenRegisterClientComponent implements OnInit {
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 
     this.authService.registerClient({'name': this.appName,
-                                     'redirectUris': this.redirectUris.map(value => this.hostUri + value),
+                                     'redirectUris': this.redirectUris.map(value => 'https://' + this.hostUri + value),
                                      'hostUri': 'https://' + this.hostUri}).subscribe((data) => {
       if (data) {
         this.errorMsg = undefined;
