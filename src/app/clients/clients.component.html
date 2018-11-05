@@ -13,6 +13,7 @@
           </mat-panel-title>
           <mat-panel-description style="position:absolute; left:40%;">
               <span style="position:relative; bottom: 10px;"> {{ client.hostUri }} </span>
+              <button *ngIf="client.isEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="$event.stopPropagation();"><mat-icon>edit</mat-icon></button>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div style="text-align:center; display: flex; align-items: center;">
@@ -50,7 +51,7 @@
               </ng-container>
               <ng-container *ngIf="client.copyRedirectUris && client.isEditable">
                 <mat-chip selected *ngFor="let redirectUri of client.copyRedirectUris" (removed)="removeCopy(client, redirectUri)"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }} 
-                  <mat-icon matChipRemove>cancel</mat-icon>
+                  <mat-icon matChipRemove *ngIf="client.copyRedirectUris.length > 1">cancel</mat-icon>
                 </mat-chip>
               </ng-container>
 
