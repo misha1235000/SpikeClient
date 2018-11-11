@@ -185,6 +185,7 @@ export class ClientsComponent implements OnInit {
   cancelChanges(client) {
     client.newRedirectUris = [];
     client.isEditable = false;
+    client.hostUriEditable = false;
   }
 
   removeClient(client) {

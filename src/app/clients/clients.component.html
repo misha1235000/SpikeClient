@@ -12,8 +12,13 @@
             <span style="position:relative; bottom: 10px;"> {{ client.name }}</span>
           </mat-panel-title>
           <mat-panel-description style="position:absolute; left:40%;">
-              <span style="position:relative; bottom: 10px;"> {{ client.hostUri }} </span>
-              <button *ngIf="client.isEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="$event.stopPropagation();"><mat-icon>edit</mat-icon></button>
+              <span *ngIf="!client.isEditable || !client.hostUriEditable" style="position:relative; bottom: 10px;"> {{ client.hostUri }} </span>
+              <mat-form-field *ngIf="client.isEditable && client.hostUriEditable" style="position: relative; bottom:30px; width:200px;" (click)="$event.stopPropagation();">
+                <span matPrefix style="font-weight: bold;">https://</span>
+                <input matInput [value]="client.hostUri.split('https://')[1]"/>
+              </mat-form-field>
+              <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="$event.stopPropagation(); client.hostUriEditable = true;"><mat-icon>edit</mat-icon></button>
+              <button *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Save HostUri" matTooltipPosition="above" (click)="$event.stopPropagation();"><mat-icon>check</mat-icon></button>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div style="text-align:center; display: flex; align-items: center;">
