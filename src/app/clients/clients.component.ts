@@ -96,6 +96,11 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  /**
+   * Gets all the client data.
+   * @param client - The client with the data
+   * @param currClient
+   */
   getClientData(client, currClient) {
     if (!client.secret || !client.redirectUris) {
       this.clientsService.getClientData(client.clientId).subscribe(
@@ -118,18 +123,17 @@ export class ClientsComponent implements OnInit {
     }
   }
 
- /* newChip(client) {
-    client.isInputTriggered = false;
-    client.redirectUris.push(client.uri);
-    client.uri = '';
-  }*/
-
   isCancel(client, uri) {
     if (uri.value && uri.value.length === 0) {
       client.isInputTriggered = false;
     }
   }
 
+  /**
+   * Adds new client to the clients chip array.
+   * @param client
+   * @param event
+   */
   add(client, event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
@@ -146,6 +150,11 @@ export class ClientsComponent implements OnInit {
     }
   }
 
+  /**
+   * Removes a client from the chip array.
+   * @param client
+   * @param redirectUri
+   */
   remove(client, redirectUri): void {
     const index = client.newRedirectUris.indexOf(redirectUri);
 
@@ -162,6 +171,10 @@ export class ClientsComponent implements OnInit {
     }
   }
 
+  /**
+   * Saves the changes of the client.
+   * @param client
+   */
   saveChanges(client) {
     client.redirectUris = client.copyRedirectUris.slice();
 
@@ -169,25 +182,47 @@ export class ClientsComponent implements OnInit {
       client.redirectUris.push(newRedirectUri);
     });
 
-    this.clientsService.updateClient(client.clientId, {redirectUris: client.redirectUris}).subscribe((data) => {
+    if (client.hostUriCopy) {
+      client.redirectUris.forEach((redirectUri, index) => {
+        const pathNoPrefix = redirectUri.split('https://')[1];
+        client.redirectUris[index] = 'https://' + client.hostUriCopy + pathNoPrefix.substr(pathNoPrefix.indexOf('/'));
+      });
+    }
+
+    this.clientsService.updateClient(client.clientId, {redirectUris: client.redirectUris, hostUri: 'https://' + client.hostUriCopy}).subscribe((data) => {
       if (data) {
         this.cancelChanges(client);
+        client.hostUri = 'https://' + client.hostUriCopy;
         client.redirectUris = data.redirectUris;
       }
     });
   }
 
-  setEditable(client) {
+  /**
+   * Sets the client as editable.
+   * @param client
+   */
+  setEditable(client): void {
     client.isEditable = true;
     client.copyRedirectUris = client.redirectUris.slice();
+    client.hostUriCopy = client.hostUri.substr(8);
   }
 
-  cancelChanges(client) {
+  /**
+   * Cancels all the changes.
+   * @param client
+   */
+  cancelChanges(client): void {
     client.newRedirectUris = [];
     client.isEditable = false;
+    client.hostUriEditable = false;
   }
 
-  removeClient(client) {
+  /**
+   * Remove a client.
+   * @param client
+   */
+  removeClient(client): void {
     this.clientsService.removeClient(client.clientId).subscribe((data) => {
       this.clients.forEach((currClient, index) => {
         if (currClient.clientId === client.clientId) {
@@ -197,11 +232,32 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  /**
+   * A check if client has changed.
+   * @param client
+   */
   isClientChanged(client): boolean {
-    if (client.redirectUris.toString() === client.copyRedirectUris.toString() && client.newRedirectUris && client.newRedirectUris.length === 0) {
+    if (client.redirectUris.toString() === client.copyRedirectUris.toString() &&
+        client.newRedirectUris && client.newRedirectUris.length === 0         &&
+        client.hostUriCopy && client.hostUri.substr(8) === client.hostUriCopy) {
       return false;
     } else {
       return true;
     }
+  }
+
+  /**
+   * Set hostUri as editable.
+   * @param event
+   * @param client
+   */
+  editHostUri(event, client): void {
+    event.stopPropagation();
+    client.hostUriEditable = true;
+  }
+
+  saveHostUri(event, client): void {
+    event.stopPropagation();
+    client.hostUriEditable = false;
   }
 }
