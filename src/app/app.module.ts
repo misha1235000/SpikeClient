@@ -20,7 +20,9 @@ import { OpenRegisterClientComponent } from './auth/open-register-client/open-re
 import { OpenRegisterTeamComponent} from './auth/open-register-team/open-register-team.component';
 import { AuthService } from './auth/auth.service';
 import { ClientsService } from './clients/clients.service';
+import {enableProdMode} from '@angular/core';
 
+enableProdMode();
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'clients', component: ClientsComponent },

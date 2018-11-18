@@ -12,13 +12,14 @@
             <span style="position:relative; bottom: 10px;"> {{ client.name }}</span>
           </mat-panel-title>
           <mat-panel-description style="position:absolute; left:40%;">
-              <span *ngIf="!client.isEditable || !client.hostUriEditable" style="position:relative; bottom: 10px;"> {{ client.hostUri }} </span>
+              <span *ngIf="!client.isEditable || !client.hostUriEditable && !client.hostUriCopy" style="position:relative; bottom: 10px;"> {{ client.hostUri }} </span>
+              <span *ngIf="client.hostUriCopy && client.isEditable && !client.hostUriEditable" style="position:relative; bottom: 10px;"> https://{{ client.hostUriCopy }}</span> 
               <mat-form-field *ngIf="client.isEditable && client.hostUriEditable" style="position: relative; bottom:30px; width:200px;" (click)="$event.stopPropagation();">
                 <span matPrefix style="font-weight: bold;">https://</span>
-                <input matInput [value]="client.hostUri.split('https://')[1]"/>
+                <input matInput [(ngModel)]="client.hostUriCopy"/>
               </mat-form-field>
-              <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="$event.stopPropagation(); client.hostUriEditable = true;"><mat-icon>edit</mat-icon></button>
-              <button *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Save HostUri" matTooltipPosition="above" (click)="$event.stopPropagation();"><mat-icon>check</mat-icon></button>
+              <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="editHostUri($event, client);"><mat-icon>edit</mat-icon></button>
+              <button [disabled]="client.hostUriCopy.length <= 0" *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Save HostUri" matTooltipPosition="above" (click)="saveHostUri($event, client);"><mat-icon>check</mat-icon></button>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div style="text-align:center; display: flex; align-items: center;">
