@@ -7,12 +7,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { PublicFunctions } from '../shared/shared';
+import { config } from '../shared/config';
 
 @Injectable()
 export class AuthService {
-  private authUrl = 'http://localhost:3000/api/auth';
-  private teamUrl = 'http://localhost:3000/api/team';
-  private clientUrl = 'http://localhost:3000/api/client';
+  private authUrl = `${config.SERVER_HOST}:${config.SERVER_PORT}/api/auth`;
+  private teamUrl = `${config.SERVER_HOST}:${config.SERVER_PORT}/api/team`;
+  private clientUrl = `${config.SERVER_HOST}:${config.SERVER_PORT}/api/client`;
 
   /**
    * Injection of the http service.
