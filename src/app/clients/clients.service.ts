@@ -7,10 +7,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { PublicFunctions } from '../shared/shared';
+import { config } from '../shared/config';
 
 @Injectable()
 export class ClientsService {
-  private clientUrl = 'http://localhost:3000/api/client';
+  private clientUrl = `${config.SERVER_HOST}:${config.SERVER_PORT}/api/client`;
 
   /**
    * Injection of the http service.
