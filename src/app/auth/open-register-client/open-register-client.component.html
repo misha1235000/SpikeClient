@@ -46,7 +46,6 @@
                 <input matInput type="text" placeholder="Redirect Uris..."
                        [matChipInputFor]="chipList"
                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                       [matChipInputAddOnBlur]="addOnBlur"
                        (matChipInputTokenEnd)="add($event)"
                        formControlName="redirectUris" maxlength="15">
             </mat-chip-list>
