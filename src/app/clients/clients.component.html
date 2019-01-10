@@ -1,56 +1,56 @@
-<div *ngIf="isLogged" style="flex:40%;" style="width:1000px; position:relative; left:100px;">
-  <mat-accordion style="position:absolute; width: 100%;">
+<div *ngIf="isLogged" clsas="div-main">
+  <mat-accordion class="accordion-main">
       <div class="div-empty" *ngIf="clients && clients.length === 0">
         <mat-icon class="icon-empty">desktop_windows</mat-icon>
         <div class="span-empty">No Clients To Display</div>  
       </div>
-      <mat-expansion-panel #currClient *ngFor="let client of clients" [expanded]="client.isNew" (click)="client.isNew = false; getClientData(client, currClient); client.start = true;" style="width:100%;">
+      <mat-expansion-panel class="panel-expan" #currClient *ngFor="let client of clients" [expanded]="client.isNew" (click)="client.isNew = false; getClientData(client, currClient); client.start = true;">
         <mat-expansion-panel-header>
-          <mat-panel-title style="position:absolute; left:30px; width:100%;">
-            <mat-progress-bar *ngIf="client.start && !(client.secret && client.redirectUris)" mode="indeterminate" style="position:absolute; top:-24px; left:-25px;"></mat-progress-bar>
+          <mat-panel-title class="panel-title">
+            <mat-progress-bar class="progress-bar-main" *ngIf="client.start && !(client.secret && client.redirectUris)" mode="indeterminate"></mat-progress-bar>
             <avatar class="avatar-img" [size]="30" [name]="client.avatarName" [displayType]="'circle'" [background]="client.color"></avatar>
-            <span style="position:relative; bottom: 10px;"> {{ client.name }}</span>
+            <span class="client-name"> {{ client.name }}</span>
           </mat-panel-title>
-          <mat-panel-description style="position:absolute; left:40%;">
-              <span *ngIf="!client.isEditable || !client.hostUriEditable && !client.hostUriCopy" style="position:relative; bottom: 10px;"> {{ client.hostUri }} </span>
-              <span *ngIf="client.hostUriCopy && client.isEditable && !client.hostUriEditable" style="position:relative; bottom: 10px;"> https://{{ client.hostUriCopy }}</span> 
-              <mat-form-field *ngIf="client.isEditable && client.hostUriEditable" style="position: relative; bottom:30px; width:200px;" (click)="$event.stopPropagation();">
-                <span matPrefix style="font-weight: bold;">https://</span>
+          <mat-panel-description class="panel-desc">
+              <span *ngIf="!client.isEditable || !client.hostUriEditable && !client.hostUriCopy" class="span-desc"> {{ client.hostUri }} </span>
+              <span *ngIf="client.hostUriCopy && client.isEditable && !client.hostUriEditable" class="span-desc"> https://{{ client.hostUriCopy }}</span> 
+              <mat-form-field *ngIf="client.isEditable && client.hostUriEditable" class="mat-form-uri" (click)="$event.stopPropagation();">
+                <span matPrefix class="btn-bold">https://</span>
                 <input matInput [(ngModel)]="client.hostUriCopy"/>
               </mat-form-field>
-              <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="editHostUri($event, client);"><mat-icon>edit</mat-icon></button>
-              <button [disabled]="client.hostUriCopy.length <= 0" *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" style="position:relative; bottom: 22px; left:10px;" matTooltip="Save HostUri" matTooltipPosition="above" (click)="saveHostUri($event, client);"><mat-icon>check</mat-icon></button>
+              <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" class="edit-btn" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="editHostUri($event, client);"><mat-icon>edit</mat-icon></button>
+              <button [disabled]="client.hostUriCopy.length <= 0" *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" class="edit-btn" matTooltip="Save HostUri" matTooltipPosition="above" (click)="saveHostUri($event, client);"><mat-icon>check</mat-icon></button>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <div style="text-align:center; display: flex; align-items: center;">
-          <div style="width:50px; position:relative; flex:15%; text-align:center; left:15px; top:2px;">
-            <mat-icon style="position:relative; right:0px; top: 0px; text-align: center;">vpn_key</mat-icon>
-            <span style="position: relative; top: 10px; right: 39px; text-align:center; font-weight: bold; font-size:13px;">Client ID</span>
+        <div class="client-main-div">
+          <div class="clientid-div">
+            <mat-icon class="clientid-icon">vpn_key</mat-icon>
+            <span class="clientid-span">Client ID</span>
           </div>
-          <div style="flex:85%; position:relative; right: 15px;">
-            <textarea readonly style="background-color:#EAEAEA; width: 92%; position:relative; top:14px; resize: none;" #clientId>{{ client.clientId }}</textarea>
+          <div class="div-inner">
+            <textarea readonly class="textarea-stl" #clientId>{{ client.clientId }}</textarea>
             <button mat-icon-button color="primary" (click)="copyClipboard(clientId)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
           </div>
         </div>
 
-        <div style="text-align:center; display: flex; align-items: center;">
-            <div style="width:50px; position:relative; flex:15%; text-align:center; left:15px; top:2px;">
-              <mat-icon style="position:relative; left:12px; top: 0px; text-align: center;">lock</mat-icon>
-              <span style="position: relative; top: 10px; right: 39px; text-align:center; font-weight: bold; font-size:13px;">Client Secret</span>
+        <div class="client-main-div">
+            <div class="clientid-div">
+              <mat-icon class="lock-icon">lock</mat-icon>
+              <span class="clientid-span">Client Secret</span>
             </div>
-            <div style="flex:85%; position:relative; right: 15px;">
-              <textarea readonly style="background-color:#EAEAEA; width: 92%; position:relative; top:14px; resize: none;" #clientSecret>{{ client.secret }}</textarea>
+            <div class="div-inner">
+              <textarea readonly class="textarea-stl" #clientSecret>{{ client.secret }}</textarea>
               <button mat-icon-button color="primary" (click)="copyClipboard(clientSecret)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
             </div>
         </div>
-        <mat-divider style="position:relative; top:25px;"></mat-divider>
-        <div style="text-align:center; display: flex; align-items: center; position:relative; top:15px; height:120px;">
-          <div style="width:50px; position:relative; flex:15%; text-align:center; left:15px; top:0px;">
-            <mat-icon style="position:relative; left:12px; top: 0px; text-align: center;">refresh</mat-icon>
-            <span style="position: relative; top: 10px; right: 39px; text-align:center; font-weight: bold; font-size:13px;">Redirect Uris</span>
+        <mat-divider class="divider-stl"></mat-divider>
+        <div class="redirect-main-div">
+          <div class="redirect-div">
+            <mat-icon class="lock-icon">refresh</mat-icon>
+            <span class="clientid-span">Redirect Uris</span>
           </div>
-          <div style="flex:85%; position:relative; right: 15px;">
-            <mat-chip-list style="position:relative; left: 10px;">
+          <div class="div-inner">
+            <mat-chip-list class="chip-list">
               <ng-container *ngIf="!client.isEditable">
                 <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }}
                 </mat-chip>
@@ -61,19 +61,14 @@
                 </mat-chip>
               </ng-container>
 
-                <form class="example-form" style="margin: 0 0 0 15px" autocomplete="off">
+                <form class="example-form" class="form-stl" autocomplete="off">
                   <mat-chip-list #chipList>
                     <mat-chip  *ngFor="let newRedirectUri of client.newRedirectUris" [selectable]="selectable"
                              (removed)="remove(client, newRedirectUri)">
                       {{ newRedirectUri.substr(8).substr(newRedirectUri.substr(8).indexOf('/')) }}
                       <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
-                    <input #Input *ngIf="client.isInputTriggered && client.isEditable" class="myinput" style="border-radius: 12px;
-                                  height: 27px;
-                                  text-align: center;
-                                  background-color: white;
-                                  font-weight: bold;
-                                  color: black;"
+                    <input #Input *ngIf="client.isInputTriggered && client.isEditable" class="myinput"
                             matInput type="text" (blur)="isCancel(client, Input)" placeholder="Redirect Uris..."
                            [matChipInputFor]="chipList"
                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -82,20 +77,20 @@
                            name="redirectUris" maxlength="15" autocomplete="off">
                 </mat-chip-list>
                 </form>
-                <button style="background-color: white; color:#66BB6A; position: relative; left: 15px;" mat-mini-fab matTooltip="Save URI" matTooltipPosition="above" *ngIf="client.isEditable && client.isInputTriggered" [disabled]="client.uri && client.uri.length === 0"><mat-icon>check</mat-icon></button>
-                <button style="background-color: white; color:#3f51b5; position:relative; left: 15px;" mat-mini-fab matTooltip="Add New URI" matTooltipPosition="above" (click)="client.isInputTriggered = true;" *ngIf="client.isEditable && !client.isInputTriggered"><mat-icon>add</mat-icon></button>
+                <button class="btn-save" mat-mini-fab matTooltip="Save URI" matTooltipPosition="above" *ngIf="client.isEditable && client.isInputTriggered" [disabled]="client.uri && client.uri.length === 0"><mat-icon>check</mat-icon></button>
+                <button class="btn-add" mat-mini-fab matTooltip="Add New URI" matTooltipPosition="above" (click)="client.isInputTriggered = true;" *ngIf="client.isEditable && !client.isInputTriggered"><mat-icon>add</mat-icon></button>
             </mat-chip-list>
           </div>
       </div>
-      <mat-action-row style="display: flex;">
-          <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="!client.isEditable" (click)="removeClient(client);">Remove</button>
-          <button mat-button color="warn" style=" font-weight:bold; position:relative; right: 20px;" *ngIf="client.isEditable" (click)="cancelChanges(client);">Cancel</button>
-          <span style="flex: 1 1 auto;"></span>
-          <button mat-button color="primary" style="font-weight: bold;" *ngIf="!client.isEditable" (click)="setEditable(client)">Edit</button>
-          <button mat-button color="primary" style="font-weight: bold;" *ngIf="client.isEditable" [disabled]="!isClientChanged(client)" (click)="saveChanges(client)">Save</button>
+      <mat-action-row class="flexable">
+          <button mat-button color="warn" class="btn-act" *ngIf="!client.isEditable" (click)="removeClient(client);">Remove</button>
+          <button mat-button color="warn" class="btn-act" *ngIf="client.isEditable" (click)="cancelChanges(client);">Cancel</button>
+          <span class="span-flexable"></span>
+          <button mat-button color="primary" class="btn-bold" *ngIf="!client.isEditable" (click)="setEditable(client)">Edit</button>
+          <button mat-button color="primary" class="btn-bold" *ngIf="client.isEditable" [disabled]="!isClientChanged(client)" (click)="saveChanges(client)">Save</button>
       </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
-    <button mat-fab color="primary" style="position:fixed; right: 100px; bottom:100px;" matTooltip="Add Client" matTooltipPosition="above" (click)="openRegister()"><mat-icon>add</mat-icon></button>
+    <button mat-fab color="primary" class="register-btn" matTooltip="Add Client" matTooltipPosition="above" (click)="openRegister()"><mat-icon>add</mat-icon></button>
 
 </div>
