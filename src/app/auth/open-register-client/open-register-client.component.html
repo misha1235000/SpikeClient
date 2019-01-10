@@ -62,7 +62,7 @@
         </mat-form-field>
       </div>
       <mat-spinner *ngIf="!isDone" diameter="50" style="position:absolute; bottom:10px;"></mat-spinner>
-      <button mat-raised-button class="login-button" type="submit" disabled="disabled" [disabled]="!isDetailsValid()" (click)="register()">Register</button>
+      <button mat-raised-button class="login-button" type="submit" disabled="disabled" [disabled]="!isDetailsValid()" (click)="register($event)">Register</button>
     </form>
     <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
 </div>

@@ -82,7 +82,8 @@ export class OpenRegisterClientComponent implements OnInit {
   /**
    * Registers a client with the details given.
    */
-  register() {
+  register(event) {
+    event.stopPropagation();
     this.appName = this.registerClientFormGroup.value.appname;
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 

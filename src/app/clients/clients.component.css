@@ -33,3 +33,186 @@ mat-expansion-panel {
 input {
     outline:none;
 }
+
+.div-main {
+    flex:40%;
+}
+
+.accordion-main {
+    position:absolute;
+    width: 100%;
+}
+
+.panel-expan {
+    width: 100%;
+}
+
+.panel-title {
+    position:absolute;
+    left:30px;
+    width:100%;
+}
+
+.progress-bar-main {
+    position:absolute;
+    top:-24px;
+    left:-25px;
+}
+
+.btn-act {
+    font-weight:bold;
+    position:relative;
+    right: 20px;
+}
+
+.btn-save {
+    background-color:white;
+    color:#66BB6A;
+    position: relative;
+    left: 15px;
+}
+
+.btn-add {
+    background-color: white;
+    color:#3f51b5;
+    position:relative;
+    left: 15px;
+}
+
+.btn-bold {
+    font-weight: bold;
+}
+
+.myinput {
+    border-radius: 12px;
+    height: 27px;
+    text-align: center;
+    background-color: white;
+    font-weight: bold;
+    color: black;
+}
+
+.span-desc {
+    position:relative;
+    bottom: 10px;
+}
+
+.mat-form-uri {
+    position: relative;
+    bottom:30px;
+    width:200px;
+}
+
+.clientid-span {
+    position: relative;
+    top: 10px;
+    right: 39px;
+    text-align:center;
+    font-weight: bold;
+    font-size:13px;
+}
+
+.clientid-icon {
+    position:relative;
+    right:0px;
+    top: 0px;
+    text-align: center;
+}
+
+.clientid-div {
+    width:50px;
+    position:relative;
+    flex:15%;
+    text-align:center;
+    left:15px;
+    top:2px;
+}
+
+.client-main-div {
+    text-align:center;
+    display: flex;
+    align-items: center;
+}
+
+.lock-icon {
+    position:relative;
+    left:12px;
+    top: 0px;
+    text-align: center;
+}
+
+.div-inner {
+    flex:85%;
+    position:relative;
+    right: 15px;
+}
+
+.textarea-stl {
+    background-color:#EAEAEA;
+    width: 92%;
+    position:relative;
+    top:14px;
+    resize: none;
+}
+
+.divider-stl {
+    position:relative;
+    top:25px;
+}
+
+.redirect-main-div {
+    text-align:center;
+    display: flex;
+    align-items: center;
+    position:relative;
+    top:15px;
+    height:120px;
+}
+
+.redirect-div {
+    width:50px;
+    position:relative;
+    flex:15%;
+    text-align:center;
+    left:15px;
+    top:0px;
+}
+
+.client-name {
+    position:relative;
+    bottom: 10px;
+}
+
+.panel-desc {
+    position:absolute;
+    left:40%;
+}
+
+.edit-btn {
+    position:relative;
+    bottom: 22px;
+    left:10px;
+}
+
+.chip-list {
+    position:relative;
+    left: 10px;
+}
+
+.form-stl {
+    margin: 0 0 0 15px;
+}
+
+.flexable {
+    display: flex;
+}
+
+.span-flexable {
+    flex: 1 1 auto;
+}
+
+.register-btn {
+    position:fixed;
+    right: 100px;
+    bottom:100px;
+}
