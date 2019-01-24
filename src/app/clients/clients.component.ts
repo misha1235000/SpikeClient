@@ -178,9 +178,11 @@ export class ClientsComponent implements OnInit {
   saveChanges(client) {
     client.redirectUris = client.copyRedirectUris.slice();
 
-    client.newRedirectUris.forEach(newRedirectUri => {
-      client.redirectUris.push(newRedirectUri);
-    });
+    if (client.newRedirectUris) {
+      client.newRedirectUris.forEach(newRedirectUri => {
+        client.redirectUris.push(newRedirectUri);
+      });
+    }
 
     if (client.hostUriCopy) {
       client.redirectUris.forEach((redirectUri, index) => {
