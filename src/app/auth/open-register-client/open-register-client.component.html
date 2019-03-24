@@ -15,7 +15,7 @@
                 Team name is required.
             </mat-error>
             <mat-error *ngIf="appnameFormControl.hasError('pattern') && !appnameFormControl.hasError('required')">
-                Team name must contain 4-20 letters or numbers.
+                For Team name to be valid, it must contain 4-20 letters [A-Za-z] or numbers [0-9] only.
             </mat-error>
         </mat-form-field>
       </div>
@@ -24,7 +24,7 @@
         <mat-form-field class="full-width">
           <mat-icon class="prefix-icon-special">public</mat-icon>
           <span matPrefix>https://</span>
-          <input matInput placeholder="example.com" type="text" formControlName="hostUri" autocomplete="off" maxlength="200" required>
+          <input matInput placeholder="example.com" type="text" formControlName="hostUri" autocomplete="off" maxlength="200" required (input)="isPortEntered()" [(ngModel)]="currHost">
           <mat-icon class="help-authorize" [matTooltip]="ORIGIN_HELP" matTooltipPosition="above">help</mat-icon>
           <mat-error *ngIf="hostUriFormControl.hasError('required')">
               Hostname is required.
@@ -37,17 +37,28 @@
       <br>
       <div class="input-class">
         <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">memory</mat-icon>
+          <input matInput placeholder="port (optional)" type="text" formControlName="port" autocomplete="off" maxlength="5" [(ngModel)]="currPort" (input)="isPortForm($event.data)">
+          <mat-error *ngIf="portFormControl.hasError('pattern')">
+            Port Invalid. Must be 0 - 65535
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="input-class">
+        <mat-form-field class="full-width">
             <mat-chip-list #chipList [disabled]="!isHostUriValid()">
                 <mat-chip  *ngFor="let redirectUri of redirectUris" [selectable]="selectable"
                          (removed)="remove(redirectUri)">
                   {{redirectUri}}
                   <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
-                <input matInput type="text" placeholder="Redirect Uris..."
+                <input matInput type="text" placeholder="Redirect Uris... /example"
                        [matChipInputFor]="chipList"
                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="true"
                        (matChipInputTokenEnd)="add($event)"
-                       formControlName="redirectUris" maxlength="15">
+                       formControlName="redirectUris" maxlength="32">
             </mat-chip-list>
           <mat-icon class="prefix-icon">refresh</mat-icon>
         <!-- <input matInput placeholder="Example: /oauth2callback" type="text" formControlName="redirectUris" autocomplete="off" required>-->

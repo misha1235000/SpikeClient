@@ -16,16 +16,24 @@ export class OpenRegisterClientComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   registerClientFormGroup: FormGroup;
   errorMsg: string;
+  currHost: string;
+  currPort: string;
   isLogged: boolean;
   appName: string;
+  port: string;
   redirectUris = [];
   hostUri = '';
   password: string;
   passwordConfirm: string;
   isDone = true;
-  hostUriRegex =
-    /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?/m;
+
+  // tslint:disable-next-line
+  // |(?:(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$
+  // tslint:disable-next-line
+  hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
+
   redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
+  portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
 
   AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
                    'in your application that users are redirected to after they' +
@@ -48,6 +56,10 @@ export class OpenRegisterClientComponent implements OnInit {
 
   redirectUrisFormControl = new FormControl({ value: '', disabled: true });
 
+  portFormControl = new FormControl('', [
+    Validators.pattern(this.portRegex),
+  ]);
+
   /**
    * Inits the needed services.
    * @param openLoginService - The open login service.
@@ -68,7 +80,8 @@ export class OpenRegisterClientComponent implements OnInit {
     this.registerClientFormGroup = this.formBuilder.group({
       appname: this.appnameFormControl,
       hostUri: this.hostUriFormControl,
-      redirectUris: this.redirectUrisFormControl
+      redirectUris: this.redirectUrisFormControl,
+      port: this.portFormControl,
     });
   }
 
@@ -85,6 +98,7 @@ export class OpenRegisterClientComponent implements OnInit {
   register(event) {
     event.stopPropagation();
     this.appName = this.registerClientFormGroup.value.appname;
+    this.port = this.registerClientFormGroup.value.port;
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 
     this.authService.registerClient({'name': this.appName,
@@ -137,4 +151,34 @@ export class OpenRegisterClientComponent implements OnInit {
       return true;
     }
   }
+
+  isPortEntered() {
+    const currHostUri: string = this.registerClientFormGroup.value.hostUri;
+    const hostPort: RegExp = /:([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g;
+    const match = hostPort.exec(currHostUri);
+    if (match && match[1].length > 0) {
+      this.currPort = match[1];
+    } else {
+      this.currPort = '';
+    }
+  }
+
+  isPortForm() {
+    const currHostUri: string = this.registerClientFormGroup.value.hostUri;
+    const hostPort: RegExp = /:([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g;
+    const match = hostPort.exec(currHostUri);
+    if (this.portRegex.exec(this.currPort)) {
+      if (match && match[1].length > 0) {
+        this.currHost = this.currHost.replace(/([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g, this.currPort);
+      } else if (!match) {
+        this.currHost = `${currHostUri}:${this.currPort}`;
+      }
+    } else if (this.currPort === '') {
+      this.currHost = this.currHost.replace(/:([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g, '');
+    }
+    // if (currHostUri.match(/a/g)) {
+      // this.currHost = `${currHostUri}:${this.currPort}`;
+    // }
+  }
+
 }
