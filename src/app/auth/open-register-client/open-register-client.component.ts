@@ -56,7 +56,8 @@ export class OpenRegisterClientComponent implements OnInit {
 
   redirectUrisFormControl = new FormControl({ value: '', disabled: true });
 
-  portFormControl = new FormControl('', [
+  portFormControl = new FormControl({value: '', disabled: true},
+  [
     Validators.pattern(this.portRegex),
   ]);
 
@@ -83,6 +84,9 @@ export class OpenRegisterClientComponent implements OnInit {
       redirectUris: this.redirectUrisFormControl,
       port: this.portFormControl,
     });
+
+    this.redirectUrisFormControl.disable();
+    this.portFormControl.disable();
   }
 
   /**
@@ -145,9 +149,11 @@ export class OpenRegisterClientComponent implements OnInit {
   isHostUriValid() {
     if (!this.hostUriRegex.test(this.registerClientFormGroup.value.hostUri)) {
       this.redirectUrisFormControl.disable();
+      this.portFormControl.disable();
       return false;
     } else {
       this.redirectUrisFormControl.enable();
+      this.portFormControl.enable();
       return true;
     }
   }
