@@ -38,7 +38,7 @@
       <div class="input-class">
         <mat-form-field class="full-width">
           <mat-icon class="prefix-icon">memory</mat-icon>
-          <input matInput placeholder="port (optional)" type="text" formControlName="port" autocomplete="off" maxlength="5" [(ngModel)]="currPort" (input)="isPortForm($event.data)">
+          <input matInput placeholder="port (optional)" type="text" formControlName="port" autocomplete="off" maxlength="5" [(ngModel)]="currPort" (input)="isPortForm()">
           <mat-error *ngIf="portFormControl.hasError('pattern')">
             Port Invalid. Must be 0 - 65535
           </mat-error>
