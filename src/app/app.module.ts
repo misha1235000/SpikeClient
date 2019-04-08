@@ -21,6 +21,7 @@ import { OpenRegisterTeamComponent} from './auth/open-register-team/open-registe
 import { AuthService } from './auth/auth.service';
 import { ClientsService } from './clients/clients.service';
 import {enableProdMode} from '@angular/core';
+import { VerifyDeleteComponent } from './clients/verify-delete/verify-delete.component';
 
 enableProdMode();
 const appRoutes: Routes = [
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
     ClientsComponent,
     OpenRegisterClientComponent,
     OpenRegisterTeamComponent,
+    VerifyDeleteComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +76,7 @@ const appRoutes: Routes = [
       { enableTracing: false }
     )
   ],
-  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent],
+  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent, VerifyDeleteComponent],
   providers: [FormBuilder, AuthService, ClientsService],
   bootstrap: [AppComponent]
 })
