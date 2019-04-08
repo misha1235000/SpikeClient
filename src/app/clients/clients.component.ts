@@ -196,6 +196,9 @@ export class ClientsComponent implements OnInit {
         this.cancelChanges(client);
         client.hostUri = 'https://' + client.hostUriCopy;
         client.redirectUris = data.redirectUris;
+        this.snackBar.open('Client was updated successfuly', '', {
+          duration: 2000
+        });
       }
     });
   }
@@ -229,6 +232,9 @@ export class ClientsComponent implements OnInit {
       this.clients.forEach((currClient, index) => {
         if (currClient.clientId === client.clientId) {
           this.clients.splice(index, 1);
+          this.snackBar.open('Client was removed successfuly', '', {
+            duration: 2000
+          });
         }
       });
     });
