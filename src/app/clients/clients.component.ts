@@ -232,22 +232,32 @@ export class ClientsComponent implements OnInit {
    * @param client
    */
   removeClient(client): void {
-    const dialogRef = this.registerDialog.open(VerifyDeleteComponent, {
+    const dialogRef = this.verifyDeleteDialog.open(VerifyDeleteComponent, {
       width: '420px',
       height: '220px',
     });
 
+    let savedIndex: number;
+    let savedClient;
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clientsService.removeClient(client.clientId).subscribe((data) => {
-          this.snackBar.open('Client was removed successfuly', '', {
-            duration: 2000
+        this.clients.forEach((currClient, index) => {
+          if (currClient.clientId === client.clientId) {
+            this.clients.splice(index, 1);
+            savedIndex = index;
+            savedClient = currClient;
+          }
+        });
+        const timer = setTimeout(() => {
+          this.clientsService.removeClient(client.clientId).subscribe((data) => {
           });
-          this.clients.forEach((currClient, index) => {
-            if (currClient.clientId === client.clientId) {
-              this.clients.splice(index, 1);
-            }
-          });
+        }, 5000);
+        this.snackBar.open('Client was removed successfuly', 'Undo', {
+          duration: 5000
+        }).onAction().subscribe(() => {
+          this.clients.splice(savedIndex, 0, savedClient);
+          clearTimeout(timer);
         });
       }
     });
