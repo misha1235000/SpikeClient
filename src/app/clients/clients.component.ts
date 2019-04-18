@@ -95,6 +95,8 @@ export class ClientsComponent implements OnInit {
         } else {
           result.avatarName = result.name;
         }
+
+        result.newRedirectUris = [];
         this.clients.push(result);
       }
     });
@@ -143,7 +145,10 @@ export class ClientsComponent implements OnInit {
     const value = event.value;
 
     // Add the chip to the chips list.
-    if ((value || '').trim() && redirectUrisRegex.test(value)) {
+    if ((value || '').trim() &&
+        redirectUrisRegex.test(value) &&
+        client.redirectUris.indexOf(client.hostUri + value) === -1 &&
+        client.newRedirectUris.indexOf(client.hostUri + value) === -1) {
       client.isInputTriggered = false;
       client.newRedirectUris.push(client.hostUri + value.trim());
     }
@@ -225,6 +230,7 @@ export class ClientsComponent implements OnInit {
     client.newRedirectUris = [];
     client.isEditable = false;
     client.hostUriEditable = false;
+    client.isInputTriggered = false;
   }
 
   /**

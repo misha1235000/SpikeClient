@@ -130,7 +130,7 @@ export class OpenRegisterClientComponent implements OnInit {
     const value = event.value;
 
     // Add the chip to the chips list.
-    if ((value || '').trim() && this.redirectUrisRegex.test(value) && this.redirectUris.length < 10) {
+    if ((value || '').trim() && this.redirectUrisRegex.test(value) && this.redirectUris.length < 10 && this.redirectUris.indexOf(value) === -1) {
       this.redirectUris.push(value.trim());
     }
 

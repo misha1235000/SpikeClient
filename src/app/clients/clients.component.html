@@ -73,7 +73,7 @@
                             matInput type="text" (blur)="isCancel(client, Input)" placeholder="Redirect Uris..."
                            [matChipInputFor]="chipList"
                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                           [matChipInputAddOnBlur]="addOnBlur"
+                           [matChipInputAddOnBlur]="true"
                            (matChipInputTokenEnd)="add(client, $event)"
                            name="redirectUris" maxlength="15" autocomplete="off">
                 </mat-chip-list>
