@@ -15,9 +15,11 @@ import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms'
 export class OpenRegisterClientComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   registerClientFormGroup: FormGroup;
+  correctFile: boolean;
   errorMsg: string;
   currHost = '';
   currPort: string;
+  currFile: string;
   isLogged: boolean;
   appName: string;
   port: string;
@@ -26,17 +28,19 @@ export class OpenRegisterClientComponent implements OnInit {
   password: string;
   passwordConfirm: string;
   isDone = true;
+  fileError = '';
+  isMultipleHosts = false;
 
   // tslint:disable-next-line
   // |(?:(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$
   // tslint:disable-next-line
-  //hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
+  hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
   // tslint:disable-next-line
-  hostUriRegex = /^\w+(?:(?:((?:[a-z0-9-._~!$&'()*+,;=:]|%[0-9A-F]{2})*)@)?((?:[a-z0-9-._~!$&'()*+,;=]|%[0-9A-F]{2})*)(?::(\d*))?(\/(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?|(\/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._~!$&'()*+,;=:/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&'()*+,;=:/?@]|%[0-9A-F]{2})*))?$/;
+  //hostUriRegex = /^\w+(?:(?:((?:[a-z0-9-._:]|%[0-9A-F]{2})*))?((?:[a-z0-9-._]|%[0-9A-F]{2})*)(?::(\d*))?(\/(?:[a-z0-9-._]|%[0-9A-F]{2})*)?|(\/?(?:[a-z0-9-._:]|%[0-9A-F]{2})+(?:[a-z0-9-._:]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._:]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._:]|%[0-9A-F]{2})*))?$/;
 
   redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
-
+  knownLbs = ['Import From CSV', 'F5 LTM', 'Nginx', 'Apache2'];
   AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
                    'in your application that users are redirected to after they' +
                    'have authenticated with Google. The path will be appended with the' +
@@ -54,6 +58,10 @@ export class OpenRegisterClientComponent implements OnInit {
   hostUriFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(this.hostUriRegex),
+  ]);
+
+  fileFormControl = new FormControl('', [
+    Validators.required,
   ]);
 
   redirectUrisFormControl = new FormControl({ value: '', disabled: true });
@@ -83,12 +91,14 @@ export class OpenRegisterClientComponent implements OnInit {
     this.registerClientFormGroup = this.formBuilder.group({
       appname: this.appnameFormControl,
       hostUri: this.hostUriFormControl,
+      file: this.fileFormControl,
       redirectUris: this.redirectUrisFormControl,
       port: this.portFormControl,
     });
 
     this.redirectUrisFormControl.disable();
     this.portFormControl.disable();
+    this.fileFormControl.disable();
   }
 
   /**
@@ -189,4 +199,73 @@ export class OpenRegisterClientComponent implements OnInit {
     // }
   }
 
+  test(file) {
+    const INVALID_HOSTNAME = 'Invalid hostname.';
+    const INVALID_PORT = 'Invalid port (must be between 0-65550)';
+    const INVALID_SYNTAX = 'Invalid Syntax (must be tab of URL and tab of PORT)';
+    const INVALID_TYPE = 'Invalid Type (must be .csv file)';
+    let errorMessage = '';
+    let indexError = false;
+    let indexLine: number;
+
+    if (!file.files[0]) {
+      console.log('No file selected');
+    } else {
+      this.currFile = file.files[0].name;
+    }
+
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      if (this.currFile.substr(this.currFile.length - 4) !== '.csv') {
+        this.correctFile = false;
+        this.fileError = INVALID_TYPE;
+      } else {
+        if (fileReader.result && fileReader.result.toString()) {
+          let fixedHosts = fileReader.result.toString().replace(/,/g, ':');
+          fixedHosts = fixedHosts.substr(0, fixedHosts.length - 1);
+          const arrHosts = fixedHosts.split('\n');
+
+          if (arrHosts && arrHosts.length > 0) {
+            for (let currHost = 0; currHost < arrHosts.length; currHost++) {
+              if (arrHosts[currHost].match(/:/g) &&
+                  arrHosts[currHost].match(/:/g).length !== 1) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_SYNTAX;
+                break;
+              } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_HOSTNAME;
+              } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_PORT;
+                break;
+              }
+            }
+
+            if (!indexError) {
+              console.log(arrHosts);
+              this.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
+              this.correctFile = true;
+            } else {
+              this.correctFile = false;
+              this.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
+            }
+          } else {
+            this.correctFile = false;
+            this.fileError = INVALID_SYNTAX;
+          }
+        } else {
+          this.correctFile = false;
+          this.fileError = 'Empty File';
+        }
+      }
+    };
+
+    if (file.files[0]) {
+        fileReader.readAsText(file.files[0]);
+    }
+  }
 }

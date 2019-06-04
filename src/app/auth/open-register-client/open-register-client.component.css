@@ -64,7 +64,7 @@ mat-card-subtitle {
     background-color: black;
     position:absolute;
     right: 5px;
-    bottom: -35px;
+    bottom: -45px;
 }
 
 .logout-button {
@@ -94,4 +94,10 @@ mat-card-subtitle {
     font-size: 11px;
     color: #ef5350;
     font-weight: bold;
+}
+
+.example-margin {
+    direction: rtl;
+    position:relative;
+    left:18px;
 }

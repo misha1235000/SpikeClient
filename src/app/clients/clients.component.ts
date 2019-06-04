@@ -23,6 +23,7 @@ const redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
 })
 export class ClientsComponent implements OnInit {
   isEditable = false;
+  isJohnny = false;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isLogged = false;
   isInputTriggered = false;
