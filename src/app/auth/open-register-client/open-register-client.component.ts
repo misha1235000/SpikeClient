@@ -15,10 +15,12 @@ import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms'
 export class OpenRegisterClientComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   registerClientFormGroup: FormGroup;
+  hostUris = [];
   correctFile: boolean;
   errorMsg: string;
   currHost = '';
   currPort: string;
+  currLb = -1;
   currFile: string;
   isLogged: boolean;
   appName: string;
@@ -40,7 +42,10 @@ export class OpenRegisterClientComponent implements OnInit {
 
   redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
-  knownLbs = ['Import From CSV', 'F5 LTM', 'Nginx', 'Apache2'];
+  knownLbs = [ { id: 0, value: 'Import From CSV' },
+               { id: 1, value: 'F5 LTM' },
+               { id: 2, value: 'Nginx'},
+               { id: 3, value: 'Apache2' } ];
   AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
                    'in your application that users are redirected to after they' +
                    'have authenticated with Google. The path will be appended with the' +
@@ -132,7 +137,13 @@ export class OpenRegisterClientComponent implements OnInit {
   }
 
   isDetailsValid() {
-    return this.registerClientFormGroup.status !== 'INVALID' && this.redirectUris.length > 0;
+    return (this.registerClientFormGroup.status !== 'INVALID' &&
+            this.redirectUris.length > 0 && !this.isMultipleHosts) ||
+           (this.appnameFormControl.valid &&
+            this.correctFile &&
+            this.redirectUrisFormControl.valid &&
+            this.isMultipleHosts &&
+            this.redirectUris.length > 0);
   }
 
   add(event: MatChipInputEvent): void {
@@ -159,14 +170,30 @@ export class OpenRegisterClientComponent implements OnInit {
   }
 
   isHostUriValid() {
-    if (!this.hostUriRegex.test(this.registerClientFormGroup.value.hostUri)) {
-      this.redirectUrisFormControl.disable();
-      this.portFormControl.disable();
-      return false;
-    } else {
-      this.redirectUrisFormControl.enable();
-      this.portFormControl.enable();
-      return true;
+    if (!this.isMultipleHosts) {
+      if (!this.hostUriRegex.test(this.registerClientFormGroup.value.hostUri)) {
+        this.redirectUrisFormControl.disable();
+        this.portFormControl.disable();
+        return false;
+      } else {
+        this.redirectUrisFormControl.enable();
+        this.portFormControl.enable();
+        return true;
+      }
+    }
+  }
+
+  isFileValid() {
+    if (this.isMultipleHosts) {
+      if (!this.correctFile) {
+        this.redirectUrisFormControl.disable();
+        this.portFormControl.disable();
+        return false;
+      } else if (this.correctFile) {
+        this.redirectUrisFormControl.enable();
+        this.portFormControl.enable();
+        return true;
+      }
     }
   }
 
@@ -237,6 +264,7 @@ export class OpenRegisterClientComponent implements OnInit {
                 indexError = true;
                 indexLine = currHost;
                 errorMessage = INVALID_HOSTNAME;
+                break;
               } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
                 indexError = true;
                 indexLine = currHost;
@@ -246,18 +274,22 @@ export class OpenRegisterClientComponent implements OnInit {
             }
 
             if (!indexError) {
+              this.hostUris = arrHosts;
               console.log(arrHosts);
               this.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
               this.correctFile = true;
             } else {
+              this.hostUris = [];
               this.correctFile = false;
               this.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
             }
           } else {
+            this.hostUris = [];
             this.correctFile = false;
             this.fileError = INVALID_SYNTAX;
           }
         } else {
+          this.hostUris = [];
           this.correctFile = false;
           this.fileError = 'Empty File';
         }

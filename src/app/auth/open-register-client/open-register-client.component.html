@@ -60,9 +60,9 @@
         <mat-form-field class="full-width">
           <mat-icon class="prefix-icon">device_hub</mat-icon>
           <mat-label>CSV Or Load Balancer</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let knownLb of knownLbs" [value]="knownLb">
-              {{knownLb}}
+          <mat-select [(value)]="currLb">
+            <mat-option *ngFor="let knownLb of knownLbs" [value]="knownLb.id">
+              {{knownLb.value}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -76,14 +76,15 @@
           <span *ngIf="correctFile === true" matSuffix><mat-icon style="color: #66BB6A; position: relative; top: 6px; font-size: 28px;" [matTooltip]="fileError" >done</mat-icon></span>
         </mat-form-field>
           <input type="file" accept=".csv" #fileInput style="display:none" (change)="test(fileInput)">
-          <button mat-icon-button color="primary" (click)="fileInput.click()">
+          <button mat-icon-button color="primary" (click)="fileInput.click()" [disabled]="currLb !== 0">
             <mat-icon>attach_file</mat-icon>
           </button>
       </div>
       <br>
       <div class="input-class">
         <mat-form-field class="full-width">
-            <mat-chip-list #chipList [disabled]="!isHostUriValid()">
+            <mat-chip-list #chipList [disabled]="(!isHostUriValid() && !isMultipleHosts) || 
+                                                 (!isFileValid() && isMultipleHosts)">
                 <mat-chip  *ngFor="let redirectUri of redirectUris" [selectable]="selectable"
                          (removed)="remove(redirectUri)">
                   {{redirectUri}}
