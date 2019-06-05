@@ -231,6 +231,7 @@ export class OpenRegisterClientComponent implements OnInit {
     const INVALID_PORT = 'Invalid port (must be between 0-65550)';
     const INVALID_SYNTAX = 'Invalid Syntax (must be tab of URL and tab of PORT)';
     const INVALID_TYPE = 'Invalid Type (must be .csv file)';
+    const DUPLICATE_HOSTS = 'Duplicate hosts with same ports are not allowed.';
     let errorMessage = '';
     let indexError = false;
     let indexLine: number;
@@ -253,35 +254,41 @@ export class OpenRegisterClientComponent implements OnInit {
           const arrHosts = fixedHosts.split('\n');
 
           if (arrHosts && arrHosts.length > 0) {
-            for (let currHost = 0; currHost < arrHosts.length; currHost++) {
-              if (arrHosts[currHost].match(/:/g) &&
-                  arrHosts[currHost].match(/:/g).length !== 1) {
-                indexError = true;
-                indexLine = currHost;
-                errorMessage = INVALID_SYNTAX;
-                break;
-              } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
-                indexError = true;
-                indexLine = currHost;
-                errorMessage = INVALID_HOSTNAME;
-                break;
-              } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
-                indexError = true;
-                indexLine = currHost;
-                errorMessage = INVALID_PORT;
-                break;
-              }
-            }
-
-            if (!indexError) {
-              this.hostUris = arrHosts;
-              console.log(arrHosts);
-              this.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
-              this.correctFile = true;
-            } else {
-              this.hostUris = [];
+            if (checkIfDuplicateExists(arrHosts)) {
               this.correctFile = false;
-              this.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
+              this.hostUris = [];
+              this.fileError = DUPLICATE_HOSTS;
+            } else {
+              for (let currHost = 0; currHost < arrHosts.length; currHost++) {
+                if (arrHosts[currHost].match(/:/g) &&
+                    arrHosts[currHost].match(/:/g).length !== 1) {
+                  indexError = true;
+                  indexLine = currHost;
+                  errorMessage = INVALID_SYNTAX;
+                  break;
+                } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
+                  indexError = true;
+                  indexLine = currHost;
+                  errorMessage = INVALID_HOSTNAME;
+                  break;
+                } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
+                  indexError = true;
+                  indexLine = currHost;
+                  errorMessage = INVALID_PORT;
+                  break;
+                }
+              }
+
+              if (!indexError) {
+                this.hostUris = arrHosts;
+                console.log(arrHosts);
+                this.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
+                this.correctFile = true;
+              } else {
+                this.hostUris = [];
+                this.correctFile = false;
+                this.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
+              }
             }
           } else {
             this.hostUris = [];
@@ -300,4 +307,8 @@ export class OpenRegisterClientComponent implements OnInit {
         fileReader.readAsText(file.files[0]);
     }
   }
+}
+
+function checkIfDuplicateExists(array) {
+  return new Set(array).size !== array.length;
 }
