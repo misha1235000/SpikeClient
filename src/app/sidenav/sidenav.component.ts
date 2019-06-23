@@ -14,7 +14,7 @@ export class SidenavComponent implements OnInit, OnChanges {
   @Input() sidenavToggle;
   sidenav;
   isLogged = false;
-  team = '';
+  team = '' as any;
   title = 'app';
   options: FormGroup;
 
@@ -44,6 +44,7 @@ export class SidenavComponent implements OnInit, OnChanges {
   getTeamName() {
     this.authService.getTeamName().subscribe((data) => {
       this.team = data.team;
+      this.team.teamname = this.team.teamname[0].toUpperCase() + this.team.teamname.substr(1);
     }, (error) => {
       console.log(error);
     });
@@ -55,7 +56,6 @@ export class SidenavComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.isLogged = PublicFunctions.checkLogin();
-
     if (this.isLogged) {
       this.getTeamName();
     }

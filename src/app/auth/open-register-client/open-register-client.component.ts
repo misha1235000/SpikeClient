@@ -15,9 +15,13 @@ import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms'
 export class OpenRegisterClientComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   registerClientFormGroup: FormGroup;
+  hostUris = [];
+  correctFile: boolean;
   errorMsg: string;
   currHost = '';
   currPort: string;
+  currLb = -1;
+  currFile: string;
   isLogged: boolean;
   appName: string;
   port: string;
@@ -26,25 +30,30 @@ export class OpenRegisterClientComponent implements OnInit {
   password: string;
   passwordConfirm: string;
   isDone = true;
+  fileError = '';
+  isMultipleHosts = false;
 
   // tslint:disable-next-line
   // |(?:(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}-\x{ffff}0-9]+-?)*[a-z\x{00a1}-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$
   // tslint:disable-next-line
-  //hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
+  hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
   // tslint:disable-next-line
-  hostUriRegex = /^\w+(?:(?:((?:[a-z0-9-._~!$&'()*+,;=:]|%[0-9A-F]{2})*)@)?((?:[a-z0-9-._~!$&'()*+,;=]|%[0-9A-F]{2})*)(?::(\d*))?(\/(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?|(\/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._~!$&'()*+,;=:/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&'()*+,;=:/?@]|%[0-9A-F]{2})*))?$/;
+  //hostUriRegex = /^\w+(?:(?:((?:[a-z0-9-._:]|%[0-9A-F]{2})*))?((?:[a-z0-9-._]|%[0-9A-F]{2})*)(?::(\d*))?(\/(?:[a-z0-9-._]|%[0-9A-F]{2})*)?|(\/?(?:[a-z0-9-._:]|%[0-9A-F]{2})+(?:[a-z0-9-._:]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._:]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._:]|%[0-9A-F]{2})*))?$/;
 
   redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
-
-  AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
-                   'in your application that users are redirected to after they' +
-                   'have authenticated with Google. The path will be appended with the' +
-                   'authorization code for access. Must have a protocol.' +
-                   'Cannot contain URL fragments or relative paths. Cannot be a public IP address.';
-  ORIGIN_HELP = 'For use with requests from a browser. This is the origin URI of the client' +
-                'application. It can\'t contain a wildcard (https://*.example.com) or a path' +
-                '(https://example.com/subdir). If you\'re using a nonstandard port, you must include it in the origin URI.';
+  knownLbs = [ { id: 0, value: 'Import From CSV (Beta)' },
+               /*{ id: 1, value: 'F5 LTM' },
+               { id: 2, value: 'Nginx'},
+{ id: 3, value: 'Apache2' }*/ ];
+  AUTHORIZE_HELP = `For use with requests from a web server. This is the path
+                   'in your application that users are redirected to after they
+                   'have authenticated with Google. The path will be appended with the
+                   'authorization code for access. Must have a protocol.
+                   'Cannot contain URL fragments or relative paths. Cannot be a public IP address.`;
+  ORIGIN_HELP = `For use with requests from a browser. This is the origin URI of the client
+                'application. It can\'t contain a wildcard (https://*.example.com) or a path
+                '(https://example.com/subdir). If you\'re using a nonstandard port, you must include it in the origin URI.`;
 
   appnameFormControl = new FormControl('', [
     Validators.required,
@@ -54,6 +63,10 @@ export class OpenRegisterClientComponent implements OnInit {
   hostUriFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(this.hostUriRegex),
+  ]);
+
+  fileFormControl = new FormControl('', [
+    Validators.required,
   ]);
 
   redirectUrisFormControl = new FormControl({ value: '', disabled: true });
@@ -83,12 +96,14 @@ export class OpenRegisterClientComponent implements OnInit {
     this.registerClientFormGroup = this.formBuilder.group({
       appname: this.appnameFormControl,
       hostUri: this.hostUriFormControl,
+      file: this.fileFormControl,
       redirectUris: this.redirectUrisFormControl,
       port: this.portFormControl,
     });
 
     this.redirectUrisFormControl.disable();
     this.portFormControl.disable();
+    this.fileFormControl.disable();
   }
 
   /**
@@ -107,9 +122,14 @@ export class OpenRegisterClientComponent implements OnInit {
     this.port = this.registerClientFormGroup.value.port;
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 
+    if (!this.isMultipleHosts) {
+      this.hostUris = [];
+      this.hostUris.push(this.hostUri);
+    }
+
     this.authService.registerClient({'name': this.appName,
-                                     'redirectUris': this.redirectUris.map(value => 'https://' + this.hostUri + value),
-                                     'hostUri': 'https://' + this.hostUri}).subscribe((data) => {
+                                     'redirectUris': this.redirectUris,
+                                     'hostUris': this.hostUris.map(hostUri => 'https://' + hostUri.trim())}).subscribe((data) => {
       if (data) {
         this.errorMsg = undefined;
         this.dialogRef.close(data);
@@ -122,7 +142,13 @@ export class OpenRegisterClientComponent implements OnInit {
   }
 
   isDetailsValid() {
-    return this.registerClientFormGroup.status !== 'INVALID' && this.redirectUris.length > 0;
+    return (this.registerClientFormGroup.status !== 'INVALID' &&
+            this.redirectUris.length > 0 && !this.isMultipleHosts) ||
+           (this.appnameFormControl.valid &&
+            this.correctFile &&
+            this.redirectUrisFormControl.valid &&
+            this.isMultipleHosts &&
+            this.redirectUris.length > 0);
   }
 
   add(event: MatChipInputEvent): void {
@@ -149,14 +175,30 @@ export class OpenRegisterClientComponent implements OnInit {
   }
 
   isHostUriValid() {
-    if (!this.hostUriRegex.test(this.registerClientFormGroup.value.hostUri)) {
-      this.redirectUrisFormControl.disable();
-      this.portFormControl.disable();
-      return false;
-    } else {
-      this.redirectUrisFormControl.enable();
-      this.portFormControl.enable();
-      return true;
+    if (!this.isMultipleHosts) {
+      if (!this.hostUriRegex.test(this.registerClientFormGroup.value.hostUri)) {
+        this.redirectUrisFormControl.disable();
+        this.portFormControl.disable();
+        return false;
+      } else {
+        this.redirectUrisFormControl.enable();
+        this.portFormControl.enable();
+        return true;
+      }
+    }
+  }
+
+  isFileValid() {
+    if (this.isMultipleHosts) {
+      if (!this.correctFile) {
+        this.redirectUrisFormControl.disable();
+        this.portFormControl.disable();
+        return false;
+      } else if (this.correctFile) {
+        this.redirectUrisFormControl.enable();
+        this.portFormControl.enable();
+        return true;
+      }
     }
   }
 
@@ -189,4 +231,89 @@ export class OpenRegisterClientComponent implements OnInit {
     // }
   }
 
+  test(file) {
+    const INVALID_HOSTNAME = 'Invalid hostname.';
+    const INVALID_PORT = 'Invalid port (must be between 0-65550)';
+    const INVALID_SYNTAX = 'Invalid Syntax (must be tab of URL and tab of PORT)';
+    const INVALID_TYPE = 'Invalid Type (must be .csv file)';
+    const DUPLICATE_HOSTS = 'Duplicate hosts with same ports are not allowed.';
+    let errorMessage = '';
+    let indexError = false;
+    let indexLine: number;
+
+    if (!file.files[0]) {
+      console.log('No file selected');
+    } else {
+      this.currFile = file.files[0].name;
+    }
+
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      if (this.currFile.substr(this.currFile.length - 4) !== '.csv') {
+        this.correctFile = false;
+        this.fileError = INVALID_TYPE;
+      } else {
+        if (fileReader.result && fileReader.result.toString()) {
+          let fixedHosts = fileReader.result.toString().replace(/,/g, ':');
+          fixedHosts = fixedHosts.substr(0, fixedHosts.length - 1);
+          const arrHosts = fixedHosts.split('\n');
+
+          if (arrHosts && arrHosts.length > 0) {
+            if (checkIfDuplicateExists(arrHosts)) {
+              this.correctFile = false;
+              this.hostUris = [];
+              this.fileError = DUPLICATE_HOSTS;
+            } else {
+              for (let currHost = 0; currHost < arrHosts.length; currHost++) {
+                if (arrHosts[currHost].match(/:/g) &&
+                    arrHosts[currHost].match(/:/g).length !== 1) {
+                  indexError = true;
+                  indexLine = currHost;
+                  errorMessage = INVALID_SYNTAX;
+                  break;
+                } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
+                  indexError = true;
+                  indexLine = currHost;
+                  errorMessage = INVALID_HOSTNAME;
+                  break;
+                } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
+                  indexError = true;
+                  indexLine = currHost;
+                  errorMessage = INVALID_PORT;
+                  break;
+                }
+              }
+
+              if (!indexError) {
+                this.hostUris = arrHosts;
+                console.log(arrHosts);
+                this.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
+                this.correctFile = true;
+              } else {
+                this.hostUris = [];
+                this.correctFile = false;
+                this.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
+              }
+            }
+          } else {
+            this.hostUris = [];
+            this.correctFile = false;
+            this.fileError = INVALID_SYNTAX;
+          }
+        } else {
+          this.hostUris = [];
+          this.correctFile = false;
+          this.fileError = 'Empty File';
+        }
+      }
+    };
+
+    if (file.files[0]) {
+        fileReader.readAsText(file.files[0]);
+    }
+  }
+}
+
+function checkIfDuplicateExists(array) {
+  return new Set(array).size !== array.length;
 }

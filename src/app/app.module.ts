@@ -6,9 +6,12 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatRippleModule } from '@angular/material/core';
 import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatDividerModule, MatIconModule,
         MatSnackBarModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule, MatSidenavModule, MatCheckboxModule,
-        MatListModule, MatExpansionModule, MatChipsModule, MatProgressBarModule} from '@angular/material';
+        MatListModule, MatExpansionModule, MatChipsModule, MatProgressBarModule, MatSlideToggleModule, MatSelectModule, MatTableModule, MatPaginatorModule,
+        MatSortModule } from '@angular/material';
+import {MatBadgeModule} from '@angular/material/badge';
 import { AvatarModule } from 'ng2-avatar';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -22,6 +25,7 @@ import { AuthService } from './auth/auth.service';
 import { ClientsService } from './clients/clients.service';
 import {enableProdMode} from '@angular/core';
 import { VerifyDeleteComponent } from './clients/verify-delete/verify-delete.component';
+import { ClientHostUrisComponent } from './clients/client-host-uris/client-host-uris.component';
 
 enableProdMode();
 const appRoutes: Routes = [
@@ -46,6 +50,7 @@ const appRoutes: Routes = [
     OpenRegisterClientComponent,
     OpenRegisterTeamComponent,
     VerifyDeleteComponent,
+    ClientHostUrisComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,13 +75,20 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     MatListModule,
     MatExpansionModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatBadgeModule,
+    MatRippleModule,
+    MatTableModule,
+    MatPaginatorModule,
+    // MatSortModule,
     AvatarModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }
     )
   ],
-  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent, VerifyDeleteComponent],
+  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent, VerifyDeleteComponent, ClientHostUrisComponent],
   providers: [FormBuilder, AuthService, ClientsService],
   bootstrap: [AppComponent]
 })

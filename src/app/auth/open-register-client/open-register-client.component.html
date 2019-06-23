@@ -6,7 +6,7 @@
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="mat-card-content">
-    <form [formGroup]="registerClientFormGroup" #ngForm autocomplete="off">
+    <form [formGroup]="registerClientFormGroup" #ngForm autocomplete="off" style="position:relative; bottom:20px;">
     <div class="input-class">
         <mat-form-field class="full-width">
             <input matInput placeholder="Enter Application Name" formControlName="appname" autocomplete="off" maxlength="20" required>
@@ -19,8 +19,20 @@
             </mat-error>
         </mat-form-field>
       </div>
-      <br>
-      <div class="input-class">
+      <br><br>
+      <section class="example-section">
+        <mat-slide-toggle
+            class="example-margin"
+            color="primary"
+            [checked]="isMultipleHosts"
+            disabled="false"
+            (change)="isMultipleHosts = !isMultipleHosts">
+            &nbsp; &nbsp; Multiple Hosts | Load Balancer
+            <mat-icon class="prefix-icon">settings</mat-icon>
+        </mat-slide-toggle>
+      </section>
+      <br><br>
+      <div class="input-class" *ngIf="!isMultipleHosts">
         <mat-form-field class="full-width">
           <mat-icon class="prefix-icon-special">public</mat-icon>
           <span matPrefix>https://</span>
@@ -34,8 +46,8 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <br>
-      <div class="input-class">
+       <br *ngIf="!isMultipleHosts">
+      <div class="input-class" *ngIf="!isMultipleHosts">
         <mat-form-field class="full-width">
           <mat-icon class="prefix-icon">memory</mat-icon>
           <input matInput placeholder="port (optional)" type="text" formControlName="port" autocomplete="off" maxlength="5" [(ngModel)]="currPort" (input)="isPortForm()">
@@ -44,10 +56,35 @@
           </mat-error>
         </mat-form-field>
       </div>
+      <div class="input-class" *ngIf="isMultipleHosts">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">device_hub</mat-icon>
+          <mat-label>CSV Or Load Balancer</mat-label>
+          <mat-select [(value)]="currLb">
+            <mat-option *ngFor="let knownLb of knownLbs" [value]="knownLb.id">
+              {{knownLb.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <br *ngIf="isMultipleHosts">
+      <div class="input-class" *ngIf="isMultipleHosts" style="position:relative; left:20px;">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">folder</mat-icon>
+          <input matInput placeholder="Select Your File" type="text" autocomplete="off" formControlName="file" [(ngModel)]="currFile">
+          <span *ngIf="correctFile === false" matSuffix><mat-icon style="color:#EF5350; position: relative; top: 6px; font-size: 28px;" [matTooltip]="fileError">close</mat-icon></span>
+          <span *ngIf="correctFile === true" matSuffix><mat-icon style="color: #66BB6A; position: relative; top: 6px; font-size: 28px;" [matTooltip]="fileError">done</mat-icon></span>
+        </mat-form-field>
+          <input type="file" accept=".csv" #fileInput style="display:none" (change)="test(fileInput)">
+          <button mat-icon-button color="primary" (click)="fileInput.click()" [disabled]="currLb !== 0">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+      </div>
       <br>
       <div class="input-class">
         <mat-form-field class="full-width">
-            <mat-chip-list #chipList [disabled]="!isHostUriValid()">
+            <mat-chip-list #chipList [disabled]="(!isHostUriValid() && !isMultipleHosts) || 
+                                                 (!isFileValid() && isMultipleHosts)">
                 <mat-chip  *ngFor="let redirectUri of redirectUris" [selectable]="selectable"
                          (removed)="remove(redirectUri)">
                   {{redirectUri}}

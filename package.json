@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npx tsc && npx ng build --prod && node scripts/copy_files.js && node ./dist/src/server.js",
-    "generate-certs": "node scripts/generate_certs.js", 
+    "generate-certs": "node scripts/generate_certs.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
