@@ -16,14 +16,16 @@
             <span class="client-name"> {{ client.name }}</span>
           </mat-panel-title>
           <mat-panel-description class="panel-desc">
-              <span *ngIf="!client.isEditable || !client.hostUriEditable && !client.hostUriCopy" class="span-desc"> {{ client.hostUri }} </span>
-              <span *ngIf="client.hostUriCopy && client.isEditable && !client.hostUriEditable" class="span-desc"> https://{{ client.hostUriCopy }}</span> 
+            <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" class="upload-btn" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="editHostUri($event, client);"><mat-icon>attach_file</mat-icon></button>
+              <span *ngIf="client.hostUris && client.hostUris.length > 1 && !client.isEditable || !client.hostUriEditable && !client.hostUrisCopy && client.hostUris.length > 1" class="span-desc" (click)="expandUris($event, client);"> {{ client.hostUris[0] }}... </span>
+              <span *ngIf="client.hostUris && client.hostUris.length === 1 && !client.isEditable || !client.hostUriEditable && !client.hostUrisCopy && client.hostUris.length === 1" class="span-desc" (click)="expandUris($event, client);"> {{ client.hostUris[0] }} </span>
+              <span *ngIf="client.hostUrisCopy && client.isEditable && !client.hostUriEditable" class="span-desc" (click)="expandUris($event, client);"> https://{{ client.hostUrisCopy[0] }}</span> 
+              <button mat-icon-button color="primary" class="expand-btn" matTooltip="View All Host Uris" matTooltipPosition="above" (click)="expandUris($event, client);"><mat-icon>more_horiz</mat-icon></button>
               <mat-form-field *ngIf="client.isEditable && client.hostUriEditable" class="mat-form-uri" (click)="$event.stopPropagation();">
                 <span matPrefix class="btn-bold">https://</span>
-                <input matInput [(ngModel)]="client.hostUriCopy"/>
+                <input matInput [(ngModel)]="client.hostUrisCopy"/>
               </mat-form-field>
-              <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" class="edit-btn" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="editHostUri($event, client);"><mat-icon>edit</mat-icon></button>
-              <button [disabled]="client.hostUriCopy.length <= 0" *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" class="edit-btn" matTooltip="Save HostUri" matTooltipPosition="above" (click)="saveHostUri($event, client);"><mat-icon>check</mat-icon></button>
+              <button [disabled]="client.hostUrisCopy.length <= 0" *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" class="edit-btn" matTooltip="Save HostUri" matTooltipPosition="above" (click)="saveHostUri($event, client);"><mat-icon>check</mat-icon></button>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="client-main-div">
@@ -56,11 +58,11 @@
           <div class="div-inner">
             <mat-chip-list class="chip-list">
               <ng-container *ngIf="!client.isEditable">
-                <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }}
+                <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri }}
                 </mat-chip>
               </ng-container>
               <ng-container *ngIf="client.copyRedirectUris && client.isEditable">
-                <mat-chip selected *ngFor="let redirectUri of client.copyRedirectUris" (removed)="removeCopy(client, redirectUri)"> {{ redirectUri.substr(8).substr(redirectUri.substr(8).indexOf('/')) }} 
+                <mat-chip selected *ngFor="let redirectUri of client.copyRedirectUris" (removed)="removeCopy(client, redirectUri)"> {{ redirectUri }} 
                   <mat-icon matChipRemove *ngIf="client.copyRedirectUris.length > 1">cancel</mat-icon>
                 </mat-chip>
               </ng-container>
@@ -69,7 +71,7 @@
                   <mat-chip-list #chipList>
                     <mat-chip  *ngFor="let newRedirectUri of client.newRedirectUris" [selectable]="selectable"
                              (removed)="remove(client, newRedirectUri)">
-                      {{ newRedirectUri.substr(8).substr(newRedirectUri.substr(8).indexOf('/')) }}
+                      {{ newRedirectUri }}
                       <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
                     <input #Input *ngIf="client.isInputTriggered && client.isEditable" class="myinput"

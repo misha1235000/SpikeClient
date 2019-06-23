@@ -1,0 +1,60 @@
+mat-toolbar {
+    background-color: black !important;
+    color: white;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+mat-card-subtitle {
+    text-align:center;
+}
+
+.mat-card-content {
+    text-align:center;
+    position: relative;
+    top: 35px;
+    margin: 0px 15px 0px 15px
+}
+
+.btn-delete {
+    position: absolute;
+    right: 0px;
+}
+
+button {
+    font-weight: bold;
+}
+
+.desc {
+    font-size: 17px;
+    font-family: arial;
+}
+
+.table {
+    margin: 0 20px 0 20px;
+    max-height:450px;
+    overflow-y:auto;
+}
+
+.table::-webkit-scrollbar-track
+{
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+    border-radius: 5px;
+}
+
+.table::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+    border-radius: 5px;
+}
+
+.table::-webkit-scrollbar-thumb
+{
+    background-color: #000000;
+    border-radius: 5px;
+}

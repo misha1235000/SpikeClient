@@ -6,6 +6,7 @@ import { PublicFunctions } from '../shared/shared';
 import { ClientsService } from './clients.service';
 import { OpenRegisterClientComponent } from '../auth/open-register-client/open-register-client.component';
 import { VerifyDeleteComponent } from './verify-delete/verify-delete.component';
+import { ClientHostUrisComponent } from './client-host-uris/client-host-uris.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 const COLORS = ['#EF5350', '#C62828', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0',
@@ -38,6 +39,7 @@ export class ClientsComponent implements OnInit {
   constructor(private snackBar: MatSnackBar,
               private registerDialog: MatDialog,
               private verifyDeleteDialog: MatDialog,
+              private clientHostUrisDialog: MatDialog,
               private clientsService: ClientsService) {}
 
   /**
@@ -130,6 +132,7 @@ export class ClientsComponent implements OnInit {
     }
   }
 
+  // Checks if the cancel button was pressed.
   isCancel(client, uri) {
     if (uri.value && uri.value.length === 0) {
       client.isInputTriggered = false;
@@ -188,23 +191,28 @@ export class ClientsComponent implements OnInit {
   saveChanges(client) {
     client.redirectUris = client.copyRedirectUris.slice();
 
+    // If there are new redirect Uris, add them to the redirect Uris array.
     if (client.newRedirectUris) {
       client.newRedirectUris.forEach(newRedirectUri => {
         client.redirectUris.push(newRedirectUri);
       });
     }
 
+    /*
+    // If the hostUri was changed, change the redirect Uris according to it.
     if (client.hostUriCopy) {
       client.redirectUris.forEach((redirectUri, index) => {
         const pathNoPrefix = redirectUri.split('https://')[1];
         client.redirectUris[index] = 'https://' + client.hostUriCopy + pathNoPrefix.substr(pathNoPrefix.indexOf('/'));
       });
-    }
+    }*/
 
-    this.clientsService.updateClient(client.clientId, {redirectUris: client.redirectUris, hostUri: 'https://' + client.hostUriCopy}).subscribe((data) => {
+    this.clientsService.updateClient(client.clientId,
+                                     { redirectUris: client.redirectUris,
+                                     hostUris: client.hostUrisCopy.map(hostUri => `https://${hostUri}`) }).subscribe((data) => {
       if (data) {
         this.cancelChanges(client);
-        client.hostUri = 'https://' + client.hostUriCopy;
+        client.hostUris = client.hostUrisCopy.map(hostUri => `https://${hostUri}`);
         client.redirectUris = data.redirectUris;
         this.snackBar.open('Client was updated successfuly', '', {
           duration: 2000
@@ -220,7 +228,7 @@ export class ClientsComponent implements OnInit {
   setEditable(client): void {
     client.isEditable = true;
     client.copyRedirectUris = client.redirectUris.slice();
-    client.hostUriCopy = client.hostUri.substr(8);
+    client.hostUrisCopy = client.hostUris.map(hostUri => hostUri.substr(8));
   }
 
   /**
@@ -241,7 +249,7 @@ export class ClientsComponent implements OnInit {
   removeClient(client): void {
     const dialogRef = this.verifyDeleteDialog.open(VerifyDeleteComponent, {
       width: '420px',
-      height: '220px',
+      height: '220px'
     });
 
     let savedIndex: number;
@@ -271,13 +279,35 @@ export class ClientsComponent implements OnInit {
   }
 
   /**
+   * Opens up the hosts uri management for a specific client.
+   * @param client
+   */
+  expandUris(event, client): void {
+    event.stopPropagation();
+    const dialogRef = this.clientHostUrisDialog.open(ClientHostUrisComponent, {
+      width: '620px',
+      height: '700px',
+      data: {
+        client
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+  }
+
+  /**
    * A check if client has changed.
    * @param client
    */
   isClientChanged(client): boolean {
     if (client.redirectUris.toString() === client.copyRedirectUris.toString() &&
         client.newRedirectUris && client.newRedirectUris.length === 0         &&
-        client.hostUriCopy && client.hostUri.substr(8) === client.hostUriCopy) {
+        client.hostUrisCopy &&
+        client.hostUris.map(hostUri => hostUri.substr(8)).sort().toString() ===
+        client.hostUrisCopy.sort().toString()) {
       return false;
     } else {
       return true;
@@ -294,6 +324,11 @@ export class ClientsComponent implements OnInit {
     client.hostUriEditable = true;
   }
 
+  /**
+   * Stop HostUri from being editable.
+   * @param event
+   * @param client
+   */
   saveHostUri(event, client): void {
     event.stopPropagation();
     client.hostUriEditable = false;

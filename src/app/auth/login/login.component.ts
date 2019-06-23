@@ -2,6 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { PublicFunctions } from '../../shared/shared';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
    * @param _formBuilder - The form builder.
    */
   constructor(private authService: AuthService, private snackBar: MatSnackBar, private formBuilder: FormBuilder,
-              private registerDialog: MatDialog) { }
+              private registerDialog: MatDialog, private router: Router) { }
 
   teamnameFormControl = new FormControl('', [
     Validators.required,
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
 
         document.cookie = `token=${data.token};expires=${expires};path=/`; // The cookie of the token.
         window.location.href = '/clients';
+        // this.router.navigateByUrl('/clients'); // - Will be used in Spike 1.0 version.
       } else {
         this.errorMsg = data.message;
       }

@@ -42,18 +42,18 @@ export class OpenRegisterClientComponent implements OnInit {
 
   redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
-  knownLbs = [ { id: 0, value: 'Import From CSV' },
-               { id: 1, value: 'F5 LTM' },
+  knownLbs = [ { id: 0, value: 'Import From CSV (Beta)' },
+               /*{ id: 1, value: 'F5 LTM' },
                { id: 2, value: 'Nginx'},
-               { id: 3, value: 'Apache2' } ];
-  AUTHORIZE_HELP = 'For use with requests from a web server. This is the path' +
-                   'in your application that users are redirected to after they' +
-                   'have authenticated with Google. The path will be appended with the' +
-                   'authorization code for access. Must have a protocol.' +
-                   'Cannot contain URL fragments or relative paths. Cannot be a public IP address.';
-  ORIGIN_HELP = 'For use with requests from a browser. This is the origin URI of the client' +
-                'application. It can\'t contain a wildcard (https://*.example.com) or a path' +
-                '(https://example.com/subdir). If you\'re using a nonstandard port, you must include it in the origin URI.';
+{ id: 3, value: 'Apache2' }*/ ];
+  AUTHORIZE_HELP = `For use with requests from a web server. This is the path
+                   'in your application that users are redirected to after they
+                   'have authenticated with Google. The path will be appended with the
+                   'authorization code for access. Must have a protocol.
+                   'Cannot contain URL fragments or relative paths. Cannot be a public IP address.`;
+  ORIGIN_HELP = `For use with requests from a browser. This is the origin URI of the client
+                'application. It can\'t contain a wildcard (https://*.example.com) or a path
+                '(https://example.com/subdir). If you\'re using a nonstandard port, you must include it in the origin URI.`;
 
   appnameFormControl = new FormControl('', [
     Validators.required,
@@ -122,9 +122,14 @@ export class OpenRegisterClientComponent implements OnInit {
     this.port = this.registerClientFormGroup.value.port;
     this.hostUri = this.registerClientFormGroup.value.hostUri;
 
+    if (!this.isMultipleHosts) {
+      this.hostUris = [];
+      this.hostUris.push(this.hostUri);
+    }
+
     this.authService.registerClient({'name': this.appName,
-                                     'redirectUris': this.redirectUris.map(value => 'https://' + this.hostUri + value),
-                                     'hostUri': 'https://' + this.hostUri}).subscribe((data) => {
+                                     'redirectUris': this.redirectUris,
+                                     'hostUris': this.hostUris.map(hostUri => 'https://' + hostUri.trim())}).subscribe((data) => {
       if (data) {
         this.errorMsg = undefined;
         this.dialogRef.close(data);

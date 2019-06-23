@@ -6,6 +6,7 @@ import { PublicFunctions } from '../../shared/shared';
 import { AuthService } from '../auth.service';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { EqualValidator } from './equal.validator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-open-register',
@@ -53,7 +54,7 @@ export class OpenRegisterTeamComponent implements OnInit {
    * @param data - The data service.
    */
   constructor(public dialogRef: MatDialogRef<OpenRegisterTeamComponent>, private formBuilder: FormBuilder,
-  @Inject(MAT_DIALOG_DATA) public data: any, private authService: AuthService) {}
+  @Inject(MAT_DIALOG_DATA) public data: any, private authService: AuthService, private router: Router) {}
 
   /**
    * Checks whether the team account is logged in or not.
@@ -97,6 +98,7 @@ export class OpenRegisterTeamComponent implements OnInit {
 
         document.cookie = `token=${data.token};expires=${expires};path=/`; // The cookie of the token.
         window.location.href = '/clients';
+        // this.router.navigateByUrl('/clients'); - Will be used in Spike 1.0 version.
       } else {
         this.errorMsg = data.message;
       }

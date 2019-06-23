@@ -56,7 +56,6 @@ export class SidenavComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.isLogged = PublicFunctions.checkLogin();
-
     if (this.isLogged) {
       this.getTeamName();
     }

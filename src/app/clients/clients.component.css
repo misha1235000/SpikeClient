@@ -95,6 +95,7 @@ input {
 .span-desc {
     position:relative;
     bottom: 10px;
+    cursor:pointer;
 }
 
 .mat-form-uri {
@@ -192,6 +193,17 @@ input {
     position:relative;
     bottom: 22px;
     left:10px;
+}
+
+.upload-btn {
+    position:absolute;
+    left: -40px;
+    bottom: 21px;
+}
+
+.expand-btn {
+    position: relative;
+    bottom: 22px;
 }
 
 .chip-list {
