@@ -15,18 +15,6 @@
             <avatar class="avatar-img" [size]="30" [name]="client.avatarName" [displayType]="'circle'" [background]="client.color"></avatar>
             <span class="client-name"> {{ client.name }}</span>
           </mat-panel-title>
-          <mat-panel-description class="panel-desc">
-            <button *ngIf="client.isEditable && !client.hostUriEditable" mat-icon-button color="primary" class="upload-btn" matTooltip="Edit HostUri" matTooltipPosition="above" (click)="editHostUri($event, client);"><mat-icon>attach_file</mat-icon></button>
-              <span *ngIf="client.hostUris && client.hostUris.length > 1 && !client.isEditable || !client.hostUriEditable && !client.hostUrisCopy && client.hostUris.length > 1" class="span-desc" (click)="expandUris($event, client);"> {{ client.hostUris[0] }}... </span>
-              <span *ngIf="client.hostUris && client.hostUris.length === 1 && !client.isEditable || !client.hostUriEditable && !client.hostUrisCopy && client.hostUris.length === 1" class="span-desc" (click)="expandUris($event, client);"> {{ client.hostUris[0] }} </span>
-              <span *ngIf="client.hostUrisCopy && client.isEditable && !client.hostUriEditable" class="span-desc" (click)="expandUris($event, client);"> https://{{ client.hostUrisCopy[0] }}</span> 
-              <button mat-icon-button color="primary" class="expand-btn" matTooltip="View All Host Uris" matTooltipPosition="above" (click)="expandUris($event, client);"><mat-icon>more_horiz</mat-icon></button>
-              <mat-form-field *ngIf="client.isEditable && client.hostUriEditable" class="mat-form-uri" (click)="$event.stopPropagation();">
-                <span matPrefix class="btn-bold">https://</span>
-                <input matInput [(ngModel)]="client.hostUrisCopy"/>
-              </mat-form-field>
-              <button [disabled]="client.hostUrisCopy.length <= 0" *ngIf="client.isEditable && client.hostUriEditable" mat-icon-button color="primary" class="edit-btn" matTooltip="Save HostUri" matTooltipPosition="above" (click)="saveHostUri($event, client);"><mat-icon>check</mat-icon></button>
-          </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="client-main-div">
           <div class="clientid-div">
@@ -55,7 +43,7 @@
             <mat-icon class="lock-icon">refresh</mat-icon>
             <span class="clientid-span">Redirect Uris</span>
           </div>
-          <div class="div-inner">
+          <div class="div-inner-redirect">
             <mat-chip-list class="chip-list">
               <ng-container *ngIf="!client.isEditable">
                 <mat-chip selected *ngFor="let redirectUri of client.redirectUris"> {{ redirectUri }}
@@ -83,10 +71,46 @@
                            name="redirectUris" maxlength="15" autocomplete="off">
                 </mat-chip-list>
                 </form>
-                <button class="btn-save" mat-mini-fab matTooltip="Save URI" matTooltipPosition="above" *ngIf="client.isEditable && client.isInputTriggered" [disabled]="client.uri && client.uri.length === 0"><mat-icon>check</mat-icon></button>
-                <button class="btn-add" mat-mini-fab matTooltip="Add New URI" matTooltipPosition="above" (click)="client.isInputTriggered = true;" *ngIf="client.isEditable && !client.isInputTriggered"><mat-icon>add</mat-icon></button>
+                <button class="btn-save" mat-icon-button matTooltip="Save URI" matTooltipPosition="above" *ngIf="client.isEditable && client.isInputTriggered" [disabled]="client.uri && client.uri.length === 0"><mat-icon>check</mat-icon></button>
+                <button class="btn-add" mat-icon-button matTooltip="Add New URI" matTooltipPosition="above" (click)="client.isInputTriggered = true;" *ngIf="client.isEditable && !client.isInputTriggered"><mat-icon>add</mat-icon></button>
             </mat-chip-list>
           </div>
+      </div>
+      <div class="hosturi-main-div">
+        <div class="hosturi-div">
+          <mat-icon class="lock-icon">public</mat-icon>
+          <span class="hosturi-span">Host Uris</span>
+        </div>
+        <div class="div-inner-hosturi" *ngIf="client.fileHostUris && client.fileHostUris.length > 0 && client.correctFile && client.isEditable">
+            <span class="hosturi-display" *ngFor="let hostUri of client.fileHostUris | slice:0:2; let i=index">
+              {{hostUri}} &nbsp;
+            </span>
+            <button mat-icon-button color="primary" class="expand-btn" matTooltip="View All Host Uris" matTooltipPosition="above" (click)="expandUris($event, client, true);">
+              <mat-icon *ngIf="client.fileHostUris.length <= 3">more_horiz</mat-icon>
+              <mat-icon *ngIf="client.fileHostUris.length > 3" [matBadge]="client.fileHostUris.length - 2" matBadgeColor="warn">more_horiz</mat-icon>
+            </button>
+        </div>
+        <div class="div-inner-hosturi" *ngIf="!client.fileHostUris || !client.correctFile">
+          <span class="hosturi-display" *ngFor="let hostUri of client.hostUris | slice:0:2; let i=index">
+            {{hostUri}} &nbsp;
+          </span>
+          <button mat-icon-button color="primary" class="expand-btn" matTooltip="View All Host Uris" matTooltipPosition="above" (click)="expandUris($event, client, false);">
+            <mat-icon *ngIf="client.hostUris.length <= 3">more_horiz</mat-icon>
+            <mat-icon *ngIf="client.hostUris.length > 3" [matBadge]="client.hostUris.length - 2" matBadgeColor="warn">more_horiz</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="input-class" *ngIf="client.isEditable">
+          <mat-form-field class="full-width">
+            <mat-icon class="prefix-icon">folder</mat-icon>
+            <input matInput placeholder="Upload New HostUri File" type="text" autocomplete="off" [(ngModel)]="client.currFile" [ngModelOptions]="{standalone: true}" disabled>
+            <span *ngIf="client.correctFile === false" matSuffix><mat-icon style="color:#EF5350; position: relative; top: 6px; font-size: 28px;" [matTooltip]="client.fileError">close</mat-icon></span>
+            <span *ngIf="client.correctFile === true" matSuffix><mat-icon style="color: #66BB6A; position: relative; top: 6px; font-size: 28px;" [matTooltip]="client.fileError">done</mat-icon></span>
+          </mat-form-field>
+            <input type="file" accept=".csv" #fileInput style="display:none" (change)="getFileInfo(client, fileInput)">
+            <button mat-icon-button color="primary" (click)="fileInput.click()">
+              <mat-icon>attach_file</mat-icon>
+            </button>
       </div>
       <mat-action-row class="flexable">
           <button mat-button color="warn" class="btn-act" *ngIf="!client.isEditable" (click)="removeClient(client);">Remove</button>

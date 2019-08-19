@@ -75,7 +75,7 @@
           <span *ngIf="correctFile === false" matSuffix><mat-icon style="color:#EF5350; position: relative; top: 6px; font-size: 28px;" [matTooltip]="fileError">close</mat-icon></span>
           <span *ngIf="correctFile === true" matSuffix><mat-icon style="color: #66BB6A; position: relative; top: 6px; font-size: 28px;" [matTooltip]="fileError">done</mat-icon></span>
         </mat-form-field>
-          <input type="file" accept=".csv" #fileInput style="display:none" (change)="test(fileInput)">
+          <input type="file" accept=".csv" #fileInput style="display:none" (change)="getFileInfo(fileInput)">
           <button mat-icon-button color="primary" (click)="fileInput.click()" [disabled]="currLb !== 0">
             <mat-icon>attach_file</mat-icon>
           </button>

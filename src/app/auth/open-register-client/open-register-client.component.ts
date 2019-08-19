@@ -231,7 +231,7 @@ export class OpenRegisterClientComponent implements OnInit {
     // }
   }
 
-  test(file) {
+  getFileInfo(file) {
     const INVALID_HOSTNAME = 'Invalid hostname.';
     const INVALID_PORT = 'Invalid port (must be between 0-65550)';
     const INVALID_SYNTAX = 'Invalid Syntax (must be tab of URL and tab of PORT)';

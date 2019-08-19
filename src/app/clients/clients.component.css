@@ -113,6 +113,15 @@ input {
     font-size:13px;
 }
 
+.hosturi-span {
+    position: relative;
+    top: 11px;
+    right: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size:13px;
+}
+
 .clientid-icon {
     position:relative;
     right:0px;
@@ -145,7 +154,23 @@ input {
 .div-inner {
     flex:85%;
     position:relative;
+    right: 31px;
+}
+
+.div-inner-redirect {
+    flex:85%;
+    position:relative;
+    right: 25px;
+    bottom: 12px;
+    text-align: left;
+}
+
+.div-inner-hosturi {
+    flex:85%;
+    position:relative;
     right: 15px;
+    bottom: 12px;
+    text-align: left;
 }
 
 .textarea-stl {
@@ -166,8 +191,28 @@ input {
     display: flex;
     align-items: center;
     position:relative;
-    top:15px;
-    height:120px;
+    top:30px;
+    margin: 15px 0 15px 0;
+    height:70px;
+}
+
+.hosturi-main-div {
+    text-align:center;
+    display: flex;
+    align-items: center;
+    position:relative;
+    top:30px;
+    margin: 15px 0 15px 0;
+    height:70px;
+}
+
+.hosturi-div {
+    width:50px;
+    flex:15%;
+    position:relative;
+    text-align: center;
+    left:3px;
+    bottom:15px;
 }
 
 .redirect-div {
@@ -176,7 +221,7 @@ input {
     flex:15%;
     text-align:center;
     left:15px;
-    top:0px;
+    bottom: 15px;
 }
 
 .client-name {
@@ -198,12 +243,11 @@ input {
 .upload-btn {
     position:absolute;
     left: -40px;
-    bottom: 21px;
 }
 
 .expand-btn {
     position: relative;
-    bottom: 22px;
+    bottom: 0px;
 }
 
 .chip-list {
@@ -227,4 +271,26 @@ input {
     position:fixed;
     right: 50px;
     bottom: 50px;
+}
+
+.hosturi-display {
+    font-weight: bold;
+    background-color: #E0E0E0;
+    margin: 0px 10px 0 0px;
+    padding: 5px 0px 5px 11px;
+}
+
+.input-class {
+    position: relative;
+    height: 90px;
+    left: 200px;
+    top: 18px;
+}
+
+.prefix-icon {
+    font-size:30px;
+    color: #757575;
+    position:absolute;
+    left: -40px;
+    bottom:5px;
 }
