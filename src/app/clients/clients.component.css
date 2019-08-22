@@ -294,3 +294,10 @@ input {
     left: -40px;
     bottom:5px;
 }
+
+.help-csv {
+    cursor: default;
+}
+
+.help-csv>img { display: none; }
+.help-csv:hover>img { display: block; }

@@ -29,6 +29,7 @@ export class ClientsComponent implements OnInit {
   fileFormGroup: FormGroup;
   isEditable = false;
   isJohnny = false;
+  saveErrMsg: string;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isLogged = false;
   isInputTriggered = false;
@@ -211,7 +212,7 @@ export class ClientsComponent implements OnInit {
     }
 
     if (client.fileHostUris && client.correctFile) {
-      client.hostUris = client.fileHostUris;
+      client.hostUris = client.fileHostUris.slice(0);
     }
 
     this.clientsService.updateClient(client.clientId,
@@ -230,6 +231,10 @@ export class ClientsComponent implements OnInit {
         this.snackBar.open('Client was updated successfuly', '', {
           duration: 2000
         });
+      }
+    }, (error) => {
+      if (error.message) {
+        this.saveErrMsg = error.message;
       }
     });
   }
@@ -258,6 +263,7 @@ export class ClientsComponent implements OnInit {
     client.currFile = '';
     client.fileError = '';
     client.isInputTriggered = false;
+    this.saveErrMsg = undefined;
   }
 
   /**
@@ -314,6 +320,8 @@ export class ClientsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        client.hostUris = result.slice(0);
+        client.fileHostUris = result.slice(0);
       }
     });
   }
@@ -325,9 +333,6 @@ export class ClientsComponent implements OnInit {
   isClientChanged(client): boolean {
     if (client.redirectUris.toString() === client.copyRedirectUris.toString() &&
         client.newRedirectUris && client.newRedirectUris.length === 0         &&
-        client.hostUrisCopy &&
-        client.hostUris.map(hostUri => hostUri.substr(8)).sort().toString() ===
-        client.hostUrisCopy.sort().toString() &&
         (arraysEqual(client.hostUris, client.fileHostUris) || !(client.correctFile))) {
       return false;
     } else {
@@ -383,41 +388,37 @@ export class ClientsComponent implements OnInit {
           const arrHosts = fixedHosts.split('\n');
 
           if (arrHosts && arrHosts.length > 0) {
-            if (checkIfDuplicateExists(arrHosts)) {
-              client.correctFile = false;
-              client.fileHostUris = [];
-              client.fileError = DUPLICATE_HOSTS;
-            } else {
-              for (let currHost = 0; currHost < arrHosts.length; currHost++) {
-                if (arrHosts[currHost].match(/:/g) &&
-                    arrHosts[currHost].match(/:/g).length !== 1) {
-                  indexError = true;
-                  indexLine = currHost;
-                  errorMessage = INVALID_SYNTAX;
-                  break;
-                } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
-                  indexError = true;
-                  indexLine = currHost;
-                  errorMessage = INVALID_HOSTNAME;
-                  break;
-                } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
-                  indexError = true;
-                  indexLine = currHost;
-                  errorMessage = INVALID_PORT;
-                  break;
-                }
+            for (let currHost = 0; currHost < arrHosts.length; currHost++) {
+              if (arrHosts[currHost].match(/:/g) &&
+                  arrHosts[currHost].match(/:/g).length !== 1) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_SYNTAX;
+                break;
+              } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_HOSTNAME;
+                break;
+              } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_PORT;
+                break;
               }
+            }
 
-              if (!indexError) {
-                client.fileHostUris = arrHosts;
-                client.fileHostUris = client.fileHostUris.map(hostUri => `https://${hostUri.trim()}`).sort();
-                client.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
-                client.correctFile = true;
-              } else {
-                client.fileHostUris = [];
-                client.correctFile = false;
-                client.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
-              }
+            if (!indexError) {
+              client.fileHostUris = Array.from(new Set (arrHosts.concat(client.hostUris).map((value) => {
+                return value.replace('https://', '').trim();
+              })));
+              client.fileHostUris = client.fileHostUris.map(hostUri => `https://${hostUri.trim()}`).sort();
+              client.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
+              client.correctFile = true;
+            } else {
+              client.fileHostUris = [];
+              client.correctFile = false;
+              client.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
             }
           } else {
             client.fileHostUris = [];
@@ -444,7 +445,7 @@ function checkIfDuplicateExists(array) {
 
 function arraysEqual(firstArray, secondArray) {
   if (firstArray && secondArray) {
-    return JSON.stringify(firstArray.sort()) === JSON.stringify(secondArray.sort());
+    return JSON.stringify(firstArray.sort()).trim() === JSON.stringify(secondArray.sort()).trim();
   }
 
   return false;

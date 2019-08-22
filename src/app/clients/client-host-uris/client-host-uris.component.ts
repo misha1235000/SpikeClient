@@ -18,6 +18,7 @@ export class ClientHostUrisComponent implements OnInit {
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
   hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
   client;
+  errMsg: string;
   hostUri: string;
   hostPort: string;
   CLIENT_DATA = [];
@@ -86,16 +87,21 @@ export class ClientHostUrisComponent implements OnInit {
   }
 
   addToList(hostUri, hostPort) {
-    const testArray = this.CLIENT_DATA.slice(0);
     hostUri = `https://${hostUri.split(':')[0]}`;
-    this.addMode = false;
-
-    this.CLIENT_DATA.push({hostUri, hostPort, actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit'},*/
-                                                        { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' }] });
-    this.dataSource = new MatTableDataSource(this.CLIENT_DATA);
-    window.setTimeout(() => { this.divToScroll.nativeElement.scrollTop = 15000; }, 10);
-    this.hostPort = undefined;
-    this.hostUri = undefined;
+    const currentHostUris = clientDataToArray(this.CLIENT_DATA);
+    currentHostUris.push(`${hostUri}:${hostPort}`);
+    if (currentHostUris.length === (new Set(currentHostUris)).size) {
+      this.addMode = false;
+      this.CLIENT_DATA.push({hostUri, hostPort, actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit'},*/
+                                                          { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' }] });
+      this.dataSource = new MatTableDataSource(this.CLIENT_DATA);
+      window.setTimeout(() => { this.divToScroll.nativeElement.scrollTop = 15000; }, 10);
+      this.hostPort = undefined;
+      this.hostUri = undefined;
+      this.errMsg = undefined;
+    } else {
+      this.errMsg = 'Duplicate HostUri';
+    }
   }
 
   runAction(actionType, host) {
@@ -155,8 +161,9 @@ export class ClientHostUrisComponent implements OnInit {
 
   disableAddMode() {
     this.addMode = false;
-    this.hostUri = '';
-    this.hostPort = '';
+    this.errMsg = undefined;
+    this.hostUri = undefined;
+    this.hostPort = undefined;
   }
 
   isFormInvalid() {
@@ -164,17 +171,18 @@ export class ClientHostUrisComponent implements OnInit {
   }
 
   checkChanges() {
-    return (arraysEqual(ClientDataToArray(this.CLIENT_DATA), this.client.hostUris));
+    return (arraysEqual(clientDataToArray(this.CLIENT_DATA), this.client.hostUris));
   }
 
   updateClient() {
-    const arrayToUpdate = ClientDataToArray(this.CLIENT_DATA);
+    const arrayToUpdate = clientDataToArray(this.CLIENT_DATA);
     this.client.hostUris = arrayToUpdate.slice(0);
     this.clientsService.updateClient(this.client.clientId, {
       redirectUris: this.client.redirectUris,
       hostUris: this.client.hostUris,
     }).subscribe((data) => {
       if (data) {
+        this.dialogRef.close(this.client.hostUris);
         this.snackBar.open('Client was updated successfuly', '', {
           duration: 2000
         });
@@ -191,7 +199,7 @@ function arraysEqual(firstArray, secondArray) {
   return false;
 }
 
-function ClientDataToArray(clientData) {
+function clientDataToArray(clientData) {
   const currArray: string[] = [];
 
   clientData.forEach((currClient) => {

@@ -71,7 +71,7 @@ export class ClientsService {
             if (error.status === 401) {
               PublicFunctions.logout();
             }
-
+            // return error.json();
             return Observable.throw(error.json());
            });
   }
