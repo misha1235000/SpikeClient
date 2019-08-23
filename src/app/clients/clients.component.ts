@@ -8,6 +8,7 @@ import { OpenRegisterClientComponent } from '../auth/open-register-client/open-r
 import { VerifyDeleteComponent } from './verify-delete/verify-delete.component';
 import { ClientHostUrisComponent } from './client-host-uris/client-host-uris.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 const COLORS = ['#EF5350', '#C62828', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0',
                 '#3D5AFE', '#1976D2', '#0277BD', '#0097A7', '#00897B', '#388E3C',
@@ -23,34 +24,45 @@ const redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit {
+  hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
+  portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
+  fileFormGroup: FormGroup;
   isEditable = false;
   isJohnny = false;
+  saveErrMsg: string;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   isLogged = false;
   isInputTriggered = false;
   clients: any[];
 
   /**
-  * Inject the needed services.
-  * @param snackBar - The service of the snackbar.
-  * @param registerDialog - The service of the register dialog.
+   * Inject the needed services.
+   * @param snackBar - The service of the snackbar.
+   * @param registerDialog - The service of the register dialog.
   * @param clientsService - The service of the clients.
   */
   constructor(private snackBar: MatSnackBar,
               private registerDialog: MatDialog,
               private verifyDeleteDialog: MatDialog,
               private clientHostUrisDialog: MatDialog,
-              private clientsService: ClientsService) {}
+              private clientsService: ClientsService,
+              private formBuilder: FormBuilder) {}
 
-  /**
-   * When the component initialized, check if the account team is logged in.
-   */
+  fileFormControl = new FormControl('', [
+    Validators.required,
+  ]);
+              /**
+               * When the component initialized, check if the account team is logged in.
+               */
   ngOnInit() {
     this.isLogged = PublicFunctions.checkLogin();
     this.clientsService.getClients().subscribe(
       clients => {
         if (clients) {
           clients.forEach(client => {
+            client.fileFormGroup = this.formBuilder.group({
+              file: this.fileFormControl,
+            });
             client.newRedirectUris = [];
             client.color = COLORS[client.name[0].toLowerCase().charCodeAt(0) - 97];
             if (client.name.split(' ') && client.name.split(' ').length === 1) {
@@ -59,6 +71,7 @@ export class ClientsComponent implements OnInit {
               client.avatarName = client.name;
             }
           });
+          clients.map(client => { client = client.hostUris.sort(); });
           this.clients = clients;
         }
       },
@@ -151,10 +164,10 @@ export class ClientsComponent implements OnInit {
     // Add the chip to the chips list.
     if ((value || '').trim() &&
         redirectUrisRegex.test(value) &&
-        client.redirectUris.indexOf(client.hostUri + value) === -1 &&
-        client.newRedirectUris.indexOf(client.hostUri + value) === -1) {
+        client.redirectUris.indexOf(value) === -1 &&
+        client.newRedirectUris.indexOf(value) === -1) {
       client.isInputTriggered = false;
-      client.newRedirectUris.push(client.hostUri + value.trim());
+      client.newRedirectUris.push(value.trim());
     }
 
     // Reset the input value
@@ -198,25 +211,30 @@ export class ClientsComponent implements OnInit {
       });
     }
 
-    /*
-    // If the hostUri was changed, change the redirect Uris according to it.
-    if (client.hostUriCopy) {
-      client.redirectUris.forEach((redirectUri, index) => {
-        const pathNoPrefix = redirectUri.split('https://')[1];
-        client.redirectUris[index] = 'https://' + client.hostUriCopy + pathNoPrefix.substr(pathNoPrefix.indexOf('/'));
-      });
-    }*/
+    if (client.fileHostUris && client.correctFile) {
+      client.hostUris = client.fileHostUris.slice(0);
+    }
 
     this.clientsService.updateClient(client.clientId,
                                      { redirectUris: client.redirectUris,
-                                     hostUris: client.hostUrisCopy.map(hostUri => `https://${hostUri}`) }).subscribe((data) => {
+                                     hostUris: client.hostUris.map(hostUri => {
+                                      if (hostUri.indexOf('https://') === -1) {
+                                        hostUri = `https://${hostUri}`;
+                                      }
+
+                                      return hostUri.trim();
+                                    })
+                                    }).subscribe((data) => {
       if (data) {
         this.cancelChanges(client);
-        client.hostUris = client.hostUrisCopy.map(hostUri => `https://${hostUri}`);
         client.redirectUris = data.redirectUris;
         this.snackBar.open('Client was updated successfuly', '', {
           duration: 2000
         });
+      }
+    }, (error) => {
+      if (error.message) {
+        this.saveErrMsg = error.message;
       }
     });
   }
@@ -238,8 +256,14 @@ export class ClientsComponent implements OnInit {
   cancelChanges(client): void {
     client.newRedirectUris = [];
     client.isEditable = false;
+    client.edit = false;
+    client.correctFile = undefined;
+    client.fileHostUris = [];
     client.hostUriEditable = false;
+    client.currFile = '';
+    client.fileError = '';
     client.isInputTriggered = false;
+    this.saveErrMsg = undefined;
   }
 
   /**
@@ -282,18 +306,22 @@ export class ClientsComponent implements OnInit {
    * Opens up the hosts uri management for a specific client.
    * @param client
    */
-  expandUris(event, client): void {
+  expandUris(event, client, edit: boolean): void {
     event.stopPropagation();
+
     const dialogRef = this.clientHostUrisDialog.open(ClientHostUrisComponent, {
       width: '620px',
-      height: '700px',
+      height: '770px',
       data: {
-        client
+        client,
+        edit,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        client.hostUris = result.slice(0);
+        client.fileHostUris = result.slice(0);
       }
     });
   }
@@ -305,9 +333,7 @@ export class ClientsComponent implements OnInit {
   isClientChanged(client): boolean {
     if (client.redirectUris.toString() === client.copyRedirectUris.toString() &&
         client.newRedirectUris && client.newRedirectUris.length === 0         &&
-        client.hostUrisCopy &&
-        client.hostUris.map(hostUri => hostUri.substr(8)).sort().toString() ===
-        client.hostUrisCopy.sort().toString()) {
+        (arraysEqual(client.hostUris, client.fileHostUris) || !(client.correctFile))) {
       return false;
     } else {
       return true;
@@ -333,4 +359,94 @@ export class ClientsComponent implements OnInit {
     event.stopPropagation();
     client.hostUriEditable = false;
   }
+
+  getFileInfo(client, file) {
+    const INVALID_HOSTNAME = 'Invalid hostname.';
+    const INVALID_PORT = 'Invalid port (must be between 0-65550)';
+    const INVALID_SYNTAX = 'Invalid Syntax (must be tab of URL and tab of PORT)';
+    const INVALID_TYPE = 'Invalid Type (must be .csv file)';
+    const DUPLICATE_HOSTS = 'Duplicate hosts with same ports are not allowed.';
+    let errorMessage = '';
+    let indexError = false;
+    let indexLine: number;
+
+    if (!file.files[0]) {
+      console.log('No file selected');
+    } else {
+      client.currFile = file.files[0].name;
+    }
+
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      if (client.currFile.substr(client.currFile.length - 4) !== '.csv') {
+        client.correctFile = false;
+        client.fileError = INVALID_TYPE;
+      } else {
+        if (fileReader.result && fileReader.result.toString()) {
+          let fixedHosts = fileReader.result.toString().replace(/,/g, ':');
+          fixedHosts = fixedHosts.substr(0, fixedHosts.length - 1);
+          const arrHosts = fixedHosts.split('\n');
+
+          if (arrHosts && arrHosts.length > 0) {
+            for (let currHost = 0; currHost < arrHosts.length; currHost++) {
+              if (arrHosts[currHost].match(/:/g) &&
+                  arrHosts[currHost].match(/:/g).length !== 1) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_SYNTAX;
+                break;
+              } else if (!arrHosts[currHost].split(':')[0].match(this.hostUriRegex)) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_HOSTNAME;
+                break;
+              } else if (!arrHosts[currHost].split(':')[1].match(this.portRegex)) {
+                indexError = true;
+                indexLine = currHost;
+                errorMessage = INVALID_PORT;
+                break;
+              }
+            }
+
+            if (!indexError) {
+              client.fileHostUris = Array.from(new Set (arrHosts.concat(client.hostUris).map((value) => {
+                return value.replace('https://', '').trim();
+              })));
+              client.fileHostUris = client.fileHostUris.map(hostUri => `https://${hostUri.trim()}`).sort();
+              client.fileError = `Succeed to upload all ${arrHosts.length} hosts`;
+              client.correctFile = true;
+            } else {
+              client.fileHostUris = [];
+              client.correctFile = false;
+              client.fileError = `${errorMessage}, Error at line: ${indexLine + 1}`;
+            }
+          } else {
+            client.fileHostUris = [];
+            client.correctFile = false;
+            client.fileError = INVALID_SYNTAX;
+          }
+        } else {
+          client.fileHostUris = [];
+          client.correctFile = false;
+          client.fileError = 'Empty File';
+        }
+      }
+    };
+
+    if (file.files[0]) {
+        fileReader.readAsText(file.files[0]);
+    }
+  }
+}
+
+function checkIfDuplicateExists(array) {
+  return new Set(array).size !== array.length;
+}
+
+function arraysEqual(firstArray, secondArray) {
+  if (firstArray && secondArray) {
+    return JSON.stringify(firstArray.sort()).trim() === JSON.stringify(secondArray.sort()).trim();
+  }
+
+  return false;
 }

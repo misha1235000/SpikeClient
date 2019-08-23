@@ -14,3 +14,7 @@ mat-dialog-container {
 .mat-drawer-container {
     overflow: initial !important;
 }
+
+.mat-dialog-container {
+    overflow-y: hidden !important;
+}

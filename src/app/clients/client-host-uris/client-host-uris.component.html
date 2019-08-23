@@ -10,22 +10,79 @@
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter Hosts">
 </mat-form-field>
   
-<div class="table">
+<div class="table" #scrollDiv>
   <table mat-table [dataSource]="dataSource" style="width:96%; max-height:250px;">
   
     <!-- HostUri Column -->
     <ng-container matColumnDef="hostUri">
-      <th mat-header-cell *matHeaderCellDef> Host URI </th>
+      <th mat-header-cell *matHeaderCellDef><mat-icon style="position:relative; top:7px; right:3px;">public</mat-icon> <span>Host URI</span> </th>
       <td mat-cell *matCellDef="let host"> {{host.hostUri}} </td>
     </ng-container>
 
     <!-- HostPort Column -->
     <ng-container matColumnDef="hostPort">
-      <th mat-header-cell *matHeaderCellDef> Host Port </th>
+      <th mat-header-cell *matHeaderCellDef><mat-icon style="position:relative; top:8px; right:1px;">memory</mat-icon> <span>Host Port</span> </th>
       <td mat-cell *matCellDef="let host"> {{host.hostPort}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef style="text-align:center"> <mat-icon style="position:relative; top:8px; right:3px;">build</mat-icon> <span>Actions</span> </th>
+      <td mat-cell *matCellDef="let host" style="text-align:center">
+      <span>
+        <button style="margin: 0 4px 0 4px;" *ngFor="let action of host.actions" mat-icon-button [color]="action.color"
+                [matTooltip]="action.tooltip" matTooltipPosition="above" (click)="runAction(action.func, host)">
+          <mat-icon>{{action.icon}}</mat-icon></button>
+      </span>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
+<span style="position:absolute;">
+<div style="position:relative; width:520px; right:10px; text-align:center; height:50px; top:11px; margin:0px 10px 0px 10px;">
+  <span *ngIf="addMode">
+  <form [formGroup]="addHostFormGroup" #ngForm autocomplete="off" style="width: 430px;">
+    <mat-icon style="position: relative; left:5px; top:8px;">public</mat-icon>
+    <mat-form-field style="font-size: 14px; width: 179px; position:relative; left:10px;">
+      <span matPrefix style="font-weight: bold;">https://</span>
+      <input matInput placeholder="example.com" formControlName="host" [(ngModel)]="hostUri" (input)="isPortEntered()" maxlength="150" required>
+      <mat-error *ngIf="hostUriFormControl.hasError('required')">
+          Hostname is required.
+      </mat-error>
+      <mat-error *ngIf="hostUriFormControl.hasError('pattern') && !hostUriFormControl.hasError('required')">
+          Hostname Invalid. Must be https://YOUR_URI
+      </mat-error>
+    </mat-form-field>
+    <mat-icon style="position:relative; left:29px; top:8px;">memory</mat-icon>
+    <mat-form-field style="font-size: 14px; width:100px; left:32px;">
+      <input matInput placeholder="Port" [(ngModel)]="hostPort" (input)="isPortForm()" formControlName="port" required>
+      <mat-error *ngIf="portFormControl.hasError('pattern')">
+          Port Invalid. Must be 0 - 65535
+      </mat-error>
+    </mat-form-field>
+  </form>
+  </span>
+</div>
+<button *ngIf="addMode === false" mat-mini-fab color="primary"
+        style="float:right; position:relative; bottom: 35px;"
+        matTooltip="Add New Host" matTooltipPosition="above" (click)="setAddMode()">
+  <mat-icon style="font-size:20px; position:relative; top:1px;">add</mat-icon>
+</button>
+<button *ngIf="addMode === true" mat-mini-fab color="warn"
+        style="float:right; position:relative; bottom: 35px; left: 20px;"
+        matTooltip="Cancel" matTooltipPosition="above" (click)="disableAddMode()">
+  <mat-icon style="font-size:20px; position:relative; top:1px;">close</mat-icon>
+</button>
+<button type="submit" *ngIf="addMode === true" mat-mini-fab color="primary"
+        style="float:right; position:relative; bottom: 35px;"
+        matTooltip="Save Host" matTooltipPosition="above" (click)="addToList(hostUri, hostPort)" disabled="disabled" [disabled]="isFormInvalid()">
+  <mat-icon style="font-size:20px; position:relative; top:1px;">check</mat-icon>
+</button>
+<span style="position: absolute;right: -19px;bottom: 13px;font-size: 12px;color: red;font-weight: bold;"
+      *ngIf="errMsg">*{{errMsg}}</span>
+<mat-divider style="position:relative; top:34px; margin: 0px -80px 0px 0px;"></mat-divider>
+<button mat-button color="primary" style="position: absolute;right: -68px;bottom: -46px;" [disabled]="checkChanges() || CLIENT_DATA.length === 0" (click)="updateClient()">Save</button>
+<button mat-button color="warn" style="position:absolute; left: 12px; bottom: -46px;" (click)="close()">Close</button>
+</span>

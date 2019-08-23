@@ -101,3 +101,10 @@ mat-card-subtitle {
     position:relative;
     left:18px;
 }
+
+.help-csv {
+    cursor: default;
+}
+
+.help-csv>img { display: none; }
+.help-csv:hover>img { display: block; }
