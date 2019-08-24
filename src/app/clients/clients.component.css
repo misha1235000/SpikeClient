@@ -299,5 +299,9 @@ input {
     cursor: default;
 }
 
-.help-csv>img { display: none; }
-.help-csv:hover>img { display: block; }
+.help-csv>img {
+    display: none;
+}
+.help-csv:hover>img {
+    display: block;
+}

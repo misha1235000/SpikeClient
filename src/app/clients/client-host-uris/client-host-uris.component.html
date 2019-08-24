@@ -16,7 +16,11 @@
     <!-- HostUri Column -->
     <ng-container matColumnDef="hostUri">
       <th mat-header-cell *matHeaderCellDef><mat-icon style="position:relative; top:7px; right:3px;">public</mat-icon> <span>Host URI</span> </th>
-      <td mat-cell *matCellDef="let host"> {{host.hostUri}} </td>
+      <td mat-cell *matCellDef="let host">
+        <span *ngIf="host.hostUri.length > 25" [matTooltip]="host.hostUri" matTooltipPosition="above">{{host.hostUri.substr(0, 25)}}...</span>
+        <span *ngIf="host.hostUri.length <= 25">{{host.hostUri}}</span>
+      
+      </td>
     </ng-container>
 
     <!-- HostPort Column -->
