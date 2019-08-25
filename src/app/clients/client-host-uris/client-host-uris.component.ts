@@ -47,14 +47,16 @@ export class ClientHostUrisComponent implements OnInit {
                   this.client.fileHostUris.forEach(hostUri => {
                     this.CLIENT_DATA.push({ hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
                                             actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
-                                                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' }] });
+                                                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
+                                                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
                   });
                   console.log(this.client.hostUris[0]);
                 } else {
                   this.client.hostUris.forEach(hostUri => {
                     this.CLIENT_DATA.push({ hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
                                             actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
-                                                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' }] });
+                                                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
+                                                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
                   });
                 }
 
@@ -93,7 +95,8 @@ export class ClientHostUrisComponent implements OnInit {
     if (currentHostUris.length === (new Set(currentHostUris)).size) {
       this.addMode = false;
       this.CLIENT_DATA.push({hostUri, hostPort, actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit'},*/
-                                                          { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' }] });
+                                                          { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
+                                                          { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
       this.dataSource = new MatTableDataSource(this.CLIENT_DATA);
       window.setTimeout(() => { this.divToScroll.nativeElement.scrollTop = 15000; }, 10);
       this.hostPort = undefined;
@@ -113,6 +116,12 @@ export class ClientHostUrisComponent implements OnInit {
             this.CLIENT_DATA.splice(currIndex, 1);
             break;
           case 'edit':
+            break;
+          case 'copy':
+            this.copyToClipboard(`${host.hostUri}:${host.hostPort}`);
+            this.snackBar.open('HostUri Was Copied To ClipBoard', '', {
+              duration: 2000
+            });
             break;
           default:
             break;
@@ -188,6 +197,15 @@ export class ClientHostUrisComponent implements OnInit {
         });
       }
     });
+  }
+
+  copyToClipboard(item) {
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', (item));
+      e.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
   }
 }
 
