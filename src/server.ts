@@ -1,9 +1,21 @@
+// server
+
+import { config } from './app/shared/config';
+
+// Must run that at first for configuration
+import * as apm from 'elastic-apm-node';
+apm.start({
+    serviceName: config.ELASTIC_APM_SERVICE_NAME,
+    serverUrl: config.ELASTIC_APM_SERVER_URL,
+    secretToken: config.ELASTIC_APM_SECRET_TOKEN || '',
+    active: config.ELASTIC_APM_ACTIVE === 'true' || false,
+});
+
 import { Request, Response } from 'express-serve-static-core';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as https from 'https';
 import { readFileSync } from 'fs';
-import { config } from './app/shared/config';
 
 const express = require('express');
 

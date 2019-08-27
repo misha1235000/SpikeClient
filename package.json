@@ -26,6 +26,7 @@
     "@types/typescript": "^2.0.0",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
+    "elastic-apm-node": "^2.16.0",
     "express-serve-static-core": "^0.1.1",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.11",
