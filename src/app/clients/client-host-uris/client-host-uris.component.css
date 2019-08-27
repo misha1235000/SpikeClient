@@ -36,6 +36,7 @@ button {
     margin: 0 20px 0 20px;
     height:450px;
     overflow-y:auto;
+    overflow-x:hidden;
 }
 
 .table::-webkit-scrollbar-track
