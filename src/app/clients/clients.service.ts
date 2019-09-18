@@ -17,7 +17,7 @@ export class ClientsService {
    * Injection of the http service.
    * @param http - The http service.
    */
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   /**
    * Gets clients by the token which is saved on the cookie.
@@ -27,16 +27,16 @@ export class ClientsService {
 
     headers.append('authorization', PublicFunctions.getCookie('token'));
 
-    return this.http.get(this.clientUrl, {headers})
-           .map((data) => {
-             return data.json();
-           }).catch((error) => { // If there is any error.
-             if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
-                PublicFunctions.logout();
-             }
+    return this.http.get(this.clientUrl, { headers })
+      .map((data) => {
+        return data.json();
+      }).catch((error) => { // If there is any error.
+        if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
+          PublicFunctions.logout();
+        }
 
-             return Observable.throw(error.json());
-           });
+        return Observable.throw(error.json());
+      });
   }
 
   /**
@@ -47,16 +47,16 @@ export class ClientsService {
 
     headers.append('authorization', PublicFunctions.getCookie('token'));
 
-    return this.http.get(this.clientUrl + '/' + clientId, {headers})
-           .map((data) => {
-             return data.json();
-           }).catch((error) => { // If there is any error.
-             if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
-                PublicFunctions.logout();
-             }
+    return this.http.get(this.clientUrl + '/' + clientId, { headers })
+      .map((data) => {
+        return data.json();
+      }).catch((error) => { // If there is any error.
+        if (error.status === 401) { // If the error's status is 401 (Unauthorized), then logout.
+          PublicFunctions.logout();
+        }
 
-             return Observable.throw(error.json());
-           });
+        return Observable.throw(error.json());
+      });
   }
 
   updateClient(clientId: string, client): Observable<any> {
@@ -64,16 +64,16 @@ export class ClientsService {
 
     headers.append('authorization', PublicFunctions.getCookie('token'));
 
-    return this.http.put(this.clientUrl + '/' + clientId, {clientInformation: client}, {headers})
-           .map((data) => {
-              return data.json();
-           }).catch((error) => {
-            if (error.status === 401) {
-              PublicFunctions.logout();
-            }
-            // return error.json();
-            return Observable.throw(error.json());
-           });
+    return this.http.put(this.clientUrl + '/' + clientId, { clientInformation: client }, { headers })
+      .map((data) => {
+        return data.json();
+      }).catch((error) => {
+        if (error.status === 401) {
+          PublicFunctions.logout();
+        }
+        // return error.json();
+        return Observable.throw(error.json());
+      });
   }
 
   removeClient(clientId: string): Observable<any> {
@@ -81,15 +81,32 @@ export class ClientsService {
 
     headers.append('authorization', PublicFunctions.getCookie('token'));
 
-    return this.http.delete(this.clientUrl + '/' + clientId, {headers})
-           .map((data) => {
-              return data.json();
-           }).catch((error) => {
-            if (error.status === 401) {
-              PublicFunctions.logout();
-            }
+    return this.http.delete(this.clientUrl + '/' + clientId, { headers })
+      .map((data) => {
+        return data.json();
+      }).catch((error) => {
+        if (error.status === 401) {
+          PublicFunctions.logout();
+        }
 
-            return Observable.throw(error.json());
-           });
+        return Observable.throw(error.json());
+      });
+  }
+
+  resetCredentials(clientId: string): Observable<any> {
+    const headers = new Headers();
+
+    headers.append('authorization', PublicFunctions.getCookie('token'));
+
+    return this.http.patch(this.clientUrl + '/' + clientId, {}, { headers })
+      .map((data) => {
+        return data.json();
+      }).catch((error) => {
+        if (error.status === 401) {
+          PublicFunctions.logout();
+        }
+
+        return Observable.throw(error.json());
+      });
   }
 }

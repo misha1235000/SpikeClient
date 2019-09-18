@@ -26,7 +26,6 @@
             <button mat-icon-button color="primary" (click)="copyClipboard(clientId)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
           </div>
         </div>
-
         <div class="client-main-div">
             <div class="clientid-div">
               <mat-icon class="lock-icon">lock</mat-icon>
@@ -121,6 +120,12 @@
       <mat-action-row class="flexable">
           <button mat-button color="warn" class="btn-act" *ngIf="!client.isEditable" (click)="removeClient(client);">Remove</button>
           <button mat-button color="warn" class="btn-act" *ngIf="client.isEditable" (click)="cancelChanges(client);">Cancel</button>
+          <div style="width:100%; text-align: center;">
+            <button mat-button color="warn" class="btn-act" matTooltipPosition="above"
+                    matTooltip="Get New Client ID And Secret" (click)="resetCredentials(client)">
+                    Renew Credentials
+            </button>
+          </div>
           <span class="span-flexable"></span>
           <button mat-button color="primary" class="btn-bold" *ngIf="!client.isEditable" (click)="setEditable(client)">Edit</button>
           <button mat-button color="primary" class="btn-bold" *ngIf="client.isEditable" [disabled]="!isClientChanged(client)" (click)="saveChanges(client)">Save</button>
