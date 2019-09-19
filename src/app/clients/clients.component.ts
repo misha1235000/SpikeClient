@@ -6,6 +6,7 @@ import { PublicFunctions } from '../shared/shared';
 import { ClientsService } from './clients.service';
 import { OpenRegisterClientComponent } from '../auth/open-register-client/open-register-client.component';
 import { VerifyDeleteComponent } from './verify-delete/verify-delete.component';
+import { VerifyClientResetComponent } from './verify-client-reset/verify-client-reset.component';
 import { ClientHostUrisComponent } from './client-host-uris/client-host-uris.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -44,6 +45,7 @@ export class ClientsComponent implements OnInit {
   constructor(private snackBar: MatSnackBar,
     private registerDialog: MatDialog,
     private verifyDeleteDialog: MatDialog,
+    private verifyClientResetDialog: MatDialog,
     private clientHostUrisDialog: MatDialog,
     private clientsService: ClientsService,
     private formBuilder: FormBuilder) { }
@@ -440,23 +442,36 @@ export class ClientsComponent implements OnInit {
   }
 
   resetCredentials(client) {
-    this.clientsService.resetCredentials(client.clientId).subscribe((data) => {
-        if (data) {
-          for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
-            if (client.clientId === this.clients[currIndex].clientId) {
-              this.clients[currIndex].clientId = data.clientId;
-              this.clients[currIndex].secret = data.secret;
-              break;
-            }
-          }
 
-          this.snackBar.open('Client Credentials Has Been Renewed Successfuly', '', {
-            duration: 2000
-          });
-        }
-      }, (error) => {
-        console.log(error);
-      });
+    const dialogRef = this.verifyClientResetDialog.open(VerifyClientResetComponent, {
+      width: '420px',
+      height: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        
+        this.clientsService.resetCredentials(client.clientId).subscribe((data) => {
+          if (data) {
+            for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
+              if (client.clientId === this.clients[currIndex].clientId) {
+                this.clients[currIndex].clientId = data.clientId;
+                this.clients[currIndex].secret = data.secret;
+                break;
+              }
+            }
+  
+            this.snackBar.open('Client Credentials Has Been Renewed Successfuly', '', {
+              duration: 2000
+            });
+          }
+        }, (error) => {
+          console.log(error);
+        });        
+      }
+    });
+
+    
   }
 }
 

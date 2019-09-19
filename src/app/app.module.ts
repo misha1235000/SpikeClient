@@ -25,6 +25,7 @@ import { AuthService } from './auth/auth.service';
 import { ClientsService } from './clients/clients.service';
 import {enableProdMode} from '@angular/core';
 import { VerifyDeleteComponent } from './clients/verify-delete/verify-delete.component';
+import { VerifyClientResetComponent } from './clients/verify-client-reset/verify-client-reset.component';
 import { ClientHostUrisComponent } from './clients/client-host-uris/client-host-uris.component';
 
 enableProdMode();
@@ -50,6 +51,7 @@ const appRoutes: Routes = [
     OpenRegisterClientComponent,
     OpenRegisterTeamComponent,
     VerifyDeleteComponent,
+    VerifyClientResetComponent,
     ClientHostUrisComponent,
   ],
   imports: [
@@ -88,7 +90,7 @@ const appRoutes: Routes = [
       { enableTracing: false }
     )
   ],
-  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent, VerifyDeleteComponent, ClientHostUrisComponent],
+  entryComponents: [OpenRegisterClientComponent, OpenRegisterTeamComponent, VerifyDeleteComponent, VerifyClientResetComponent, ClientHostUrisComponent],
   providers: [FormBuilder, AuthService, ClientsService],
   bootstrap: [AppComponent]
 })

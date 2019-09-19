@@ -1,0 +1,17 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>Client Reset Credentials Verification</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="mat-card-content">
+  <div mat-dialog-content style="position:relative; bottom:20px;">
+    <p class="desc">This operation will renew client id and secret and will delete all currently activated access tokens. <br> Are you sure?</p>
+  </div>
+ 
+  <div mat-dialog-actions>
+    <button mat-button color="primary" (click)="close()">Cancel</button>
+    <button class="btn-delete" mat-button color="warn" (click)="verifyReset()">Reset</button>
+  </div>
+</div>
