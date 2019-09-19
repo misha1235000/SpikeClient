@@ -6,15 +6,16 @@ import { PublicFunctions } from '../shared/shared';
 import { ClientsService } from './clients.service';
 import { OpenRegisterClientComponent } from '../auth/open-register-client/open-register-client.component';
 import { VerifyDeleteComponent } from './verify-delete/verify-delete.component';
+import { VerifyClientResetComponent } from './verify-client-reset/verify-client-reset.component';
 import { ClientHostUrisComponent } from './client-host-uris/client-host-uris.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 const COLORS = ['#EF5350', '#C62828', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0',
-                '#3D5AFE', '#1976D2', '#0277BD', '#0097A7', '#00897B', '#388E3C',
-                '#558B2F', '#FF7043', '#BF360C', '#8D6E63', '#757575', '#78909C',
-                '#000000', '#29B6F6', '#7C4DFF', '#FF5252', '#EC407A', '#388E3C',
-                '#558B2F', '#1976D2'];
+  '#3D5AFE', '#1976D2', '#0277BD', '#0097A7', '#00897B', '#388E3C',
+  '#558B2F', '#FF7043', '#BF360C', '#8D6E63', '#757575', '#78909C',
+  '#000000', '#29B6F6', '#7C4DFF', '#FF5252', '#EC407A', '#388E3C',
+  '#558B2F', '#1976D2'];
 
 const redirectUrisRegex = /^(\/[a-zA-Z0-9]{1,20}){1,10}$/m;
 
@@ -42,18 +43,19 @@ export class ClientsComponent implements OnInit {
   * @param clientsService - The service of the clients.
   */
   constructor(private snackBar: MatSnackBar,
-              private registerDialog: MatDialog,
-              private verifyDeleteDialog: MatDialog,
-              private clientHostUrisDialog: MatDialog,
-              private clientsService: ClientsService,
-              private formBuilder: FormBuilder) {}
+    private registerDialog: MatDialog,
+    private verifyDeleteDialog: MatDialog,
+    private verifyClientResetDialog: MatDialog,
+    private clientHostUrisDialog: MatDialog,
+    private clientsService: ClientsService,
+    private formBuilder: FormBuilder) { }
 
   fileFormControl = new FormControl('', [
     Validators.required,
   ]);
-              /**
-               * When the component initialized, check if the account team is logged in.
-               */
+  /**
+   * When the component initialized, check if the account team is logged in.
+   */
   ngOnInit() {
     this.isLogged = PublicFunctions.checkLogin();
     this.clientsService.getClients().subscribe(
@@ -90,7 +92,7 @@ export class ClientsComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
     inputElement.blur();
     this.snackBar.open('Copied To Clipboard', '', {
-        duration: 2000
+      duration: 2000
     });
   }
 
@@ -163,9 +165,9 @@ export class ClientsComponent implements OnInit {
 
     // Add the chip to the chips list.
     if ((value || '').trim() &&
-        redirectUrisRegex.test(value) &&
-        client.redirectUris.indexOf(value) === -1 &&
-        client.newRedirectUris.indexOf(value) === -1) {
+      redirectUrisRegex.test(value) &&
+      client.redirectUris.indexOf(value) === -1 &&
+      client.newRedirectUris.indexOf(value) === -1) {
       client.isInputTriggered = false;
       client.newRedirectUris.push(value.trim());
     }
@@ -216,27 +218,28 @@ export class ClientsComponent implements OnInit {
     }
 
     this.clientsService.updateClient(client.clientId,
-                                     { redirectUris: client.redirectUris,
-                                     hostUris: client.hostUris.map(hostUri => {
-                                      if (hostUri.indexOf('https://') === -1) {
-                                        hostUri = `https://${hostUri}`;
-                                      }
+      {
+        redirectUris: client.redirectUris,
+        hostUris: client.hostUris.map(hostUri => {
+          if (hostUri.indexOf('https://') === -1) {
+            hostUri = `https://${hostUri}`;
+          }
 
-                                      return hostUri.trim();
-                                    })
-                                    }).subscribe((data) => {
-      if (data) {
-        this.cancelChanges(client);
-        client.redirectUris = data.redirectUris;
-        this.snackBar.open('Client was updated successfuly', '', {
-          duration: 2000
-        });
-      }
-    }, (error) => {
-      if (error.message) {
-        this.saveErrMsg = error.message;
-      }
-    });
+          return hostUri.trim();
+        })
+      }).subscribe((data) => {
+        if (data) {
+          this.cancelChanges(client);
+          client.redirectUris = data.redirectUris;
+          this.snackBar.open('Client was updated successfuly', '', {
+            duration: 2000
+          });
+        }
+      }, (error) => {
+        if (error.message) {
+          this.saveErrMsg = error.message;
+        }
+      });
   }
 
   /**
@@ -332,8 +335,8 @@ export class ClientsComponent implements OnInit {
    */
   isClientChanged(client): boolean {
     if (client.redirectUris.toString() === client.copyRedirectUris.toString() &&
-        client.newRedirectUris && client.newRedirectUris.length === 0         &&
-        (arraysEqual(client.hostUris, client.fileHostUris) || !(client.correctFile))) {
+      client.newRedirectUris && client.newRedirectUris.length === 0 &&
+      (arraysEqual(client.hostUris, client.fileHostUris) || !(client.correctFile))) {
       return false;
     } else {
       return true;
@@ -390,7 +393,7 @@ export class ClientsComponent implements OnInit {
           if (arrHosts && arrHosts.length > 0) {
             for (let currHost = 0; currHost < arrHosts.length; currHost++) {
               if (arrHosts[currHost].match(/:/g) &&
-                  arrHosts[currHost].match(/:/g).length !== 1) {
+                arrHosts[currHost].match(/:/g).length !== 1) {
                 indexError = true;
                 indexLine = currHost;
                 errorMessage = INVALID_SYNTAX;
@@ -409,7 +412,7 @@ export class ClientsComponent implements OnInit {
             }
 
             if (!indexError) {
-              client.fileHostUris = Array.from(new Set (arrHosts.concat(client.hostUris).map((value) => {
+              client.fileHostUris = Array.from(new Set(arrHosts.concat(client.hostUris).map((value) => {
                 return value.replace('https://', '').trim();
               })));
               client.fileHostUris = client.fileHostUris.map(hostUri => `https://${hostUri.trim()}`).sort();
@@ -434,8 +437,41 @@ export class ClientsComponent implements OnInit {
     };
 
     if (file.files[0]) {
-        fileReader.readAsText(file.files[0]);
+      fileReader.readAsText(file.files[0]);
     }
+  }
+
+  resetCredentials(client) {
+
+    const dialogRef = this.verifyClientResetDialog.open(VerifyClientResetComponent, {
+      width: '420px',
+      height: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        
+        this.clientsService.resetCredentials(client.clientId).subscribe((data) => {
+          if (data) {
+            for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
+              if (client.clientId === this.clients[currIndex].clientId) {
+                this.clients[currIndex].clientId = data.clientId;
+                this.clients[currIndex].secret = data.secret;
+                break;
+              }
+            }
+  
+            this.snackBar.open('Client Credentials Has Been Renewed Successfuly', '', {
+              duration: 2000
+            });
+          }
+        }, (error) => {
+          console.log(error);
+        });        
+      }
+    });
+
+    
   }
 }
 
