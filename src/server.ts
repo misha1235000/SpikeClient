@@ -50,6 +50,11 @@ class Server {
         // Health check for Load Balancer
         this.app.get('/health', (req, res) => res.status(200).send('alive'));
 
+	// Redirect to docs site
+	this.app.get('/help', (req, res) => {		
+	    res.redirect('http://' + req.headers.host + ':3001');
+	});
+	
         this.app.get('*', (req: Request, res: Response) => {
             if (allowedExt.filter(ext => req.url.indexOf(ext) > 0).length > 0) {
                 res.sendFile(path.resolve(`./dist/serverRegisterClient/${req.url}`));
@@ -60,7 +65,7 @@ class Server {
 
         https.createServer(this.options, this.app).listen(this.port, () => {
             console.log(`Spike client is running on port ${this.port} as https.`);
-        });
+        });        
     }
 }
 
