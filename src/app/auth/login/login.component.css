@@ -1,0 +1,79 @@
+.main-team {
+    width: 450px;
+}
+
+mat-card {
+    margin:20px;
+    height: 310px
+}
+
+mat-card-subtitle {
+    text-align:center;
+}
+
+mat-card-content {
+    text-align:center;
+    position:relative;
+    margin: 60px 50px 50px 50px;
+}
+.login-form {
+    min-width: 150px;
+    max-width:400px;
+    width:100%;
+}
+
+.full-width {
+    width:100%;
+}
+
+.prefix-icon {
+    font-size:30px;
+    color: #757575;
+    position:absolute;
+    left: -40px;
+    bottom:5px;
+}
+
+.input-class {
+    margin-left:25px;
+}
+
+.login-button {
+    color: white;
+    background-color: black;
+    position:absolute;
+    right: -34px;
+    bottom: -84px;
+}
+
+.logout-button {
+    position: fixed;
+    left: 50px;
+    bottom:50px;
+}
+
+.email-button {
+    position: relative;
+    left: 50px;
+}
+
+.error-msg {
+    position:absolute;
+    left: 20px;
+    bottom: 10px;
+    max-width:220px;
+    font-size: 11px;
+    color: #ef5350;
+    font-weight: bold;
+}
+
+.register-btn {
+    color: #1a73e8;
+    position: absolute;
+    bottom: 28px;
+    left:32px;
+}
+
+textarea {
+    resize: none !important;
+}

@@ -1,0 +1,73 @@
+.sidenav {
+    display: flex;
+    justify-content: center;
+    width: 280px;
+    background-color: #DADADA;
+}
+
+.mat-list-icon {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .btn-list {
+      height: 50px;
+      position:relative;
+      right:10px;
+      width:100%;
+      text-align:left;
+
+  }
+
+  .btns-list {
+      position:relative;
+      top: 30px;
+  }
+
+  .btn-icon {
+      position:relative;
+      top: 7px;
+  }
+
+  .btn-text {
+      position:relative;
+      bottom: 12px;
+  }
+
+  mat-list-item {
+      margin: 5px 0 5px 0;
+      position:relative;
+      left: 10px;
+  }
+
+.active {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.mat-subheader {
+    display: block !important;
+}
+
+.example-container {
+    display:flex;
+    flex-direction: column;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  text-align: center;
+  text-align: -webkit-center;
+  flex: 1;
+  background-color: rgba(235 ,235, 235, 1);
+}
+
+.btn-menu {
+    position: fixed;
+    left: 5px;
+    top: 12px;
+}
+
+.h3-text {
+    font-weight: bold;
+    text-align:center;
+}

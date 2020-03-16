@@ -1,0 +1,125 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Register</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="mat-card-content">
+    <form [formGroup]="registerClientFormGroup" #ngForm autocomplete="off" class="form-reg">
+    <div class="input-class">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="Enter Application Name" formControlName="appname" autocomplete="off" maxlength="20" required>
+            <mat-icon class="prefix-icon">person</mat-icon>
+            <mat-error *ngIf="appnameFormControl.hasError('required')">
+                Application name is required.
+            </mat-error>
+            <mat-error *ngIf="appnameFormControl.hasError('pattern') && !appnameFormControl.hasError('required')">
+                For Team name to be valid, it must contain 4-20 letters [A-Za-z] or numbers [0-9] only.
+            </mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="input-class">
+      <mat-form-field class="full-width">
+        <mat-label>Select Team</mat-label>
+        <mat-select formControlName="teamname" required>
+          <mat-option *ngFor="let team of teams" [value]="team._id">
+            {{team.teamname}}
+          </mat-option>
+        </mat-select>
+        <mat-icon class="prefix-icon">group</mat-icon>
+        <mat-error *ngIf="teamnameFormControl.hasError('required')">Please Choose A Team.</mat-error>
+      </mat-form-field>
+      </div>
+      <br><br>
+      <section class="example-section">
+        <mat-slide-toggle
+            class="example-margin"
+            color="primary"
+            [checked]="isMultipleHosts"
+            disabled="false"
+            (change)="isMultipleHosts = !isMultipleHosts">
+            &nbsp; &nbsp; Multiple Hosts | Load Balancer
+            <mat-icon class="prefix-icon">settings</mat-icon>
+        </mat-slide-toggle>
+      </section>
+      <br><br>
+      <div class="input-class" *ngIf="!isMultipleHosts">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon-special">public</mat-icon>
+          <span matPrefix>https://</span>
+          <input matInput placeholder="example.com" type="text" formControlName="hostUri" autocomplete="off" maxlength="200" required (input)="isPortEntered()" [(ngModel)]="currHost">
+          <mat-icon class="help-authorize" [matTooltip]="ORIGIN_HELP" matTooltipPosition="above">help</mat-icon>
+          <mat-error *ngIf="hostUriFormControl.hasError('required')">
+              Hostname is required.
+          </mat-error>
+          <mat-error *ngIf="hostUriFormControl.hasError('pattern') && !hostUriFormControl.hasError('required')">
+            Hostname Invalid. Must be https://YOUR_URI
+          </mat-error>
+        </mat-form-field>
+      </div>
+       <br *ngIf="!isMultipleHosts">
+      <div class="input-class" *ngIf="!isMultipleHosts">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">memory</mat-icon>
+          <input matInput placeholder="port (optional)" type="text" formControlName="port" autocomplete="off" maxlength="5" [(ngModel)]="currPort" (input)="isPortForm()">
+          <mat-error *ngIf="portFormControl.hasError('pattern')">
+            Port Invalid. Must be 0 - 65535
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="input-class" *ngIf="isMultipleHosts">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">device_hub</mat-icon>
+          <mat-label>CSV Or Load Balancer</mat-label>
+          <mat-select [(value)]="currLb">
+            <mat-option *ngFor="let knownLb of knownLbs" [value]="knownLb.id">
+              {{knownLb.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <br *ngIf="isMultipleHosts">
+      <div class="input-class" *ngIf="isMultipleHosts" style="position:relative; left:20px;">
+        <mat-form-field class="full-width">
+            <span class="help-csv" color="primary" (click)="$event.stopPropagation()">
+              <mat-icon class="icon-help">help</mat-icon>
+              <img class="img-help" src="/assets/png/csvHelp.png">
+            </span>
+          <mat-icon class="prefix-icon">folder</mat-icon>
+          <input matInput placeholder="Select Your File" type="text" autocomplete="off" formControlName="file" [(ngModel)]="currFile">
+          <span *ngIf="correctFile === false" matSuffix><mat-icon class="icon-red" [matTooltip]="fileError">close</mat-icon></span>
+          <span *ngIf="correctFile === true" matSuffix><mat-icon class="icon-green" [matTooltip]="fileError">done</mat-icon></span>
+        </mat-form-field>
+          <input type="file" accept=".csv" #fileInput style="display:none" (change)="getFileInfo(fileInput)">
+          <button mat-icon-button color="primary" (click)="fileInput.click()" [disabled]="currLb !== 0">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+      </div>
+      <br>
+      <div class="input-class">
+        <mat-form-field class="full-width">
+            <mat-chip-list #chipList [disabled]="(!isHostUriValid() && !isMultipleHosts) || 
+                                                 (!isFileValid() && isMultipleHosts)">
+                <mat-chip  *ngFor="let redirectUri of redirectUris" [selectable]="selectable"
+                         (removed)="remove(redirectUri)">
+                  {{redirectUri}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input matInput type="text" placeholder="Redirect Uris... /example"
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="true"
+                       (matChipInputTokenEnd)="add($event)"
+                       formControlName="redirectUris" maxlength="32">
+            </mat-chip-list>
+          <mat-icon class="prefix-icon">refresh</mat-icon>
+          <mat-icon class="help-authorize" [matTooltip]="AUTHORIZE_HELP" matTooltipPosition="above">help</mat-icon>
+        </mat-form-field>
+      </div>
+      <mat-spinner *ngIf="!isDone" diameter="50" style="position:absolute; bottom:10px;"></mat-spinner>
+      <button mat-raised-button class="login-button" type="submit" disabled="disabled" [disabled]="!isDetailsValid()" (click)="register($event)">Register</button>
+    </form>
+    <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
+</div>

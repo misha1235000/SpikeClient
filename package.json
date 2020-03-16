@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npx tsc && npx ng build --prod && node scripts/copy_files.js && node ./dist/src/server.js",
+    "generate-certs": "node scripts/generate_certs.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -12,14 +13,25 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.6",
+    "@angular/cdk": "^9.1.2",
     "@angular/common": "~9.0.6",
     "@angular/compiler": "~9.0.6",
     "@angular/core": "~9.0.6",
     "@angular/forms": "~9.0.6",
+    "@angular/material": "^9.1.2",
     "@angular/platform-browser": "~9.0.6",
     "@angular/platform-browser-dynamic": "~9.0.6",
     "@angular/router": "~9.0.6",
+    "cookie-parser": "^1.4.5",
+    "elastic-apm-node": "^3.5.0",
+    "express-serve-static-core": "^0.1.1",
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "ng2-avatar": "^2.3.1",
+    "passport": "^0.4.1",
+    "passport-shraga": "^1.4.0",
     "rxjs": "~6.5.4",
+    "tsc": "^1.20150623.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
@@ -28,9 +40,9 @@
     "@angular/cli": "~9.0.6",
     "@angular/compiler-cli": "~9.0.6",
     "@angular/language-service": "~9.0.6",
-    "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -42,6 +54,6 @@
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
-    "typescript": "~3.7.5"
+    "typescript": "^3.7.5"
   }
 }

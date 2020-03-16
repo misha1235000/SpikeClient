@@ -1,0 +1,62 @@
+mat-toolbar {
+    background-color: black !important;
+}
+
+mat-toolbar-row {
+    padding: 0;
+}
+
+.example-spacer {
+    margin-left: 50px;
+  }
+
+.example-spacer-right {
+    flex: 1 1 auto;
+}
+
+.login-button {
+    font-weight: bold;
+}
+
+.active {
+background-color: rgba(255,255,255,0.2);
+}
+
+
+.menu-button {
+    margin-left: 5px;
+    color:white;
+}
+
+.logo-text {
+    position:relative;
+    left:15px;
+    bottom: 17px;
+}
+
+.logo-img {
+    width: 47px;
+    left: 10px;
+    top:3px;
+    position: relative;
+}
+
+.logo-main {
+    position:relative;
+    left:12px;
+}
+
+.btn-stl {
+    position:absolute;
+    right: 15px;
+    color:white;
+}
+
+.btn-help {
+    font-weight:bold;
+    font-size:17px;
+}
+
+.main {
+    margin-bottom:110px;
+}

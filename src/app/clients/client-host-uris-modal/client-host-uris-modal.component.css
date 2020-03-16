@@ -1,0 +1,169 @@
+mat-toolbar {
+    background-color:black !important;
+    color:white;
+}
+
+.example-spacer {
+    flex:1 1 auto;
+}
+
+mat-card-subtitle {
+    text-align:center;
+}
+
+.mat-card-content {
+    text-align:center;
+    position:relative;
+    top:35px;
+    margin:0px 15px 0px 15px
+}
+
+.btn-delete {
+    position:absolute;
+    right:0px;
+}
+
+button {
+    font-weight:bold;
+}
+
+.desc {
+    font-size:17px;
+    font-family:arial;
+}
+
+.table {
+    margin:0 20px 0 20px;
+    height:450px;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.table::-webkit-scrollbar-track
+{
+    box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+    background-color:#F5F5F5;
+    border-radius:5px;
+}
+
+.table::-webkit-scrollbar
+{
+    width:6px;
+    background-color:#F5F5F5;
+    border-radius:5px;
+}
+
+.table::-webkit-scrollbar-thumb
+{
+    background-color:#000000;
+    border-radius:5px;
+}
+
+.divide-cls {
+    position:relative;
+    top:34px;
+    margin:0px -80px 0px 0px;
+}
+
+.span-err-msg {
+    position:absolute;
+    right:-19px;
+    bottom:13px;
+    font-size:12px;
+    color:red;
+    font-weight:bold;
+}
+
+.btn-save {
+    position:absolute;
+    right:-68px;
+    bottom:-46px;
+}
+
+.btn-close {
+    position:absolute;
+    left:12px;
+    bottom:-46px;
+}
+
+.btn-save-host {
+    position:absolute;
+    left:12px;
+    bottom:-46px;
+}
+
+.btn-cancel {
+    float:right;
+    position:relative;
+    bottom:35px;
+    left:20px;
+}
+
+.icon-btn {
+    font-size:20px;
+    position:relative;
+    top:1px;
+}
+
+.port-form {
+    font-size:14px;
+    width:100px;
+    left:32px;
+}
+
+.mem-icon {
+    position:relative;
+    left:29px;
+    top:8px;
+}
+
+.hostname-form {
+    font-size:14px;
+    width:179px;
+    position:relative;
+    left:10px;
+}
+
+.hostname-icon {
+    position:relative;
+    left:5px;
+    top:8px;
+}
+
+.div-mode {
+    position:relative;
+    width:520px;
+    right:10px;
+    text-align:center;
+    height:50px;
+    top:11px;
+    margin:0px 10px 0px 10px;
+}
+
+.icon-host {
+    position:relative;
+    top:7px;
+    right:3px;
+}
+
+.icon-port {
+    position:relative;
+    top:8px;
+    right:1px;
+}
+
+.icon-action {
+    position:relative;
+    top:8px;
+    right:3px;
+}
+
+.btn-action {
+    margin: 0 4px 0 4px;
+}
+
+.form-filter {
+    margin:20px;
+    width:40%;
+}

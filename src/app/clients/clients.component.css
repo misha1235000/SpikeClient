@@ -1,0 +1,380 @@
+mat-expansion-panel {
+    margin:5px;
+}
+
+.icon-empty {
+    color: #DADADA;
+    text-align: center;
+    font-size: 300px;
+    width: 300px;
+    height: 300px;
+    cursor: default;
+}
+
+.div-empty {
+    height:400px;
+    text-align: center;
+}
+
+.span-empty {
+    font-family: Arial;
+    text-align:center;
+    font-size: 22px;
+    color: #CACACA;
+}
+
+.avatar-img {
+    position: relative;
+    bottom: 15px;
+    right: 10px;
+}
+
+input {
+    outline:none;
+}
+
+.div-main {
+    flex:40%;
+}
+
+.accordion-main {
+    position:absolute;
+    left:27%;
+    width:64%;
+}
+
+.panel-expan {
+    width: 100%;
+}
+
+.panel-title {
+    position:absolute;
+    left:30px;
+    width:100%;
+}
+
+.progress-bar-main {
+    position:absolute;
+    top:-24px;
+    left:-25px;
+}
+
+.btn-act {
+    font-weight:bold;
+    position:relative;
+    right: 20px;
+}
+
+.btn-save {
+    background-color:white;
+    color:#66BB6A;
+    position: relative;
+    left: 15px;
+}
+
+.btn-add {
+    background-color: white;
+    color:#3f51b5;
+    position:relative;
+    left: 15px;
+}
+
+.btn-bold {
+    font-weight: bold;
+}
+
+.myinput {
+    border-radius: 12px;
+    height: 27px;
+    text-align: center;
+    background-color: white;
+    font-weight: bold;
+    color: black;
+}
+
+.span-desc {
+    position:relative;
+    bottom: 10px;
+    cursor:pointer;
+}
+
+.mat-form-uri {
+    position: relative;
+    bottom:30px;
+    width:200px;
+}
+
+.clientid-span {
+    position: relative;
+    top: 10px;
+    right: 39px;
+    text-align:center;
+    font-weight: bold;
+    font-size:13px;
+}
+
+.hosturi-span {
+    position: relative;
+    top: 11px;
+    right: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size:13px;
+}
+
+.clientid-icon {
+    position:relative;
+    right:0px;
+    top: 0px;
+    text-align: center;
+}
+
+.clientid-div {
+    width:50px;
+    position:relative;
+    flex:15%;
+    text-align:center;
+    left:15px;
+    top:2px;
+}
+
+.client-main-div {
+    text-align:center;
+    display: flex;
+    align-items: center;
+}
+
+.lock-icon {
+    position:relative;
+    left:12px;
+    top: 0px;
+    text-align: center;
+}
+
+.div-inner {
+    flex:85%;
+    position:relative;
+    right: 31px;
+}
+
+.div-inner-redirect {
+    flex:85%;
+    position:relative;
+    right: 25px;
+    bottom: 12px;
+    text-align: left;
+}
+
+.div-inner-hosturi {
+    flex:85%;
+    position:relative;
+    right: 15px;
+    bottom: 12px;
+    text-align: left;
+}
+
+.textarea-stl {
+    background-color:#EAEAEA;
+    width: 92%;
+    position:relative;
+    top:14px;
+    resize: none;
+}
+
+.divider-stl {
+    position:relative;
+    top:25px;
+}
+
+.redirect-main-div {
+    text-align:center;
+    display: flex;
+    align-items: center;
+    position:relative;
+    top:30px;
+    margin: 15px 0 15px 0;
+    height:70px;
+}
+
+.hosturi-main-div {
+    text-align:center;
+    display: flex;
+    align-items: center;
+    position:relative;
+    top:30px;
+    margin: 15px 0 15px 0;
+    height:70px;
+}
+
+.hosturi-div {
+    width:50px;
+    flex:15%;
+    position:relative;
+    text-align: center;
+    left:3px;
+    bottom:15px;
+}
+
+.redirect-div {
+    width:50px;
+    position:relative;
+    flex:15%;
+    text-align:center;
+    left:15px;
+    bottom: 15px;
+}
+
+.client-name {
+    position:relative;
+    bottom: 10px;
+    font-weight:bold;
+}
+
+.edit-btn {
+    position:relative;
+    bottom: 22px;
+    left:10px;
+}
+
+.upload-btn {
+    position:absolute;
+    left: -40px;
+}
+
+.expand-btn {
+    position: relative;
+    bottom: 0px;
+}
+
+.chip-list {
+    position:relative;
+    left: 10px;
+}
+
+.form-stl {
+    margin: 0 0 0 15px;
+}
+
+.flexable {
+    display: flex;
+}
+
+.span-flexable {
+    flex: 1 1 auto;
+}
+
+.register-btn {
+    position:fixed;
+    right: 50px;
+    bottom: 50px;
+}
+
+.hosturi-display {
+    font-weight: bold;
+    background-color: #E0E0E0;
+    margin: 0px 10px 0 0px;
+    padding: 5px 0px 5px 11px;
+}
+
+.input-class {
+    position: relative;
+    line-height: 90px;
+    text-align: left;
+    left: 200px;
+}
+
+.prefix-icon {
+    font-size:30px;
+    color: #757575;
+    position:absolute;
+    left: -40px;
+    bottom:5px;
+}
+
+.help-csv {
+    cursor: default;
+}
+
+.help-csv>img {
+    display: none;
+}
+.help-csv:hover>img {
+    display: block;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .filter-form {
+      width:45.5%;
+      text-align: left;
+  }
+
+  .prefix-icon-special {
+    font-size:25px;
+    color: #757575;
+    position:absolute;
+    bottom:5px;
+    right: 5px;
+}
+
+.span-err-msg {
+    position: absolute;
+    bottom: 17px;
+    left: 0px;
+    font-size: 12px;
+    font-weight: bold;
+    color: red;
+}
+
+.icon-red {
+    color:#EF5350;
+    position: relative;
+    top: 6px;
+    font-size: 28px;
+}
+
+.icon-green {
+    color: #66BB6A;
+    position: relative;
+    top: 6px;
+    font-size: 28px;
+}
+
+.img-help {
+    position: absolute;
+    left: -36px;
+    top: -62px;
+    z-index: 999;
+    box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+.icon-help {
+    position: absolute;
+    left: -72px;
+    top: 2px;
+    color:rgba(0,0,0,.87);
+}
+
+.spinner-opts {
+    position:relative;
+    left: 120px;
+    top:180px;
+}

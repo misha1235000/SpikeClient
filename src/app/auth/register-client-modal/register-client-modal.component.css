@@ -1,0 +1,142 @@
+mat-toolbar {
+    background-color: black !important;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+mat-card {
+    margin: 20px;
+    height: 350px;
+}
+
+mat-card-subtitle {
+    text-align: center;
+}
+
+.mat-card-content {
+    text-align: center;
+    position: relative;
+    margin: 60px 50px 50px 50px;
+}
+
+.main-div {
+    position: relative;
+    top: 150px;
+    display: flex;
+}
+
+.login-form {
+    min-width: 150px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.full-width {
+    width: 240px;
+}
+
+.prefix-icon {
+    font-size: 30px;
+    color: #757575;
+    position: absolute;
+    left: -40px;
+    bottom: 5px;
+}
+
+.prefix-icon-special {
+    font-size: 30px;
+    color: #757575;
+    position: absolute;
+    left: -82px;
+    bottom: 5px;
+}
+
+.input-class {
+    margin-left: 25px;
+}
+
+.login-button {
+    color: white;
+    background-color: black;
+    position: absolute;
+    right: 5px;
+    bottom: -45px;
+}
+
+.logout-button {
+    position: fixed;
+    left: 50px;
+    bottom: 50px;
+}
+
+.email-button {
+    position: relative;
+    left: 50px;
+}
+
+.help-authorize {
+    position: absolute;
+    bottom: 3px;
+    right: -32px;
+    cursor: default;
+    font-size: 20px;
+}
+
+.error-msg {
+    position: absolute;
+    left: -40px;
+    bottom: -35px;
+    max-width: 220px;
+    font-size: 11px;
+    color: #ef5350;
+    font-weight: bold;
+}
+
+.example-margin {
+    direction: rtl;
+    position: relative;
+    left: 18px;
+}
+
+.help-csv {
+    cursor: default;
+}
+
+.help-csv>img { display: none; }
+.help-csv:hover>img { display: block; }
+
+.form-reg {
+    position: relative;
+    bottom: 20px;
+}
+
+.img-help {
+    position: absolute;
+    left: -36px;
+    top: -62px;
+    z-index: 999;
+    box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+.icon-help {
+    position: absolute;
+    left: -72px;
+    top: 3px;
+    color:rgba(0,0,0,.87)
+}
+
+.icon-red {
+    color:#EF5350;
+    position: relative;
+    top: 6px;
+    font-size: 28px;
+}
+
+.icon-green {
+    color: #66BB6A;
+    position: relative;
+    top: 6px;
+    font-size: 28px;
+}

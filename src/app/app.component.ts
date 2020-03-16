@@ -1,4 +1,7 @@
+// app.component
+
 import { Component } from '@angular/core';
+import { PublicFunctions } from './shared/shared';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'SpikeClient';
+
+  ngOnInit() {
+    PublicFunctions.checkLogin();
+  }
 }
