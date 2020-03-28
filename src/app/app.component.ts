@@ -1,6 +1,6 @@
 // app.component
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PublicFunctions } from './shared/shared';
 
 @Component({
@@ -8,7 +8,7 @@ import { PublicFunctions } from './shared/shared';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'SpikeClient';
 
   ngOnInit() {

@@ -1,5 +1,6 @@
 mat-expansion-panel {
     margin:5px;
+    min-width: 767px;
 }
 
 .icon-empty {
@@ -28,35 +29,37 @@ mat-expansion-panel {
     bottom: 15px;
     right: 10px;
 }
+/*
+    position: relative;
+    bottom: 11px;
+    right: 13px;
+    z-index: 1;
+    color: whit
+*/
 
 input {
     outline:none;
 }
 
 .div-main {
-    flex:40%;
-}
-
-.accordion-main {
-    position:absolute;
-    left:27%;
-    width:64%;
+    margin-top: 60px;
+    width: 70%;
 }
 
 .panel-expan {
     width: 100%;
+    position: relative;
 }
 
 .panel-title {
     position:absolute;
-    left:30px;
-    width:100%;
+    width: 100%;
 }
 
 .progress-bar-main {
     position:absolute;
     top:-24px;
-    left:-25px;
+    left: -28px;
 }
 
 .btn-act {
@@ -109,7 +112,7 @@ input {
     top: 10px;
     right: 39px;
     text-align:center;
-    font-weight: bold;
+    font-weight: 560;
     font-size:13px;
 }
 
@@ -118,7 +121,7 @@ input {
     top: 11px;
     right: 30px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 560;
     font-size:13px;
 }
 
@@ -147,6 +150,13 @@ input {
 .lock-icon {
     position:relative;
     left:12px;
+    top: 0px;
+    text-align: center;
+}
+
+.aud-icon {
+    position:relative;
+    left:10px;
     top: 0px;
     text-align: center;
 }
@@ -323,8 +333,9 @@ input {
   }
 
   .filter-form {
-      width:45.5%;
+      width:100%;
       text-align: left;
+      padding:0 5px;
   }
 
   .prefix-icon-special {
@@ -375,6 +386,13 @@ input {
 
 .spinner-opts {
     position:relative;
-    left: 120px;
     top:180px;
+}
+
+.mat-content {
+    width: 100%;
+    /* display: flex; */
+    /* flex: 1; */
+    /* flex-direction: row; */
+    overflow: hidden;
 }

@@ -9,6 +9,11 @@ body {
 mat-dialog-container {
     padding: 0 !important;
     overflow-x: hidden !important;
+    position: relative;
+}
+
+mat-expansion-panel-header {
+    padding: 0 28px !important;
 }
 
 .mat-drawer-container {
@@ -18,5 +23,9 @@ mat-dialog-container {
 .mat-dialog-container {
     overflow-y: hidden !important;
 }
-html, body { height: 100%; }
+html, body { 
+    height: 100%;
+    overflow-y: hidden;
+}
+
 body { margin: 0; font-family: 'Roboto', sans-serif; }

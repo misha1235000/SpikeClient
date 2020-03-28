@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { PublicFunctions } from '../../shared/shared';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { SharedService } from 'src/app/shared.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TeamJoinInfoModalComponent } from 'src/app/teams/team-join-info-modal/team-join-info-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,8 @@ export class LoginComponent implements OnInit {
    * @param _formBuilder - The form builder.
    */
   constructor(private authService: AuthService, private formBuilder: FormBuilder,
-              private router: Router, private sharedService: SharedService) { }
+              private router: Router, private sharedService: SharedService,
+              private teamJoinInfoDialog: MatDialog) { }
 
   teamnameFormControl = new FormControl('', [
     Validators.required,
@@ -31,7 +34,7 @@ export class LoginComponent implements OnInit {
   ]);
 
   user;
-  team;
+  team: any = [];
   loginFormGroup: FormGroup;
   isLogged: boolean;
   teamName: string;
@@ -44,7 +47,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.teamName = this.loginFormGroup.value.teamname;
     this.desc = this.loginFormGroup.value.desc;
-    this.authService.registerTeam({'teamname': this.teamName, 'desc': this.desc, 'ownerId': this.user.email}).subscribe((data) => {
+    this.authService.registerTeam({teamname: this.teamName, desc: this.desc, ownerId: this.user.genesisId}).subscribe((data) => {
       if (data.auth) { // If the server returned that the login authorized.
         this.errorMsg = undefined;
         this.sharedService.setData = data;
@@ -68,19 +71,20 @@ export class LoginComponent implements OnInit {
     });
 
     if (this.user) {
-      this.authService.getTeams(this.user.email).subscribe((data) => {
+      this.authService.getTeams(this.user.genesisId).subscribe((data) => {
         if (data && data.teams && data.teams.length > 0) { // If the server returned that the login authorized.
           this.team = data.teams;
           this.sharedService.setData = this.team;
-          this.router.navigateByUrl('/clients');
+          this.router.navigateByUrl('/teams');
         } else {
-          console.log('no data');
+          this.team = null;
+          // console.log('no data');
         }
       }, (error) => {
+        this.team = [];
         console.log(error);
       });
     } else {
-      
     }
   }
 
@@ -91,10 +95,15 @@ export class LoginComponent implements OnInit {
     return this.loginFormGroup.status !== 'INVALID';
   }
 
-    /**
+  /**
    * Opens the register dialog.
    */
-  openRegister() {
-    
+  openInfo() {
+    this.teamJoinInfoDialog.open(TeamJoinInfoModalComponent,
+      {
+        width: '500px',
+        height: '300px',
+      }
+    );
   }
 }

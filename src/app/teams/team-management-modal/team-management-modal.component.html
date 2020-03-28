@@ -1,0 +1,50 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>{{team.teamname}} Team Management</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-spinner style="position: absolute; left: 44%;top: 40%;" *ngIf="!doneLoading"></mat-spinner>
+<mat-list *ngIf="doneLoading" class="scrollbar scrollbar-primary" style="padding-top:0;">
+  <mat-list-item style="background-color: #EAEAEA;font-weight: bold;">
+    <div style="flex:49%">User Name</div>
+    <div style="flex:26%">
+      <span>Permission</span>
+    </div>
+    <div style="flex:24%">
+      Actions
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<mat-list *ngIf="doneLoading" class="scrollbar scrollbar-primary" style="padding-top:0; max-height:688px; overflow-y:auto;">
+  <mat-list-item *ngFor="let currUser of team.users">
+    <div style="flex:50%">
+      <span style="position: absolute;top: 6px;">{{ currUser.fullName }}</span>
+      <span style="position: absolute;bottom: 4px;color: #AAAAAA;font-size: 13px;">
+        {{ currUser.hierarchy.join('/') }}
+      </span>
+    </div>
+    <div style="flex:25%">
+      <span *ngIf="currUser.isAdmin">Admin</span>
+      <span *ngIf="!currUser.isAdmin">User</span>
+    </div>
+    <div style="flex:25%">
+      <button (click)="removePerson(currUser)" *ngIf="team.isAdmin && currUser.id !== user.genesisId" mat-icon-button color="warn" matTooltip="Remove User From Team"><mat-icon>delete</mat-icon></button>
+      <button (click)="setPermission(currUser)" *ngIf="team.isAdmin && currUser.id !== user.genesisId && !currUser.isAdmin" mat-icon-button color="primary" matTooltip="Set User As Admin"><mat-icon>supervised_user_circle</mat-icon></button>
+      <button (click)="setPermission(currUser)" *ngIf="team.isAdmin && currUser.id !== user.genesisId && currUser.isAdmin" mat-icon-button color="primary" matTooltip="Remove Admin Permissions">
+        <mat-icon style="
+                          position: absolute;
+                          right: 8px;
+                          color: red;
+                          top: 8px;">
+        block</mat-icon>
+        <mat-icon>supervised_user_circle</mat-icon></button>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+
+<button matTooltip="Add New Person To Team" matTooltipPosition="above" *ngIf="team.isAdmin" (click)="addPerson()" mat-fab color="primary" style="position:absolute; right:20px; bottom: 20px;"><mat-icon>add</mat-icon></button>

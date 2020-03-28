@@ -1,8 +1,8 @@
+<mat-spinner class="spinner-opts" *ngIf="!clients"></mat-spinner>
 <div *ngIf="user && teams" class="div-main">
-    <mat-spinner class="spinner-opts" *ngIf="!clients"></mat-spinner>
     <form class="filter-form" *ngIf="clients && clients.length > 0">
       <mat-form-field style="width:250px;">
-        <input matInput autocomplete="off" placeholder="Search Client" [(ngModel)]="clientsForSearch" (ngModelchange)="filterClients($event)" style="width:220px;" name="clientsFilter">
+        <input matInput autocomplete="off" placeholder="Search Client/Team" [(ngModel)]="clientsForSearch" (ngModelchange)="filterClients($event)" style="width:220px;" name="clientsFilter">
         <mat-icon class="prefix-icon-special">search</mat-icon>
       </mat-form-field>
     </form>
@@ -12,12 +12,16 @@
           <div class="span-empty">No Clients To Display</div>
         </div>
         
-        <mat-expansion-panel class="panel-expan" #currClient *ngFor="let client of  filterClients(clientsForSearch)" [expanded]="client.isNew" (click)="client.isNew = false; getClientData(client, currClient); client.start = true;">
-          <mat-expansion-panel-header>
+        <mat-expansion-panel class="panel-expan" #currClient *ngFor="let client of filterClients(clientsForSearch)" [expanded]="client.isNew" (click)="client.isNew = false; getClientData(client, currClient); client.start = true;">
+          <mat-expansion-panel-header style="width: 95%;">
             <mat-panel-title class="panel-title">
               <mat-progress-bar class="progress-bar-main" *ngIf="client.start && !(client.secret && client.redirectUris)" mode="indeterminate"></mat-progress-bar>
-              <img class="avatar-img" src="/assets/png/avatar.png" width="30" height="30"/>
-              <!--<avatar class="avatar-img" [size]="30" [name]="client.avatarName" [displayType]="'circle'" [background]="client.color"></avatar>-->
+              <!--<img class="avatar-img" src="/assets/png/avatar.png" width="30" height="30"/>-->
+              <!--<span style="transform: scale(0.8);position: relative;bottom: 3px;right: 2px;">
+                <mat-icon class="avatar-img">desktop_windows</mat-icon>
+                <mat-icon style="position: absolute; bottom: 31px; left: -28.5px;color: #29B6F6;font-size: 55px;">fiber_manual_record</mat-icon>
+              </span>-->
+              <ngx-avatar class="avatar-img" [size]="30" [name]="client.avatarName" [round]="true" [bgColor]="client.color" textSizeRatio="2.5"></ngx-avatar>
               <span class="client-name"> {{ client.name }} - <span style="color:#9A9A9A;"> {{ client.teamName }}</span></span>
             </mat-panel-title>
             <mat-panel-description>
@@ -44,6 +48,16 @@
                 <button mat-icon-button color="primary" (click)="copyClipboard(clientSecret)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
               </div>
           </div>
+          <div class="client-main-div">
+            <div class="clientid-div">
+              <mat-icon class="aud-icon">wifi</mat-icon>
+              <span class="clientid-span">Audience ID</span>
+            </div>
+            <div class="div-inner">
+              <textarea readonly class="textarea-stl" #audience>{{ client.audienceId }}</textarea>
+              <button mat-icon-button color="primary" (click)="copyClipboard(audience)" matTooltip="Copy" matTooltipPosition="above"><mat-icon>file_copy</mat-icon></button>
+            </div>
+        </div>
           <mat-divider class="divider-stl"></mat-divider>
           <div class="redirect-main-div">
             <div class="redirect-div">
@@ -62,7 +76,7 @@
                   </mat-chip>
                 </ng-container>
   
-                  <form class="example-form" class="form-stl" autocomplete="off">
+                  <form class="example-form" class="form-stl" autocomplete="off" >
                     <mat-chip-list #chipList>
                       <mat-chip  *ngFor="let newRedirectUri of client.newRedirectUris" [selectable]="selectable"
                                (removed)="remove(client, newRedirectUri)">

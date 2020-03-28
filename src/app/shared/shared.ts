@@ -2,6 +2,7 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
+import { config } from './config';
 
 export class PublicFunctions {
     /**
@@ -26,11 +27,21 @@ export class PublicFunctions {
 
     /**
      * Decodes JWT, to get the value of it.
-     * @param jwt 
+     * @param jwt - JWT
      */
     public static DecodeJwt() {
-        if (PublicFunctions.getCookie('authorization') !== '') {
-            return (JSON.parse(atob(PublicFunctions.getCookie('authorization').split('.')[1])));
+        const authorization = PublicFunctions.getCookie('authorization');
+        if (authorization !== '') {
+            return (
+                JSON.parse(
+                    decodeURIComponent(
+                        Array.prototype.map.call(
+                            atob(authorization.split('.')[1].replace('-', '+').replace('_', '/')),
+                            c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                        ).join('')
+                    )
+                )
+            );
         } else {
             return '';
         }
@@ -41,7 +52,7 @@ export class PublicFunctions {
      */
     public static logout() {
         // Redirect to shraga to authenticate
-        window.location.href = 'http://localhost:3000/auth/saml';
+        window.location.href = `https://localhost/auth`;
     }
 
     /**
@@ -67,6 +78,7 @@ export class PublicFunctions {
         } else {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
+        console.log(error.error);
         console.error(
             `Backend returned code ${error.status}, ` +
             `body was: ${error.error}`);
@@ -79,5 +91,5 @@ export class PublicFunctions {
         // return an observable with a user-facing error message
         return throwError(
         'Something bad happened; please try again later.');
-    };
+    }
 }

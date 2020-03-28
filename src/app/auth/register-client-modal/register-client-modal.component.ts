@@ -85,9 +85,8 @@ export class RegisterClientModalComponent implements OnInit {
    * @param data - The data service.
    */
   constructor(public dialogRef: MatDialogRef<RegisterClientModalComponent>, private formBuilder: FormBuilder,
-  @Inject(MAT_DIALOG_DATA) public data: any, private authService: AuthService) {
+              @Inject(MAT_DIALOG_DATA) public data: any, private authService: AuthService) {
   }
-
 
   /**
    * Checks whether the team account is logged in or not.
@@ -130,15 +129,15 @@ export class RegisterClientModalComponent implements OnInit {
       this.hostUris.push(this.hostUri);
     }
 
-    this.authService.registerClient({'name': this.appName,
-                                     'teamId': this.registerClientFormGroup.value.teamname,
-                                     'teamName': this.teams.map((currTeam) => {
+    this.authService.registerClient({name: this.appName,
+                                     teamId: this.registerClientFormGroup.value.teamname,
+                                     teamName: this.teams.map((currTeam) => {
                                        if (currTeam._id === this.registerClientFormGroup.value.teamname) {
                                          return currTeam.teamname;
                                        }
                                       }),
-                                     'redirectUris': this.redirectUris,
-                                     'hostUris': this.hostUris.map(hostUri => 'https://' + hostUri.trim())}).subscribe((data) => {
+                                     redirectUris: this.redirectUris,
+                                     hostUris: this.hostUris.map(hostUri => 'https://' + hostUri.trim())}).subscribe((data) => {
       if (data) {
         this.errorMsg = undefined;
         this.dialogRef.close(data);
@@ -172,7 +171,10 @@ export class RegisterClientModalComponent implements OnInit {
     const value = event.value;
 
     // Add the chip to the chips list.
-    if ((value || '').trim() && this.redirectUrisRegex.test(value) && this.redirectUris.length < 10 && this.redirectUris.indexOf(value) === -1) {
+    if ((value || '').trim() &&
+        this.redirectUrisRegex.test(value) &&
+        this.redirectUris.length < 10 &&
+        this.redirectUris.indexOf(value) === -1) {
       this.redirectUris.push(value.trim());
     }
 
@@ -251,7 +253,8 @@ export class RegisterClientModalComponent implements OnInit {
     const match = hostPort.exec(currHostUri);
     if (this.portRegex.exec(this.currPort)) {
       if (match && match[1].length > 0) {
-        this.currHost = this.currHost.replace(/([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g, this.currPort);
+        this.currHost = this.currHost
+            .replace(/([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g, this.currPort);
       } else if (!match) {
         this.currHost = `${currHostUri}:${this.currPort}`;
       }

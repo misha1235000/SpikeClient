@@ -17,6 +17,7 @@ export class ClientHostUrisModalComponent implements OnInit {
   @ViewChild('scrollDiv') divToScroll: ElementRef;
   addHostFormGroup: FormGroup;
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
+  // tslint:disable-next-line:max-line-length
   hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
   client;
   errMsg: string;
@@ -54,17 +55,19 @@ export class ClientHostUrisModalComponent implements OnInit {
 
                 if (this.data.edit) {
                   this.client.fileHostUris.forEach(hostUri => {
-                    this.CLIENT_DATA.push({ hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
-                                            actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
-                                                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
-                                                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
+                    this.CLIENT_DATA.push({
+                      hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
+                      actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
+                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
+                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
                   });
                 } else {
                   this.client.hostUris.forEach(hostUri => {
-                    this.CLIENT_DATA.push({ hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
-                                            actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
-                                                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
-                                                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
+                    this.CLIENT_DATA.push({
+                      hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
+                      actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
+                      { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
+                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
                   });
                 }
 
@@ -122,8 +125,8 @@ export class ClientHostUrisModalComponent implements OnInit {
     if (currentHostUris.length === (new Set(currentHostUris)).size) {
       this.addMode = false;
       this.CLIENT_DATA.push({hostUri, hostPort, actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit'},*/
-                                                          { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
-                                                          { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
+                            { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
+                            { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
       this.dataSource = new MatTableDataSource(this.CLIENT_DATA);
       window.setTimeout(() => { this.divToScroll.nativeElement.scrollTop = 15000; }, 10);
       this.hostPort = undefined;
@@ -191,7 +194,8 @@ export class ClientHostUrisModalComponent implements OnInit {
     const match = hostPort.exec(currHostUri);
     if (this.portRegex.exec(this.hostPort)) {
       if (match && match[1].length > 0) {
-        this.hostUri = this.hostUri.replace(/([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g, this.hostPort);
+        this.hostUri = this.hostUri.replace(/([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/g,
+                                            this.hostPort);
       } else if (!match) {
         this.hostUri = `${currHostUri}:${this.hostPort}`;
       }
@@ -267,8 +271,8 @@ export class ClientHostUrisModalComponent implements OnInit {
 
 /**
  * Checks if two arrays that were given are equal.
- * @param firstArray 
- * @param secondArray 
+ * @param firstArray - First Array
+ * @param secondArray - Second Array
  */
 function arraysEqual(firstArray, secondArray) {
   if (firstArray && secondArray) {

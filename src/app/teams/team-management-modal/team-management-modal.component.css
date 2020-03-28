@@ -1,0 +1,22 @@
+mat-toolbar {
+    background-color:black !important;
+    color:white;
+}
+
+.example-spacer {
+    flex:1 1 auto;
+}
+
+.scrollbar-primary::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F5F5F5; }
+
+.scrollbar-primary::-webkit-scrollbar-thumb {
+border-radius: 0px;
+box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+background-color: black; }
+
+.scrollbar-primary {
+scrollbar-color: black #F5F5F5;
+}

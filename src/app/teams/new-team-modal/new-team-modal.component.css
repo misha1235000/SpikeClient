@@ -1,7 +1,17 @@
 .main-team {
-    width: 450px;
-    position:relative;
-    top:160px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    top: 60px;
+}
+
+mat-toolbar {
+    background-color:black !important;
+    color:white;
+}
+
+.example-spacer {
+    flex:1 1 auto;
 }
 
 mat-card {
@@ -43,9 +53,9 @@ mat-card-content {
 .login-button {
     color: white;
     background-color: black;
-    position:absolute;
-    right: -34px;
-    bottom: -84px;
+    position: absolute;
+    right: 40%;
+    bottom: -60px;
 }
 
 .logout-button {
@@ -72,8 +82,8 @@ mat-card-content {
 .register-btn {
     color: #1a73e8;
     position: absolute;
-    bottom: 13px;
-    left:6px;
+    bottom: 28px;
+    left:32px;
 }
 
 textarea {

@@ -78,19 +78,19 @@ button {
 .btn-save {
     position:absolute;
     right:-68px;
-    bottom:-46px;
+    bottom:-50px;
 }
 
 .btn-close {
     position:absolute;
     left:12px;
-    bottom:-46px;
+    bottom:-50px;
 }
 
 .btn-save-host {
     position:absolute;
     left:12px;
-    bottom:-46px;
+    bottom:-50px;
 }
 
 .btn-cancel {

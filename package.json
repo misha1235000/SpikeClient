@@ -28,6 +28,7 @@
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
     "ng2-avatar": "^2.3.1",
+    "ngx-avatar": "^3.7.0",
     "passport": "^0.4.1",
     "passport-shraga": "^1.4.0",
     "rxjs": "~6.5.4",

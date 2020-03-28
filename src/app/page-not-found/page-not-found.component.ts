@@ -35,8 +35,8 @@ export class PageNotFoundComponent implements OnInit {
     }
 
     if (!this.teams && this.user) {
-      this.authService.getTeams(this.user.email).subscribe((data) => {
-        if (data && data.teams) {
+      this.authService.getTeams(this.user.genesisId).subscribe((data) => {
+        if (data && data.teams && data.teams.length > 0) {
           this.sharedService.setData = data.teams;
           this.teams = data.teams;
         } else {

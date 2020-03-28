@@ -1,8 +1,7 @@
 .sidenav {
-    display: flex;
-    justify-content: center;
-    width: 280px;
+    flex:15%;
     background-color: #DADADA;
+    height:100%;
 }
 
 .mat-list-icon {
@@ -21,16 +20,18 @@
   .btns-list {
       position:relative;
       top: 30px;
+      width: 220px;
   }
 
   .btn-icon {
       position:relative;
-      top: 7px;
+      top:7px;
   }
 
   .btn-text {
       position:relative;
-      bottom: 12px;
+      top:3px;
+      font-weight: 540;
   }
 
   mat-list-item {
@@ -53,11 +54,10 @@
 }
 
 .example-sidenav-container {
-  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
-     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   text-align: center;
+  height: calc(100vh - 64px);
   text-align: -webkit-center;
-  flex: 1;
+  display:flex;
   background-color: rgba(235 ,235, 235, 1);
 }
 

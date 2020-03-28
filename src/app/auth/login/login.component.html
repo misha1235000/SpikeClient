@@ -1,3 +1,4 @@
+<mat-spinner style="position:relative; top:180px;" *ngIf="team && team.length === 0"></mat-spinner>
 <div *ngIf="!team" class="main-team">
     <mat-card class="loginCard">
         <b><mat-card-subtitle>Create Team</mat-card-subtitle></b>
@@ -30,7 +31,7 @@
                 <button mat-raised-button class="login-button" (click)="login()" [disabled]="!isDetailsValid()">Create Team</button>
               </form>
         </mat-card-content>
-        <button class="register-btn" mat-button (click)='openRegister()'>Join existing team</button>
+        <button class="register-btn" mat-button (click)='openInfo()'>how to join to an existing team?</button>
         <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
     </mat-card>
   </div>

@@ -40,6 +40,7 @@ export class ClientsComponent implements OnInit {
   }
 
   user;
+  // tslint:disable-next-line:max-line-length
   hostUriRegex = /^(([A-Za-z0-9\._\-]+)([A-Za-z0-9]+))(:[1-9][0-9]{0,3}|:[1-5][0-9]{4}|:6[0-4][0-9]{3}|:65[0-4][0-9]{2}|:655[0-2][0-9]|:6553[0-5])?$/m;
   portRegex = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/m;
   fileFormGroup: FormGroup;
@@ -56,18 +57,18 @@ export class ClientsComponent implements OnInit {
    * Inject the needed services.
    * @param snackBar - The service of the snackbar.
    * @param registerDialog - The service of the register dialog.
-  * @param clientsService - The service of the clients.
-  */
+   * @param clientsService - The service of the clients.
+   */
   constructor(private snackBar: MatSnackBar,
-    private registerDialog: MatDialog,
-    private verifyDeleteDialog: MatDialog,
-    private verifyClientResetDialog: MatDialog,
-    private clientHostUrisDialog: MatDialog,
-    private clientsService: ClientsService,
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private sharedService: SharedService,
-    private authService: AuthService) { }
+              private registerDialog: MatDialog,
+              private verifyDeleteDialog: MatDialog,
+              private verifyClientResetDialog: MatDialog,
+              private clientHostUrisDialog: MatDialog,
+              private clientsService: ClientsService,
+              private formBuilder: FormBuilder,
+              private router: Router,
+              private sharedService: SharedService,
+              private authService: AuthService) { }
 
   fileFormControl = new FormControl('', [
     Validators.required,
@@ -85,10 +86,10 @@ export class ClientsComponent implements OnInit {
     } else {
       PublicFunctions.checkLogin();
     }
-    
+
     if (!this.teams && this.user) {
-      this.authService.getTeams(this.user.email).subscribe((teams) => {
-        if (teams) {
+      this.authService.getTeams(this.user.genesisId).subscribe((teams) => {
+        if (teams && teams.teams && teams.teams.length > 0) {
           this.sharedService.setData = teams;
           this.teams = teams;
           this.clientsService.getClients().subscribe(
@@ -107,7 +108,9 @@ export class ClientsComponent implements OnInit {
                   }
                 });
                 clients.map(client => { client = client.hostUris.sort(); });
+                // tslint:disable-next-line:prefer-for-of
                 for (let currClient = 0; currClient < clients.length; currClient++) {
+                  // tslint:disable-next-line:prefer-for-of
                   for (let currTeam = 0; currTeam < teams.teams.length; currTeam++) {
                     if (clients[currClient].teamId === teams.teams[currTeam]._id) {
                       clients[currClient].teamName = teams.teams[currTeam].teamname;
@@ -126,7 +129,7 @@ export class ClientsComponent implements OnInit {
         } else {
           this.router.navigateByUrl('/login');
         }
-      })
+      });
     }
   }
 
@@ -165,6 +168,7 @@ export class ClientsComponent implements OnInit {
           result.avatarName = result.name;
         }
 
+        // tslint:disable-next-line:prefer-for-of
         for (let currTeam = 0; currTeam < this.teams.teams.length; currTeam++) {
           if (result.teamId === this.teams.teams[currTeam]._id) {
             result.teamName = this.teams.teams[currTeam].teamname;
@@ -180,19 +184,21 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Gets all the client data.
-   * @param client - The client with the data
-   * @param currClient
+   * @param client - The client with the data.
+   * @param currClient - The current client.
    */
   getClientData(client, currClient) {
     if (!client.secret || !client.redirectUris) {
       this.clientsService.getClientData(client.clientId).subscribe(
         clientData => {
           if (clientData) {
+            // tslint:disable-next-line:prefer-for-of
             for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
               if (this.clients[currIndex].clientId === clientData.clientId) {
                 this.clients[currIndex].teamId = clientData.teamId;
                 this.clients[currIndex].secret = clientData.secret;
                 this.clients[currIndex].redirectUris = clientData.redirectUris;
+                this.clients[currIndex].audienceId = clientData.audienceId;
                 currClient.open();
                 this.clients[currIndex].start = false;
                 break;
@@ -215,8 +221,8 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Adds new client to the clients chip array.
-   * @param client
-   * @param event
+   * @param client - The Client.
+   * @param event - The Event.
    */
   add(client, event: MatChipInputEvent): void {
     const input = event.input;
@@ -239,8 +245,8 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Removes a client from the chip array.
-   * @param client
-   * @param redirectUri
+   * @param client - The client.
+   * @param redirectUri - The redirect Uri.
    */
   remove(client, redirectUri): void {
     const index = client.newRedirectUris.indexOf(redirectUri);
@@ -260,7 +266,7 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Saves the changes of the client.
-   * @param client
+   * @param client - The client.
    */
   saveChanges(client) {
     client.redirectUris = client.copyRedirectUris.slice();
@@ -303,7 +309,7 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Sets the client as editable.
-   * @param client
+   * @param client - The client
    */
   setEditable(client): void {
     client.isEditable = true;
@@ -313,7 +319,7 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Cancels all the changes.
-   * @param client
+   * @param client - The client
    */
   cancelChanges(client): void {
     client.newRedirectUris = [];
@@ -330,7 +336,7 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Remove a client.
-   * @param client
+   * @param client - The client
    */
   removeClient(client): void {
     const dialogRef = this.verifyDeleteDialog.open(VerifyClientDeleteModalComponent, {
@@ -366,7 +372,7 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Opens up the hosts uri management for a specific client.
-   * @param client
+   * @param client - The client
    */
   expandUris(event, client, edit: boolean): void {
     event.stopPropagation();
@@ -390,7 +396,7 @@ export class ClientsComponent implements OnInit {
 
   /**
    * A check if client has changed.
-   * @param client
+   * @param client - The client.
    */
   isClientChanged(client): boolean {
     if (client.redirectUris.toString() === client.copyRedirectUris.toString() &&
@@ -404,8 +410,8 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Set hostUri as editable.
-   * @param event
-   * @param client
+   * @param event - The event.
+   * @param client - The client.
    */
   editHostUri(event, client): void {
     event.stopPropagation();
@@ -414,8 +420,8 @@ export class ClientsComponent implements OnInit {
 
   /**
    * Stop HostUri from being editable.
-   * @param event
-   * @param client
+   * @param event - The event.
+   * @param client - The client.
    */
   saveHostUri(event, client): void {
     event.stopPropagation();
@@ -517,9 +523,9 @@ export class ClientsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        
         this.clientsService.resetCredentials(client.clientId).subscribe((data) => {
           if (data) {
+            // tslint:disable-next-line:prefer-for-of
             for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
               if (client.clientId === this.clients[currIndex].clientId) {
                 this.clients[currIndex].clientId = data.clientId;
@@ -527,14 +533,14 @@ export class ClientsComponent implements OnInit {
                 break;
               }
             }
-  
+
             this.snackBar.open('Client Credentials Has Been Renewed Successfuly', '', {
               duration: 2000
             });
           }
         }, (error) => {
           console.log(error);
-        });        
+        });
       }
     });
   }
@@ -546,12 +552,12 @@ export class ClientsComponent implements OnInit {
   filterClients(dataToSearch) {
     if (!dataToSearch || dataToSearch === '') {
       this.filteredClients = undefined;
-      return this.clients
+      return this.clients;
     } else {
       this.filteredClients = this.clients.filter((client) => {
         return client.name.toLowerCase().match(dataToSearch.toLowerCase()) ||
                client.teamName.toLowerCase().match(dataToSearch.toLowerCase());
-      })
+      });
 
       return this.filteredClients;
     }
@@ -560,8 +566,8 @@ export class ClientsComponent implements OnInit {
 
 /**
  * Checks if two arrays are equal.
- * @param firstArray
- * @param secondArray 
+ * @param firstArray - The first array.
+ * @param secondArray - The second array.
  */
 function arraysEqual(firstArray, secondArray) {
   if (firstArray && secondArray) {

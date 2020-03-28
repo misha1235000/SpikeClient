@@ -11,7 +11,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class VerifyClientDeleteModalComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<VerifyClientDeleteModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: boolean) {}
+              @Inject(MAT_DIALOG_DATA) public data: boolean) {}
 
   ngOnInit() {}
 

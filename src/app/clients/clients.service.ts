@@ -23,28 +23,28 @@ export class ClientsService {
   getClients(): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
     return this.http.get(this.clientUrl, httpOptions).pipe(
         catchError(PublicFunctions.handleError)
-    )
+    );
   }
 
   /**
    * Gets a specific client data by the token and the client ID.
-   * @param clientId 
+   * @param clientId - Client id
    */
   getClientData(clientId: string): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
     return this.http.get(this.clientUrl + '/' + clientId, httpOptions).pipe(
-        catchError(PublicFunctions.handleError) 
+        catchError(PublicFunctions.handleError)
     );
   }
 
@@ -56,7 +56,7 @@ export class ClientsService {
   updateClient(clientId: string, client): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
@@ -67,12 +67,12 @@ export class ClientsService {
 
   /**
    * Removes a client by client ID.
-   * @param clientId 
+   * @param clientId - Client id
    */
   removeClient(clientId: string): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
@@ -88,12 +88,12 @@ export class ClientsService {
   resetCredentials(clientId: string): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
     return this.http.patch(this.clientUrl + '/' + clientId, {}, httpOptions).pipe(
         catchError(PublicFunctions.handleError)
-    )
+    );
   }
 }

@@ -1,8 +1,9 @@
 // app-routing.module
 
-import { NgModule }              from '@angular/core';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,6 +31,7 @@ import { MatRippleModule } from '@angular/material/core';
   imports: [
     MatButtonModule,
     MatCardModule,
+    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
@@ -56,6 +58,7 @@ import { MatRippleModule } from '@angular/material/core';
   exports: [
     MatButtonModule,
     MatCardModule,
+    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,

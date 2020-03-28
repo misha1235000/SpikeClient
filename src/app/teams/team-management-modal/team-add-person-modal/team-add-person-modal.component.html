@@ -1,0 +1,32 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>Add New Person</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<form style="text-align:center; margin-top: 48px;">
+  <mat-icon style="color:#5A5A5A;font-size:31px; position:relative; right:10px; top:12px;">person</mat-icon>
+  <mat-form-field style="width:70%;">
+  <input #inputSelected="matInput" type="text"
+         placeholder="Person to add to this team"
+         aria-label="Number"
+         matInput
+         [formControl]="myControl"
+         [matAutocomplete]="auto"
+         (input)="getPersons()">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectPerson($event.option.value)">
+    <mat-option *ngFor="let person of filteredPersons" [value]="person.id">
+      <span style="position:absolute; top:-5px;">{{ person.fullName }}</span>
+      <span style="position: absolute;top: 9px;font-size: 13px;font-weight: bold;color: #AAAAAA;">{{ person.hierarchy.join('/') }}</span>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<button style="position: absolute;bottom: 9px;right: 12px;" (click)="addPerson()"
+        color="primary" matTooltip="Save Person" matTooltipPosition="above" mat-button [disabled]="!isFormValid()">Add Person</button>
+<button mat-button color="primary" style="position: absolute;bottom: 9px;left: 12px;" (click)="close()">Cancel</button>
+</form>
+
+<mat-progress-bar *ngIf="loadingPersons" style="position: absolute;top: 64px;"
+                  mode="indeterminate"></mat-progress-bar>

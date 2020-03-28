@@ -1,28 +1,24 @@
-<div class="example-container">
-    <mat-sidenav-container class="example-sidenav-container">
-        <button mat-icon-button class="btn-menu" (click)="sidenav.toggle();"><mat-icon style="color: white;">menu</mat-icon></button>
-            <mat-sidenav *ngIf="team" #sidenav mode="side" opened class="sidenav"
-                         [fixedInViewport]="options.value.fixed" [fixedTopGap]="options.value.top"
-                         [fixedBottomGap]="options.value.bottom" >
-                <mat-list>
-                    <h3 mat-subheader class="h3-text">Hello {{ user.displayName }}</h3>
-                    <div class="btns-list">
-                        <mat-list-item>
-                            <button mat-button class="btn-list" routerLink="/clients" routerLinkActive="active">
-                                <h4 mat-line class="btn-text"><mat-icon class="btn-icon">vpn_key</mat-icon> Registered Clients</h4>
-                            </button>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                        <mat-list-item>
-                            <button mat-button class="btn-list" routerLink="/activity" routerLinkActive="active">   
-                                <h4 mat-line class="btn-text"><mat-icon class="btn-icon">assignment</mat-icon> Profile Activity</h4>
-                            </button>
-                        </mat-list-item>
-                    </div>
-                </mat-list>
-            </mat-sidenav>
-            <mat-sidenav-content style="display:contents">
-                <router-outlet></router-outlet>
-            </mat-sidenav-content>
-    </mat-sidenav-container>
+<div class="example-sidenav-container">
+    <button mat-icon-button class="btn-menu" (click)="sidenav.toggle();"><mat-icon style="color: white;">menu</mat-icon></button>
+    <div *ngIf="(team && team.length > 0)|| (team && (team.teams && team.teams.length > 0)) " #sidenav mode="side" opened class="sidenav">
+        <mat-list>
+            <h3 mat-subheader class="h3-text">Hello {{ user.fullName || user.name.firstName + ' ' + user.name.lastName }}</h3>
+            <div class="btns-list">
+                <mat-list-item>
+                    <button mat-button class="btn-list" routerLink="/clients" routerLinkActive="active">
+                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">vpn_key</mat-icon> Manage Clients</h4>
+                    </button>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <button mat-button class="btn-list" routerLink="/teams" routerLinkActive="active">   
+                        <h4 mat-line class="btn-text"><mat-icon class="btn-icon">assignment</mat-icon> Manage Teams</h4>
+                    </button>
+                </mat-list-item>
+            </div>
+        </mat-list>
     </div>
+    <div style="flex:85%; overflow-y: auto; max-height: calc(100vh - 64px);">
+        <router-outlet></router-outlet>
+    </div>
+</div>

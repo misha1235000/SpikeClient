@@ -25,7 +25,7 @@ export class AuthService {
   getUser(): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
@@ -38,15 +38,15 @@ export class AuthService {
    * Gets teams by specific email.
    * @param email - The key that the team is searched with/
    */
-  getTeams(email): Observable<any> {
+  getTeams(personId): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
-    return this.http.get(`${this.teamUrl}/${email}`, httpOptions).pipe(
-        catchError(PublicFunctions.handleError)  
+    return this.http.get(`${this.teamUrl}/${personId}`, httpOptions).pipe(
+        catchError(PublicFunctions.handleError)
     );
   }
 
@@ -57,27 +57,27 @@ export class AuthService {
   registerTeam(team): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
-    return this.http.post(`${this.authUrl}/register`, {'team': team}, httpOptions).pipe(
+    return this.http.post(`${this.authUrl}/register`, { team }, httpOptions).pipe(
         catchError(PublicFunctions.handleError)
     );
   }
 
-   /**
+  /**
    * Register a new client to the team account.
    * @param client - The client object to register.
    */
   registerClient(client): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
-    return this.http.post(this.clientUrl, {'clientInformation': client}, httpOptions).pipe(
+    return this.http.post(this.clientUrl, {clientInformation: client}, httpOptions).pipe(
         catchError(PublicFunctions.handleError)
     );
   }
@@ -89,12 +89,12 @@ export class AuthService {
   login(team): Observable<any> {
     const httpOptions = {
         headers: new HttpHeaders({
-            'authorization': PublicFunctions.getCookie('authorization')
+            authorization: PublicFunctions.getCookie('authorization')
         })
     };
 
-    return this.http.post(this.authUrl + '/login', {'team': team}, httpOptions).pipe(
+    return this.http.post(this.authUrl + '/login', { team }, httpOptions).pipe(
         catchError(PublicFunctions.handleError)
-    )
+    );
  }
 }

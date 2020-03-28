@@ -12,5 +12,5 @@ export const config = {
         ELASTIC_APM_SERVER_URL: 'apm_server',
         ELASTIC_APM_SECRET_TOKEN: 'apm_secret',
         ELASTIC_APM_ACTIVE: 'false',
-    };
-    
+        SHRAGA_URL: 'http://13.79.7.3'
+};

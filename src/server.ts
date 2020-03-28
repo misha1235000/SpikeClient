@@ -65,7 +65,7 @@ class Server {
             secret: 'secretcode',
             resave: false,
             saveUninitialized: true
-        }))
+        }));
 
         this.app.use(passport.initialize());
         this.app.use(passport.session());
@@ -75,39 +75,37 @@ class Server {
 
         /* GET home page. */
         this.app.get('/auth/', passport.authenticate('shraga'), (req, res, next) => {
-            res.status(200)//.json(req.user);
+            res.status(200); // .json(req.user);
         });
 
         /* GET home page. */
-        this.app.post('/auth/callback', passport.authenticate('shraga'), (req, res, next) => {
-        //res.send(req.user);
-            const token = jwt.sign({ ...req.user }, this.options.key, {
+        this.app.post('/auth/callback', passport.authenticate('shraga'), async (req, res, next) => {
+        // res.send(req.user);
+            const token = await jwt.sign({ ...req.user }, this.options.key, {
                 algorithm: 'RS256'
             });
+
+            // tslint:disable-next-line:radix
             res.cookie('authorization', token, { maxAge: (parseInt(req.user.exp) * 1000) - Date.now(), httpOnly: false });
             res.redirect('/');
         });
 
         this.app.use((req, res, next) => {
-            if (!req.user)
+            if (!req.user) {
                 res.redirect('/auth');
-            else
+            } else {
                 next();
-        })
-
-        this.app.get('/whoami', (req, res) => {
-            console.log(req.user);
-            res.send(req.user);
+            }
         });
 
         this.app.get('/logout', (req, res) => {
         });
 
         // Redirect to docs site
-        this.app.get('/help', (req, res) => {		
-	        res.redirect('http://' + req.headers.host + ':3001');
-	});
-	
+        this.app.get('/help', (req, res) => {
+            res.redirect('http://' + req.headers.host + ':3001');
+        });
+
         this.app.get('*', (req, res) => {
             if (allowedExt.filter(ext => req.url.indexOf(ext) > 0).length > 0) {
                 res.sendFile(path.resolve(`./dist/SpikeClient/${req.url}`));
@@ -118,7 +116,7 @@ class Server {
 
         https.createServer(this.options, this.app).listen(this.port, () => {
             console.log(`Spike client is running on port ${this.port} as https.`);
-        });        
+        });
     }
 }
 
