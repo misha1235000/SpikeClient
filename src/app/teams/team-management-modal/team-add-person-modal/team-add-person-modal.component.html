@@ -15,7 +15,7 @@
          matInput
          [formControl]="myControl"
          [matAutocomplete]="auto"
-         (input)="getPersons()">
+         id="person-input">
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectPerson($event.option.value)">
     <mat-option *ngFor="let person of filteredPersons" [value]="person.id">
       <span style="position:absolute; top:-5px;">{{ person.fullName }}</span>

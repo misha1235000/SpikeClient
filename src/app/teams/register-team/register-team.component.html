@@ -1,10 +1,10 @@
 <mat-spinner style="position:relative; top:180px;" *ngIf="team && team.length === 0"></mat-spinner>
 <div *ngIf="!team" class="main-team">
-    <mat-card class="loginCard">
+    <mat-card class="registerCard">
         <b><mat-card-subtitle>Create Team</mat-card-subtitle></b>
         <mat-divider></mat-divider>
         <mat-card-content>
-          <form [formGroup]="loginFormGroup" #ngForm autocomplete="off">
+          <form [formGroup]="registerTeamFormGroup" #ngForm autocomplete="off">
                 <div class="input-class">
                   <mat-form-field class="full-width">
                     <input formControlName="teamname" autofocus matInput placeholder="Enter Your Team Name" name="name" autocomplete="off" required>
@@ -28,10 +28,10 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <button mat-raised-button class="login-button" (click)="login()" [disabled]="!isDetailsValid()">Create Team</button>
+                <button mat-raised-button class="register-button" (click)="registerTeam()" [disabled]="!isDetailsValid()">Create Team</button>
               </form>
         </mat-card-content>
-        <button class="register-btn" mat-button (click)='openInfo()'>how to join to an existing team?</button>
+        <button class="register-btn" mat-button (click)='openInfo()'>How to join to an existing team?</button>
         <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
     </mat-card>
   </div>

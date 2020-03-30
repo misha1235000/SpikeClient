@@ -1,7 +1,7 @@
-// login.component
+// register-team.component
 
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { PublicFunctions } from '../../shared/shared';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -10,16 +10,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { TeamJoinInfoModalComponent } from 'src/app/teams/team-join-info-modal/team-join-info-modal.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-register-team',
+  templateUrl: './register-team.component.html',
+  styleUrls: ['./register-team.component.css']
 })
-export class LoginComponent implements OnInit {
+export class RegisterTeamComponent implements OnInit {
   /**
    * The constructor of the component
-   * @param loginService - The login service that will be used for the login.
-   * @param snackBar - The snackbar that will be useed.
-   * @param _formBuilder - The form builder.
+   * @param authService - The service that will be used for creating a team.
+   * @param router - The router.
+   * @param sharedService - The shared service.
+   * @param formBuilder - The form builder.
+   * @param teamJoinInfoDialog - The dialog of the team join info.
    */
   constructor(private authService: AuthService, private formBuilder: FormBuilder,
               private router: Router, private sharedService: SharedService,
@@ -35,20 +37,20 @@ export class LoginComponent implements OnInit {
 
   user;
   team: any = [];
-  loginFormGroup: FormGroup;
+  registerTeamFormGroup: FormGroup;
   isLogged: boolean;
   teamName: string;
   desc: string;
   errorMsg: string;
 
   /**
-   * Logins to a team with the details given.
+   * Create a new team with the details given.
    */
-  login() {
-    this.teamName = this.loginFormGroup.value.teamname;
-    this.desc = this.loginFormGroup.value.desc;
+  registerTeam() {
+    this.teamName = this.registerTeamFormGroup.value.teamname;
+    this.desc = this.registerTeamFormGroup.value.desc;
     this.authService.registerTeam({teamname: this.teamName, desc: this.desc, ownerId: this.user.genesisId}).subscribe((data) => {
-      if (data.auth) { // If the server returned that the login authorized.
+      if (data.auth) { // If the server returned that the token is authorized.
         this.errorMsg = undefined;
         this.sharedService.setData = data;
         this.router.navigateByUrl('/clients');
@@ -61,18 +63,18 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * When the component intializes, init the login form group with necessary validators.
+   * When the component intializes, init the registerFormGroup with necessary validators.
    */
   ngOnInit() {
     this.user = PublicFunctions.DecodeJwt();
-    this.loginFormGroup = this.formBuilder.group({
+    this.registerTeamFormGroup = this.formBuilder.group({
       teamname: this.teamnameFormControl,
       desc: this.descFormControl
     });
 
     if (this.user) {
       this.authService.getTeams(this.user.genesisId).subscribe((data) => {
-        if (data && data.teams && data.teams.length > 0) { // If the server returned that the login authorized.
+        if (data && data.teams && data.teams.length > 0) { // If the server returned that the teams were given back.
           this.team = data.teams;
           this.sharedService.setData = this.team;
           this.router.navigateByUrl('/teams');
@@ -92,7 +94,7 @@ export class LoginComponent implements OnInit {
    * Checks whether there is any error in any input
    */
   isDetailsValid() {
-    return this.loginFormGroup.status !== 'INVALID';
+    return this.registerTeamFormGroup.status !== 'INVALID';
   }
 
   /**

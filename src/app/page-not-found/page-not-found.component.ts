@@ -40,7 +40,7 @@ export class PageNotFoundComponent implements OnInit {
           this.sharedService.setData = data.teams;
           this.teams = data.teams;
         } else {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/register');
         }
       });
     }

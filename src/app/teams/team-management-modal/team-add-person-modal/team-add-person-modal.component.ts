@@ -30,6 +30,26 @@ export class TeamAddPersonModalComponent implements OnInit {
     setTimeout(() => {
       this.input.focus();
     }, 200);
+	
+    const input: any = document.getElementById('person-input');
+
+    // Init a timeout variable to be used below
+    let timeout = null;
+    const regex = /^[a-zA-Zא-ת]$/m;
+
+    // Listen for keystroke events
+    input.addEventListener('keyup', (e) => {
+        // Clear the timeout if it has already been set.
+        // This will prevent the previous task from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(timeout);
+        if (regex.test(e.key) || e.key === 'Backspace' || e.key === 'Delete') {
+            // Make a new timeout set to go off in 1000ms (1 second)
+            timeout = setTimeout(() => {
+              this.getPersons();
+          }, 300);
+        }
+    });
   }
 
   /**
@@ -39,24 +59,28 @@ export class TeamAddPersonModalComponent implements OnInit {
     this.selectedPerson = {};
     this.selectedPersonId = '';
 
-    if (this.myControl.value.length >= 2) {
-      this.loadingPersons = true;
-      const result = await this.sharedService.getPersons(this.myControl.value).toPromise();
+    if (this.myControl && this.myControl.value) {
+      if (this.myControl.value.length >= 2) {
+        this.loadingPersons = true;
+        const result = await this.sharedService.getPersons(this.myControl.value).toPromise();
 
-      for (const [xIndex, currPerson] of result.entries()) {
-        for (const currTeamPerson of this.team.users) {
-          if (currPerson.id === currTeamPerson.id) {
-            result[xIndex] = null;
+        for (const [xIndex, currPerson] of result.entries()) {
+          for (const currTeamPerson of this.team.users) {
+            if (currPerson.id === currTeamPerson.id) {
+              result[xIndex] = null;
+            }
           }
         }
+
+        const filtered = result.filter((element) => {
+          return element != null;
+        });
+
+        this.filteredPersons = filtered;
+        this.loadingPersons = false;
+      } else {
+        this.filteredPersons = [];
       }
-
-      const filtered = result.filter((element) => {
-        return element != null;
-      });
-
-      this.filteredPersons = filtered;
-      this.loadingPersons = false;
     } else {
       this.filteredPersons = [];
     }

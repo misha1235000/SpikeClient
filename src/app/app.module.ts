@@ -14,8 +14,8 @@ import { ClientsComponent } from './clients/clients.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterClientModalComponent } from './auth/register-client-modal/register-client-modal.component';
+import { RegisterTeamComponent } from './teams/register-team/register-team.component';
+import { RegisterClientModalComponent } from './clients/register-client-modal/register-client-modal.component';
 import { VerifyClientResetModalComponent } from './clients/verify-client-reset-modal/verify-client-reset-modal.component';
 import { VerifyClientDeleteModalComponent } from './clients/verify-client-delete-modal/verify-client-delete-modal.component';
 import { ClientHostUrisModalComponent } from './clients/client-host-uris-modal/client-host-uris-modal.component';
@@ -35,7 +35,7 @@ import { TeamJoinInfoModalComponent } from './teams/team-join-info-modal/team-jo
     PageNotFoundComponent,
     SidenavComponent,
     ToolbarComponent,
-    LoginComponent,
+    RegisterTeamComponent,
     RegisterClientModalComponent,
     VerifyClientResetModalComponent,
     VerifyClientDeleteModalComponent,

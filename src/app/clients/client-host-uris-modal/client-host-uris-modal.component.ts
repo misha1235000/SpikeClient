@@ -59,7 +59,7 @@ export class ClientHostUrisModalComponent implements OnInit {
                       hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
                       actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
                       { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
-                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
+                      { color: 'primary', icon: 'content_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
                   });
                 } else {
                   this.client.hostUris.forEach(hostUri => {
@@ -67,7 +67,7 @@ export class ClientHostUrisModalComponent implements OnInit {
                       hostUri: `${hostUri.split(':')[0]}:${hostUri.split(':')[1]}` , hostPort: `${hostUri.split(':')[2]}`,
                       actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit' },*/
                       { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
-                      { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
+                      { color: 'primary', icon: 'content_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
                   });
                 }
 
@@ -126,7 +126,7 @@ export class ClientHostUrisModalComponent implements OnInit {
       this.addMode = false;
       this.CLIENT_DATA.push({hostUri, hostPort, actions: [/*{ color: 'primary', icon: 'edit', tooltip: 'Edit Host', func: 'edit'},*/
                             { color: 'warn', icon: 'delete', tooltip: 'Delete Host', func: 'delete' },
-                            { color: 'primary', icon: 'file_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
+                            { color: 'primary', icon: 'content_copy', tooltip: 'Copy Full HostUri', func: 'copy'}] });
       this.dataSource = new MatTableDataSource(this.CLIENT_DATA);
       window.setTimeout(() => { this.divToScroll.nativeElement.scrollTop = 15000; }, 10);
       this.hostPort = undefined;

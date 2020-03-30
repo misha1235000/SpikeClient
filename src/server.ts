@@ -103,7 +103,8 @@ class Server {
 
         // Redirect to docs site
         this.app.get('/help', (req, res) => {
-            res.redirect('http://' + req.headers.host + ':3001');
+	    
+            res.redirect('http://' + req.hostname + ':3001');
         });
 
         this.app.get('*', (req, res) => {

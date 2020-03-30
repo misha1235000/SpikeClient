@@ -3,7 +3,7 @@
     <div style="display:flex; flex-wrap: wrap; justify-content: center; position:relative; top:60px;">
         <mat-card style="width: 240px; height: 210px; margin: 20px;" *ngFor="let team of teams">
             <mat-card-header style="text-align: left; position:relative; right: 16px;">
-                <mat-icon *ngIf="team.isAdmin" style="position: absolute;right: -23px; top: -6px; cursor: default;" matTooltip="Admin Permissions" matTooltipPosition="above">supervised_user_circle</mat-icon>
+                <mat-icon *ngIf="team.isAdmin" style="position: absolute;right: -23px; top: -6px; cursor: default;" matTooltip="Admin Permissions" matTooltipPosition="above">gavel</mat-icon>
                 <mat-card-title>{{ team.teamname }}</mat-card-title>
                 <mat-card-subtitle>Created by {{ team.ownerName || team.ownerId.substr(10) }}</mat-card-subtitle>
             </mat-card-header>

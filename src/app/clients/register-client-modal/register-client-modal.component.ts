@@ -5,7 +5,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { PublicFunctions } from '../../shared/shared';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({

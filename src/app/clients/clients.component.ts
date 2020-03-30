@@ -7,7 +7,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar} from '@angular/material/snack-bar';
 import { PublicFunctions } from '../shared/shared';
 import { ClientsService } from './clients.service';
-import { RegisterClientModalComponent } from '../auth/register-client-modal/register-client-modal.component';
+import { RegisterClientModalComponent } from './register-client-modal/register-client-modal.component';
 import { VerifyClientDeleteModalComponent } from './verify-client-delete-modal/verify-client-delete-modal.component';
 import { VerifyClientResetModalComponent } from './verify-client-reset-modal/verify-client-reset-modal.component';
 import { ClientHostUrisModalComponent } from './client-host-uris-modal/client-host-uris-modal.component';
@@ -127,7 +127,7 @@ export class ClientsComponent implements OnInit {
               console.log(error);
             });
         } else {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/register');
         }
       });
     }

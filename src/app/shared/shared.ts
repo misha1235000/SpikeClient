@@ -52,7 +52,7 @@ export class PublicFunctions {
      */
     public static logout() {
         // Redirect to shraga to authenticate
-        window.location.href = `https://localhost/auth`;
+        window.location.href = `https://51.144.178.121:4200/auth`;
     }
 
     /**

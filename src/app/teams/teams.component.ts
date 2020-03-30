@@ -70,7 +70,7 @@ export class TeamsComponent implements OnInit {
             }
           }
         } else {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/register');
         }
       });
     }
