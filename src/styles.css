@@ -29,4 +29,8 @@ html, body {
     overflow-y: hidden;
 }
 
+.mat-badge-content {
+    background-color: black;
+}
+
 body { margin: 0; font-family: 'Roboto', sans-serif; }

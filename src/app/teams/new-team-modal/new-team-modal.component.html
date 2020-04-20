@@ -10,13 +10,13 @@
   <form style="margin: 0 100px;" [formGroup]="loginFormGroup" #ngForm autocomplete="off">
         <div class="input-class">
           <mat-form-field class="full-width">
-            <input formControlName="teamname" #inputSelected="matInput" autofocus matInput placeholder="Enter Your Team Name" name="name" autocomplete="off" required>
+            <input formControlName="teamname" #inputSelected="matInput" autofocus matInput placeholder="Enter Your Team Name" name="name" maxlength="40" autocomplete="off" required>
             <mat-icon class="prefix-icon">group</mat-icon>
             <mat-error *ngIf="teamnameFormControl.hasError('required')">
               Team name is required.
             </mat-error>
             <mat-error *ngIf="teamnameFormControl.hasError('pattern') && !teamnameFormControl.hasError('required')">
-              Team name must contain 1-40 letters or numbers.
+              Team name must contain 4-40 letters or numbers.
             </mat-error>
 
           </mat-form-field>
@@ -33,6 +33,6 @@
         </div>
         <button mat-raised-button class="login-button" (click)="addTeam()" disabled="disabled" [disabled]="!isDetailsValid()">Create Team</button>
     </form>
-    <span *ngIf="errorMsg" class="error-msg">{{errorMsg}}</span>
+    <span *ngIf="errorMsg" class="error-msg">*{{errorMsg}}</span>
   </div>
   

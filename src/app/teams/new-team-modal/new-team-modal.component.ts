@@ -29,7 +29,7 @@ export class NewTeamModalComponent implements OnInit {
 
   teamnameFormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern('^[a-zA-Z0-9]{1,40}$'),
+    Validators.pattern('^[a-zA-Z0-9]{4,40}$'),
   ]);
 
   descFormControl = new FormControl('', [
@@ -48,18 +48,17 @@ export class NewTeamModalComponent implements OnInit {
   async addTeam() {
     this.teamName = this.loginFormGroup.value.teamname;
     this.desc = this.loginFormGroup.value.desc;
-    const data: any = await this.authService.registerTeam(
-      {
-        teamname: this.teamName,
-        desc: this.desc,
-        ownerId: this.user.genesisId
-      }).toPromise();
-
-    if (data.auth) { // If the server returned that the login authorized.
+    try {
+      const data: any = await this.authService.registerTeam(
+        {
+          teamname: this.teamName,
+          desc: this.desc,
+          ownerId: this.user.genesisId
+        }).toPromise();
       this.errorMsg = undefined;
       this.dialogRef.close({ team: data.createdTeam });
-    } else {
-      this.errorMsg = data.message;
+    } catch (error) {
+      this.errorMsg = error.message;
     }
   }
 

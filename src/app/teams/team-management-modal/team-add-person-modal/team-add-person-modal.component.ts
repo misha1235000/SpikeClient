@@ -30,7 +30,7 @@ export class TeamAddPersonModalComponent implements OnInit {
     setTimeout(() => {
       this.input.focus();
     }, 200);
-	
+
     const input: any = document.getElementById('person-input');
 
     // Init a timeout variable to be used below

@@ -7,13 +7,13 @@
           <form [formGroup]="registerTeamFormGroup" #ngForm autocomplete="off">
                 <div class="input-class">
                   <mat-form-field class="full-width">
-                    <input formControlName="teamname" autofocus matInput placeholder="Enter Your Team Name" name="name" autocomplete="off" required>
+                    <input formControlName="teamname" autofocus matInput placeholder="Enter Your Team Name" name="name" autocomplete="off" required maxlength="40">
                     <mat-icon class="prefix-icon">group</mat-icon>
                     <mat-error *ngIf="teamnameFormControl.hasError('required')">
                       Team name is required.
                     </mat-error>
                     <mat-error *ngIf="teamnameFormControl.hasError('pattern') && !teamnameFormControl.hasError('required')">
-                      Team name must contain 1-40 letters or numbers.
+                      Team name must contain 4-40 letters or numbers.
                     </mat-error>
 
                   </mat-form-field>
@@ -24,7 +24,7 @@
                     <mat-icon class="prefix-icon">description</mat-icon>
                     <textarea formControlName="desc" matInput placeholder="Description (Optional)" type="text" name="desc" autocomplete="off" maxlength="80"></textarea>
                     <mat-error *ngIf="descFormControl.hasError('pattern') && !descFormControl.hasError('required')">
-                      Description must contain 1-300 characters.
+                      Description can contain 0-80 characters.
                     </mat-error>
                   </mat-form-field>
                 </div>

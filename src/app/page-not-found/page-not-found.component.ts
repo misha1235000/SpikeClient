@@ -23,7 +23,7 @@ export class PageNotFoundComponent implements OnInit {
               private sharedService: SharedService,
               private authService: AuthService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.sharedService.onDataChange((data) => {
       this.teams = data;
     });
@@ -35,14 +35,13 @@ export class PageNotFoundComponent implements OnInit {
     }
 
     if (!this.teams && this.user) {
-      this.authService.getTeams(this.user.genesisId).subscribe((data) => {
-        if (data && data.teams && data.teams.length > 0) {
-          this.sharedService.setData = data.teams;
-          this.teams = data.teams;
-        } else {
-          this.router.navigateByUrl('/register');
-        }
-      });
+      const data = await this.authService.getTeams(this.user.genesisId).toPromise();
+      if (data && data.teams && data.teams.length > 0) {
+        this.sharedService.setData = data.teams;
+        this.teams = data.teams;
+      } else {
+        this.router.navigateByUrl('/register');
+      }
     }
   }
 

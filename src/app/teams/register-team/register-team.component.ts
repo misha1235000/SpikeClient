@@ -29,7 +29,7 @@ export class RegisterTeamComponent implements OnInit {
 
   teamnameFormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern('^[a-zA-Z0-9]{1,40}$'),
+    Validators.pattern('^[a-zA-Z0-9]{4,40}$'),
   ]);
 
   descFormControl = new FormControl('', [
@@ -46,10 +46,19 @@ export class RegisterTeamComponent implements OnInit {
   /**
    * Create a new team with the details given.
    */
-  registerTeam() {
+  async registerTeam() {
     this.teamName = this.registerTeamFormGroup.value.teamname;
     this.desc = this.registerTeamFormGroup.value.desc;
-    this.authService.registerTeam({teamname: this.teamName, desc: this.desc, ownerId: this.user.genesisId}).subscribe((data) => {
+    const data = await this.authService.registerTeam({
+                                                      teamname: this.teamName,
+                                                      desc: this.desc,
+                                                      ownerId: this.user.genesisId
+                                                    }
+    ).toPromise().catch((error) => {
+      this.errorMsg = error.message;
+    });
+
+    if (data) {
       if (data.auth) { // If the server returned that the token is authorized.
         this.errorMsg = undefined;
         this.sharedService.setData = data;
@@ -57,9 +66,7 @@ export class RegisterTeamComponent implements OnInit {
       } else {
         this.errorMsg = data.message;
       }
-    }, (error) => {
-      this.errorMsg = error.message;
-    });
+    }
   }
 
   /**

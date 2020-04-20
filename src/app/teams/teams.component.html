@@ -5,10 +5,10 @@
             <mat-card-header style="text-align: left; position:relative; right: 16px;">
                 <mat-icon *ngIf="team.isAdmin" style="position: absolute;right: -23px; top: -6px; cursor: default;" matTooltip="Admin Permissions" matTooltipPosition="above">gavel</mat-icon>
                 <mat-card-title>{{ team.teamname }}</mat-card-title>
-                <mat-card-subtitle>Created by {{ team.ownerName || team.ownerId.substr(10) }}</mat-card-subtitle>
+                <mat-card-subtitle>Created by {{ team.ownerName }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content style="text-align: left;">
-            <p>
+            <p *ngIf="team.desc">
                 {{ team.desc }}
             </p>
             <span style="position: absolute;bottom: 10px;left: 16px;cursor: default;">
@@ -17,9 +17,12 @@
             </span>
             </mat-card-content>
             <mat-card-actions style="text-align:right;">
-            <button (click)="openTeamManagement(team)" mat-icon-button style="position:absolute; bottom: 10px; right: 10px;" color="primary" matTooltip="Manage Team" matTooltipPosition="above" >
-                <mat-icon>edit</mat-icon>
-            </button>
+                <button *ngIf="!team.isAdmin" (click)="openTeamManagement(team)" mat-icon-button style="position:absolute; bottom: 10px; right: 10px;" color="primary" matTooltip="View Team Members" matTooltipPosition="above" >
+                    <mat-icon>visibility</mat-icon>
+                </button>
+                <button *ngIf="team.isAdmin" (click)="openTeamManagement(team)" mat-icon-button style="position:absolute; bottom: 10px; right: 10px;" color="primary" matTooltip="Manage Team" matTooltipPosition="above" >
+                    <mat-icon>edit</mat-icon>
+                </button>
             </mat-card-actions>
         </mat-card>
     </div>

@@ -14,7 +14,7 @@
       <span>Permission</span>
     </div>
     <div style="flex:24%">
-      Actions
+      <span *ngIf="team.isAdmin">Actions</span>
     </div>
     <mat-divider></mat-divider>
   </mat-list-item>

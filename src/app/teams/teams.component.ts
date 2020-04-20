@@ -42,7 +42,7 @@ export class TeamsComponent implements OnInit {
    * Check whether there is an authorization cookie,
    * and get all the neccessery data (User and Teams).
    */
-  ngOnInit(): void {
+  async ngOnInit() {
     this.sharedService.onDataChange((data) => {
       this.teams = data;
     });
@@ -54,25 +54,24 @@ export class TeamsComponent implements OnInit {
     }
 
     if (!this.teams && this.user) {
-      this.authService.getTeams(this.user.genesisId).subscribe((data) => {
-        if (data && data.teams && data.teams.length > 0) {
-          this.sharedService.setData = data.teams;
-          this.teams = data.teams;
+      const data = await this.authService.getTeams(this.user.genesisId).toPromise();
+      if (data && data.teams && data.teams.length > 0) {
+        this.sharedService.setData = data.teams;
+        this.teams = data.teams;
 
-          for (const [teamIndex, team] of this.teams.entries()) {
-            this.teams[teamIndex].isAdmin = false;
+        for (const [teamIndex, team] of this.teams.entries()) {
+          this.teams[teamIndex].isAdmin = false;
 
-            for (const adminId of team.adminIds) {
-              if (adminId === this.user.genesisId) {
-                this.teams[teamIndex].isAdmin = true;
-                break;
-              }
+          for (const adminId of team.adminIds) {
+            if (adminId === this.user.genesisId) {
+              this.teams[teamIndex].isAdmin = true;
+              break;
             }
           }
-        } else {
-          this.router.navigateByUrl('/register');
         }
-      });
+      } else {
+        this.router.navigateByUrl('/register');
+      }
     }
   }
 
@@ -112,6 +111,7 @@ export class TeamsComponent implements OnInit {
         ...data.team,
         users: [{userId: data.team.ownerId, isAdmin: true}],
         isAdmin: true,
+        ownerName: `${ this.user.name.firstName } ${ this.user.name.lastName }`
       });
     }
   }

@@ -118,7 +118,7 @@ export class RegisterClientModalComponent implements OnInit {
   /**
    * Registers a client with the details given.
    */
-  register(event) {
+  async register(event) {
     event.stopPropagation();
     this.appName = this.registerClientFormGroup.value.appname;
     this.port = this.registerClientFormGroup.value.port;
@@ -129,24 +129,22 @@ export class RegisterClientModalComponent implements OnInit {
       this.hostUris.push(this.hostUri);
     }
 
-    this.authService.registerClient({name: this.appName,
-                                     teamId: this.registerClientFormGroup.value.teamname,
-                                     teamName: this.teams.map((currTeam) => {
-                                       if (currTeam._id === this.registerClientFormGroup.value.teamname) {
-                                         return currTeam.teamname;
-                                       }
-                                      }),
-                                     redirectUris: this.redirectUris,
-                                     hostUris: this.hostUris.map(hostUri => 'https://' + hostUri.trim())}).subscribe((data) => {
-      if (data) {
-        this.errorMsg = undefined;
-        this.dialogRef.close(data);
-      } else {
-        this.errorMsg = data.message;
-      }
-    }, (error) => {
-      this.errorMsg = error.message;
-    });
+    const data = await this.authService.registerClient({
+                    name: this.appName,
+                    teamId: this.registerClientFormGroup.value.teamname,
+                    teamName: this.teams.map((currTeam) => {
+                      if (currTeam._id === this.registerClientFormGroup.value.teamname) {
+                        return currTeam.teamname;
+                      }
+                    }),
+                    redirectUris: this.redirectUris,
+                    hostUris: this.hostUris.map(hostUri => 'https://' + hostUri.trim())}).toPromise();
+    if (data) {
+      this.errorMsg = undefined;
+      this.dialogRef.close(data);
+    } else {
+      this.errorMsg = data.message;
+    }
   }
 
   /**

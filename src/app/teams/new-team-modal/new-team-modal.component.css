@@ -71,9 +71,9 @@ mat-card-content {
 
 .error-msg {
     position:absolute;
-    left: 20px;
-    bottom: 10px;
-    max-width:220px;
+    left: 0px;
+    bottom: -105px;
+    width:96%;
     font-size: 11px;
     color: #ef5350;
     font-weight: bold;

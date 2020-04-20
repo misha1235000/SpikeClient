@@ -76,7 +76,7 @@ export class ClientsComponent implements OnInit {
   /**
    * When the component initialized, check if the account team is logged in.
    */
-  ngOnInit() {
+  async ngOnInit() {
     this.sharedService.onDataChange((data) => {
       this.teams = data;
     });
@@ -88,48 +88,42 @@ export class ClientsComponent implements OnInit {
     }
 
     if (!this.teams && this.user) {
-      this.authService.getTeams(this.user.genesisId).subscribe((teams) => {
-        if (teams && teams.teams && teams.teams.length > 0) {
-          this.sharedService.setData = teams;
-          this.teams = teams;
-          this.clientsService.getClients().subscribe(
-            clients => {
-              if (clients) {
-                clients.forEach(client => {
-                  client.fileFormGroup = this.formBuilder.group({
-                    file: this.fileFormControl,
-                  });
-                  client.newRedirectUris = [];
-                  client.color = COLORS[client.name[0].toLowerCase().charCodeAt(0) - 97];
-                  if (client.name.split(' ') && client.name.split(' ').length === 1) {
-                    client.avatarName = client.name + ' ' + client.name[client.name.length - 1];
-                  } else {
-                    client.avatarName = client.name;
-                  }
-                });
-                clients.map(client => { client = client.hostUris.sort(); });
-                // tslint:disable-next-line:prefer-for-of
-                for (let currClient = 0; currClient < clients.length; currClient++) {
-                  // tslint:disable-next-line:prefer-for-of
-                  for (let currTeam = 0; currTeam < teams.teams.length; currTeam++) {
-                    if (clients[currClient].teamId === teams.teams[currTeam]._id) {
-                      clients[currClient].teamName = teams.teams[currTeam].teamname;
-                      break;
-                    }
-                  }
-                }
+      const teams = await this.authService.getTeams(this.user.genesisId).toPromise();
 
-
-                this.clients = clients;
-              }
-            },
-            error => {
-              console.log(error);
+      if (teams && teams.teams && teams.teams.length > 0) {
+        this.sharedService.setData = teams;
+        this.teams = teams;
+        const clients = await this.clientsService.getClients().toPromise();
+        if (clients) {
+          clients.forEach(client => {
+            client.fileFormGroup = this.formBuilder.group({
+              file: this.fileFormControl,
             });
-        } else {
+
+            client.newRedirectUris = [];
+            client.color = COLORS[client.name[0].toLowerCase().charCodeAt(0) - 97];
+            if (client.name.split(' ') && client.name.split(' ').length === 1) {
+              client.avatarName = client.name + ' ' + client.name[client.name.length - 1];
+            } else {
+              client.avatarName = client.name;
+            }
+          });
+
+          clients.map(client => { client = client.hostUris.sort(); });
+
+          for (const [clientIndex, client] of clients.entries()) {
+            for (const team of teams.teams) {
+              if (client.teamId === team._id) {
+                clients[clientIndex].teamName = team.teamname;
+              }
+            }
+          }
+
+          this.clients = clients;
+          }
+      } else {
           this.router.navigateByUrl('/register');
-        }
-      });
+      }
     }
   }
 
@@ -150,7 +144,7 @@ export class ClientsComponent implements OnInit {
   /**
    * Opens the register dialog.
    */
-  openRegister() {
+  async openRegister() {
     const dialogRef = this.registerDialog.open(RegisterClientModalComponent, {
       width: '420px',
       data: {
@@ -158,28 +152,27 @@ export class ClientsComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.isNew = true;
-        result.color = COLORS[result.name[0].toLowerCase().charCodeAt(0) - 97];
-        if (result.name.split(' ') && result.name.split(' ').length === 1) {
-          result.avatarName = result.name + ' ' + result.name[result.name.length - 1];
-        } else {
-          result.avatarName = result.name;
-        }
-
-        // tslint:disable-next-line:prefer-for-of
-        for (let currTeam = 0; currTeam < this.teams.teams.length; currTeam++) {
-          if (result.teamId === this.teams.teams[currTeam]._id) {
-            result.teamName = this.teams.teams[currTeam].teamname;
-            break;
-          }
-        }
-
-        result.newRedirectUris = [];
-        this.clients.push(result);
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      result.isNew = true;
+      result.color = COLORS[result.name[0].toLowerCase().charCodeAt(0) - 97];
+      if (result.name.split(' ') && result.name.split(' ').length === 1) {
+        result.avatarName = result.name + ' ' + result.name[result.name.length - 1];
+      } else {
+        result.avatarName = result.name;
       }
-    });
+
+      // tslint:disable-next-line:prefer-for-of
+      for (let currTeam = 0; currTeam < this.teams.teams.length; currTeam++) {
+        if (result.teamId === this.teams.teams[currTeam]._id) {
+          result.teamName = this.teams.teams[currTeam].teamname;
+          break;
+        }
+      }
+
+      result.newRedirectUris = [];
+      this.clients.push(result);
+    }
   }
 
   /**
@@ -187,28 +180,35 @@ export class ClientsComponent implements OnInit {
    * @param client - The client with the data.
    * @param currClient - The current client.
    */
-  getClientData(client, currClient) {
+  async getClientData(client, currClient) {
     if (!client.secret || !client.redirectUris) {
-      this.clientsService.getClientData(client.clientId).subscribe(
-        clientData => {
-          if (clientData) {
-            // tslint:disable-next-line:prefer-for-of
-            for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
-              if (this.clients[currIndex].clientId === clientData.clientId) {
-                this.clients[currIndex].teamId = clientData.teamId;
-                this.clients[currIndex].secret = clientData.secret;
-                this.clients[currIndex].redirectUris = clientData.redirectUris;
-                this.clients[currIndex].audienceId = clientData.audienceId;
-                currClient.open();
-                this.clients[currIndex].start = false;
-                break;
-              }
-            }
+      const clientData = await this.clientsService.getClientData(client.clientId).toPromise();
+      if (clientData) {
+        for (const [clientIndex, clientCurrent] of this.clients.entries()) {
+          if (clientCurrent.clientId === clientData.clientId) {
+            this.clients[clientIndex].teamId = clientData.teamId;
+            this.clients[clientIndex].secret = clientData.secret;
+            this.clients[clientIndex].redirectUris = clientData.redirectUris;
+            this.clients[clientIndex].audienceId = clientData.audienceId;
+            currClient.open();
+            this.clients[clientIndex].start = false;
+            break;
           }
-        },
-        error => {
-          console.log(error);
-        });
+        }
+
+        // tslint:disable-next-line:prefer-for-of
+        for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
+          if (this.clients[currIndex].clientId === clientData.clientId) {
+            this.clients[currIndex].teamId = clientData.teamId;
+            this.clients[currIndex].secret = clientData.secret;
+            this.clients[currIndex].redirectUris = clientData.redirectUris;
+            this.clients[currIndex].audienceId = clientData.audienceId;
+            currClient.open();
+            this.clients[currIndex].start = false;
+            break;
+          }
+        }
+      }
     }
   }
 
@@ -268,7 +268,7 @@ export class ClientsComponent implements OnInit {
    * Saves the changes of the client.
    * @param client - The client.
    */
-  saveChanges(client) {
+  async saveChanges(client) {
     client.redirectUris = client.copyRedirectUris.slice();
 
     // If there are new redirect Uris, add them to the redirect Uris array.
@@ -282,29 +282,23 @@ export class ClientsComponent implements OnInit {
       client.hostUris = client.fileHostUris.slice(0);
     }
 
-    this.clientsService.updateClient(client.clientId,
-      {
-        redirectUris: client.redirectUris,
-        hostUris: client.hostUris.map(hostUri => {
-          if (hostUri.indexOf('https://') === -1) {
-            hostUri = `https://${hostUri}`;
-          }
+    const data = await this.clientsService.updateClient(client.clientId,
+                            {
+                              redirectUris: client.redirectUris,
+                              hostUris: client.hostUris.map(hostUri => {
+                                if (hostUri.indexOf('https://') === -1) {
+                                  hostUri = `https://${hostUri}`;
+                                }
 
-          return hostUri.trim();
-        })
-      }).subscribe((data) => {
-        if (data) {
-          this.cancelChanges(client);
-          client.redirectUris = data.redirectUris;
-          this.snackBar.open('Client was updated successfuly', '', {
-            duration: 2000
-          });
-        }
-      }, (error) => {
-        if (error.message) {
-          this.saveErrMsg = error.message;
-        }
+                                return hostUri.trim();
+                            })}).toPromise();
+    if (data) {
+      this.cancelChanges(client);
+      client.redirectUris = data.redirectUris;
+      this.snackBar.open('Client was updated successfuly', '', {
+        duration: 2000
       });
+    }
   }
 
   /**
@@ -338,7 +332,7 @@ export class ClientsComponent implements OnInit {
    * Remove a client.
    * @param client - The client
    */
-  removeClient(client): void {
+  async removeClient(client) {
     const dialogRef = this.verifyDeleteDialog.open(VerifyClientDeleteModalComponent, {
       width: '420px',
       height: '220px'
@@ -347,34 +341,32 @@ export class ClientsComponent implements OnInit {
     let savedIndex: number;
     let savedClient;
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.clients.forEach((currClient, index) => {
-          if (currClient.clientId === client.clientId) {
-            this.clients.splice(index, 1);
-            savedIndex = index;
-            savedClient = currClient;
-          }
-        });
-        const timer = setTimeout(() => {
-          this.clientsService.removeClient(client.clientId).subscribe((data) => {
-          });
-        }, 5000);
-        this.snackBar.open('Client was removed successfuly', 'Undo', {
-          duration: 5000
-        }).onAction().subscribe(() => {
-          this.clients.splice(savedIndex, 0, savedClient);
-          clearTimeout(timer);
-        });
-      }
-    });
+    const result = dialogRef.afterClosed().toPromise();
+    if (result) {
+      this.clients.forEach((currClient, index) => {
+        if (currClient.clientId === client.clientId) {
+          this.clients.splice(index, 1);
+          savedIndex = index;
+          savedClient = currClient;
+        }
+      });
+      const timer = setTimeout(async () => {
+        await this.clientsService.removeClient(client.clientId).toPromise();
+      }, 5000);
+      this.snackBar.open('Client was removed successfuly', 'Undo', {
+        duration: 5000
+      }).onAction().subscribe(() => {
+        this.clients.splice(savedIndex, 0, savedClient);
+        clearTimeout(timer);
+      });
+    }
   }
 
   /**
    * Opens up the hosts uri management for a specific client.
    * @param client - The client
    */
-  expandUris(event, client, edit: boolean): void {
+  async expandUris(event, client, edit: boolean) {
     event.stopPropagation();
 
     const dialogRef = this.clientHostUrisDialog.open(ClientHostUrisModalComponent, {
@@ -386,12 +378,11 @@ export class ClientsComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        client.hostUris = result.slice(0);
-        client.fileHostUris = result.slice(0);
-      }
-    });
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      client.hostUris = result.slice(0);
+      client.fileHostUris = result.slice(0);
+    }
   }
 
   /**
@@ -515,34 +506,30 @@ export class ClientsComponent implements OnInit {
    * Resets client credentials (Changes the client secret)
    * @param client - Current Client
    */
-  resetCredentials(client) {
+  async resetCredentials(client) {
     const dialogRef = this.verifyClientResetDialog.open(VerifyClientResetModalComponent, {
       width: '420px',
       height: '270px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.clientsService.resetCredentials(client.clientId).subscribe((data) => {
-          if (data) {
-            // tslint:disable-next-line:prefer-for-of
-            for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
-              if (client.clientId === this.clients[currIndex].clientId) {
-                this.clients[currIndex].clientId = data.clientId;
-                this.clients[currIndex].secret = data.secret;
-                break;
-              }
-            }
-
-            this.snackBar.open('Client Credentials Has Been Renewed Successfuly', '', {
-              duration: 2000
-            });
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      const data = await this.clientsService.resetCredentials(client.clientId).toPromise();
+      if (data) {
+        // tslint:disable-next-line:prefer-for-of
+        for (let currIndex = 0; currIndex < this.clients.length; currIndex++) {
+          if (client.clientId === this.clients[currIndex].clientId) {
+            this.clients[currIndex].clientId = data.clientId;
+            this.clients[currIndex].secret = data.secret;
+            break;
           }
-        }, (error) => {
-          console.log(error);
+        }
+
+        this.snackBar.open('Client Credentials Has Been Renewed Successfuly', '', {
+          duration: 2000
         });
       }
-    });
+    }
   }
 
   /**

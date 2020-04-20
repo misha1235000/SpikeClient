@@ -60,13 +60,13 @@ mat-card-content {
 }
 
 .error-msg {
-    position:absolute;
-    left: 20px;
-    bottom: 10px;
-    max-width:220px;
+    position: absolute;
+    bottom: 80px;
     font-size: 11px;
     color: #ef5350;
     font-weight: bold;
+    width: 96%;
+    left: 0px;
 }
 
 .register-btn {
