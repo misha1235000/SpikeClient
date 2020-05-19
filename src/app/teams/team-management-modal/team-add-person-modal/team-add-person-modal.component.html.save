@@ -12,14 +12,15 @@
   <input #inputSelected="matInput" type="text"
          placeholder="Person to add to this team"
          aria-label="Number"
+
          matInput
          [formControl]="myControl"
          [matAutocomplete]="auto"
          id="person-input">
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectPerson($event.option.value)">
-    <mat-option *ngFor="let person of filteredPersons" [value]="person.id" style="height:unset !important; line-height: 16px !important; white-space:normal !important; padding: 12px 16px !important; text-align:right; direction:rtl;">
+    <mat-option *ngFor="let person of filteredPersons" [value]="person.id" style="height:unset !important; line-height: 21px !important; white-space:normal !important; padding: 7px 16px !important;">
       {{ person.fullName }} <br>
-      <span style="font-size: 13px;font-weight: bold;color: #AAAAAA; position: relative; top:1px; line-height:0;">{{ person.hierarchy.join('/ ') }}</span>
+      <span style="font-size: 13px;font-weight: bold;color: #AAAAAA;">{{ person.hierarchy.join('/ ') }}</span>
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
