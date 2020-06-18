@@ -2,7 +2,6 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
 import { TeamsService } from '../teams.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedService } from '../../shared.service';
@@ -165,8 +164,7 @@ export class TeamManagementModalComponent implements OnInit {
     const personReturned = await addPersonDialogRef.afterClosed().toPromise();
 
     if (personReturned) {
-      if (personReturned.rank &&
-          personReturned.id !== '') {
+      if (personReturned.id !== '') {
           this.team.userIds.push(personReturned.id);
           this.team.users.push({...personReturned, isAdmin: false });
 

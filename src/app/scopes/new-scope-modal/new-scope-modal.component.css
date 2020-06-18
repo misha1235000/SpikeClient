@@ -1,0 +1,107 @@
+.main-scope {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    top: 34px;
+}
+
+mat-toolbar {
+    background-color:black !important;
+    color:white;
+}
+
+.example-spacer {
+    flex:1 1 auto;
+}
+
+mat-card {
+    margin:20px;
+    height: 310px
+}
+
+mat-card-subtitle {
+    text-align:center;
+}
+
+mat-card-content {
+    text-align:center;
+    position:relative;
+    margin: 60px 50px 50px 50px;
+}
+.login-form {
+    min-width: 150px;
+    max-width:400px;
+    width:100%;
+}
+
+.full-width {
+    width:100%;
+}
+
+.prefix-icon {
+    font-size:30px;
+    color: #757575;
+    position:absolute;
+    left: -40px;
+    bottom:5px;
+}
+
+.input-class {
+    margin-left:25px;
+}
+
+.input-class-select {
+    margin-left:25px;
+    width:90%;
+}
+
+.login-button {
+    color: white;
+    background-color: black;
+    position: absolute;
+    right: 40%;
+    bottom: -104px;
+}
+
+.logout-button {
+    position: fixed;
+    left: 50px;
+    bottom:50px;
+}
+
+.email-button {
+    position: relative;
+    left: 50px;
+}
+
+.error-msg {
+    position:absolute;
+    left: 0px;
+    bottom: -105px;
+    width:96%;
+    font-size: 11px;
+    color: #ef5350;
+    font-weight: bold;
+}
+
+.register-btn {
+    color: #1a73e8;
+    position: absolute;
+    bottom: 28px;
+    left:32px;
+}
+
+textarea {
+    resize: none !important;
+}
+
+.active-class {
+    font-weight:bold;
+    color: #3f51b5;
+    transition: 100ms;
+}
+
+.inactive-class {
+    color: #9A9A9A;
+    transition: 100ms;
+}

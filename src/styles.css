@@ -34,3 +34,11 @@ html, body {
 }
 
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.mat-slide-toggle-bar {
+    background-color: rgba(63,81,181,.54) !important;
+}
+
+.mat-slide-toggle-thumb {
+    background-color: #3f51b5 !important;
+}

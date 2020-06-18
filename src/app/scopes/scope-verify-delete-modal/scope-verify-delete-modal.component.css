@@ -1,0 +1,38 @@
+mat-toolbar {
+    background-color: black !important;
+    color: white;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+mat-card-subtitle {
+    text-align:center;
+}
+
+.mat-card-content {
+    text-align:center;
+    position: relative;
+    top: 50px;
+    margin: 0px 15px 0px 15px
+}
+
+.btn-delete {
+    position: absolute;
+    right: 0px;
+}
+
+button {
+    font-weight: bold;
+}
+
+.desc {
+    font-size: 17px;
+    font-family: arial;
+}
+
+.dialog-content {
+    position:relative;
+    bottom:20px;
+}

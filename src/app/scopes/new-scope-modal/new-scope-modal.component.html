@@ -1,0 +1,54 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+      <span>Add New Scope</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="main-scope">
+  <form style="margin: 0 100px;" [formGroup]="scopeFormGroup" #ngForm autocomplete="off">
+        <div class="input-class">
+          <mat-form-field class="full-width">
+            <input formControlName="scopeName" #inputSelected="matInput" autofocus matInput placeholder="Enter Scope Name" name="name" maxlength="30" autocomplete="off" required>
+            <mat-icon class="prefix-icon">group</mat-icon>
+            <mat-error *ngIf="scopeNameFormControl.hasError('required')">
+              Scope Name is required.
+            </mat-error>
+            <mat-error *ngIf="scopeNameFormControl.hasError('pattern') && !scopeNameFormControl.hasError('required')">
+              Scope Name must contain 3-30 letters or numbers.
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+        <br>
+        <div class="input-class">
+          <mat-form-field class="full-width">
+            <mat-icon class="prefix-icon">description</mat-icon>
+            <textarea formControlName="desc" matInput placeholder="Description (Optional)" type="text" name="desc" autocomplete="off" maxlength="40"></textarea>
+            <mat-error *ngIf="descFormControl.hasError('pattern') && !descFormControl.hasError('required')">
+              Description must contain 2-40 characters.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <br>
+        <div class="input-class">
+        <mat-form-field class="full-width">
+          <mat-icon class="prefix-icon">desktop_windows</mat-icon>
+          <mat-label>Client For The Scope</mat-label>
+          <mat-select formControlName="client" [(ngModel)]="selectedClient" name="client" required>
+            <mat-option *ngFor="let client of clients" [value]="client.name">
+              {{ client.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+        <mat-slide-toggle (change)="changeActive()" color="primary" style="position: relative; left: 42px; top: 30px;">
+          <span [class]="publicActive">Public Scope</span>
+          <span [class]="privateActive" style="position: absolute; left: -97px;">Private Scope</span>
+        </mat-slide-toggle>
+        <button mat-raised-button class="login-button" (click)="addScope()" disabled="disabled" [disabled]="!isDetailsValid()">Create Scope</button>
+    </form>
+    <span *ngIf="errorMsg" class="error-msg">*{{errorMsg}}</span>
+  </div>
+  

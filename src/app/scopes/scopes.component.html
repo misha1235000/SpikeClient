@@ -1,0 +1,76 @@
+<mat-spinner class="spinner-opts" *ngIf="!isDone"></mat-spinner>
+<div *ngIf="isDone">
+    <div style="display:flex; flex-wrap: wrap; justify-content: center; position:relative; top:60px;">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 80%">
+
+            <!-- Scope Name Column -->
+            <ng-container matColumnDef="scopeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tb-header"> Scope Name </th>
+                <td mat-cell *matCellDef="let element"> {{ element.scopeName }} </td>
+            </ng-container>
+            
+            <!-- Access Type Column -->
+            <ng-container matColumnDef="accessType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tb-header"> Access Type </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon *ngIf="element.accessType === 'Private'" class="lock-icon">lock</mat-icon>
+                    <mat-icon *ngIf="element.accessType === 'Public'" class="lock-icon">lock_open</mat-icon>
+                    <span class="access-span">{{ element.accessType }}</span>
+                </td>
+            </ng-container>
+            
+            <!-- Client Name Column -->
+            <ng-container matColumnDef="clientName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tb-header"> Client Name </th>
+                <td mat-cell *matCellDef="let element"> {{ element.clientName }} </td>
+            </ng-container>
+            
+            <!-- Created By Column -->
+            <ng-container matColumnDef="scopeOwner">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tb-header"> Created By </th>
+                <td mat-cell *matCellDef="let element"> {{ element.scopeOwner }} </td>
+            </ng-container>
+            
+            <!-- Description Column -->
+            <ng-container matColumnDef="scopeDesc">
+                <th mat-header-cell *matHeaderCellDef class="tb-header"> Description </th>
+                <td mat-cell *matCellDef="let element"> {{ element.scopeDesc }} </td>
+            </ng-container>
+
+            <!-- Permitted Clients Column -->
+            <ng-container matColumnDef="permittedClients">
+                <th mat-header-cell *matHeaderCellDef class="tb-header"> Permitted Clients </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-chip-list aria-label="Permitted Clients">
+                        <mat-chip color="primary" *ngFor="let permittedClient of element.permittedClients | slice:0:2;">{{ permittedClient.clientName }}</mat-chip>
+                        <button color="primary" (click)="openManageScope(element)" mat-icon-button *ngIf="element.permittedClients.length > 0" matTooltip="Manage Permitted Clients" matTooltipPosition="above">
+                            <mat-icon *ngIf="element.permittedClients.length > 0 && element.permittedClients.length <= 2">more_horiz</mat-icon>
+                            <mat-icon *ngIf="element.permittedClients.length > 2" [matBadge]="element.permittedClients.length - 2" matBadgeColor="warn">more_horiz</mat-icon>
+                        </button>
+                        <button style="width:100%;" color="primary" (click)="openManageScope(element)" mat-button *ngIf="element.permittedClients.length === 0 && element.accessType === 'Private'">
+                            <mat-icon style="position:relative; right:2px; bottom:1px;">add_to_queue</mat-icon> Add Permitted Clients
+                        </button>
+                    </mat-chip-list>
+                    
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element" style="text-align: right;">
+                    <button color="warn" mat-icon-button matTooltip="Remove Scope" matTooltipPosition="above" (click)="removeScope(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+    </div>
+</div>
+
+<button *ngIf="isDone" mat-fab color="primary" matTooltip="Create New Scope" matTooltipPosition="above" style="position:fixed; right: 50px; bottom: 50px;" (click)="openNewScope()">
+    <mat-icon>add</mat-icon>
+</button>

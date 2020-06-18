@@ -27,6 +27,11 @@ import { TeamManagementModalComponent } from './teams/team-management-modal/team
 import { TeamsService } from './teams/teams.service';
 import { TeamAddPersonModalComponent } from './teams/team-management-modal/team-add-person-modal/team-add-person-modal.component';
 import { TeamJoinInfoModalComponent } from './teams/team-join-info-modal/team-join-info-modal.component';
+import { ScopesComponent } from './scopes/scopes.component';
+import { NewScopeModalComponent } from './scopes/new-scope-modal/new-scope-modal.component';
+import { ScopeManagementModalComponent } from './scopes/scope-management-modal/scope-management-modal.component';
+import { ScopeVerifyDeleteModalComponent } from './scopes/scope-verify-delete-modal/scope-verify-delete-modal.component';
+import { ScopeNewPermittedClientComponent } from './scopes/scope-management-modal/scope-new-permitted-client/scope-new-permitted-client.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +50,11 @@ import { TeamJoinInfoModalComponent } from './teams/team-join-info-modal/team-jo
     TeamManagementModalComponent,
     TeamAddPersonModalComponent,
     TeamJoinInfoModalComponent,
+    ScopesComponent,
+    NewScopeModalComponent,
+    ScopeManagementModalComponent,
+    ScopeVerifyDeleteModalComponent,
+    ScopeNewPermittedClientComponent,
   ],
   imports: [
     BrowserAnimationsModule,

@@ -101,7 +101,7 @@ export class TeamAddPersonModalComponent implements OnInit {
    * Checks if the form is valid.
    */
   isFormValid(): boolean {
-    if (this.selectedPerson.rank) {
+    if (this.selectedPerson.id) {
       return true;
     }
 
